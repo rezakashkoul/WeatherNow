@@ -1,6 +1,6 @@
 //
 //  WeatherModel.swift
-//  wetherMether
+//  WeatherNow
 //
 //  Created by Reza Kashkoul on 29-Mehr-1400.
 //

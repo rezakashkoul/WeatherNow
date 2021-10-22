@@ -1,6 +1,6 @@
 //
 //  SearchViewController.swift
-//  wetherMether
+//  WeatherNow
 //
 //  Created by Reza Kashkoul on 29-Mehr-1400.
 //
@@ -112,8 +112,8 @@ extension SearchViewController : UITableViewDelegate , UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TableViewCell", for: indexPath) as! TableViewCell
         cell.cityLabel.text = weatherObjects[indexPath.row].name.name
-        cell.minTemp.text = ((weatherObjects[indexPath.row].main.temp_min ?? 0 - 32) / 1.8).description
-        cell.maxTemp.text = ((weatherObjects[indexPath.row].main.temp_max ?? 0 - 32) / 1.8).description
+        cell.minTemp.text = (((weatherObjects[indexPath.row].main.temp_min ?? 0) - 32) / 1.8).description
+        cell.maxTemp.text = (((weatherObjects[indexPath.row].main.temp_max ?? 0) - 32) / 1.8).description
 
         
         return cell

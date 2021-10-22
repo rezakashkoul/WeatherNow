@@ -45,28 +45,28 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="w3Q-z5-Ox8">
-                                        <rect key="frame" x="278" y="107" width="120" height="20.5"/>
+                                        <rect key="frame" x="278" y="107" width="120" height="21"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="↓" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GbE-AF-R64">
-                                                <rect key="frame" x="0.0" y="0.0" width="17" height="20.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="17" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" systemColor="systemBlueColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Low" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="16p-av-1dt">
-                                                <rect key="frame" x="17" y="0.0" width="40" height="20.5"/>
+                                                <rect key="frame" x="17" y="0.0" width="40" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" red="0.37350875140000001" green="0.60648417470000004" blue="0.97632592920000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="↑" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UQ4-EI-Zx2">
-                                                <rect key="frame" x="57" y="0.0" width="17" height="20.5"/>
+                                                <rect key="frame" x="57" y="0.0" width="17" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" systemColor="systemPinkColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="High" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iKQ-tS-3Re">
-                                                <rect key="frame" x="74" y="0.0" width="46" height="20.5"/>
+                                                <rect key="frame" x="74" y="0.0" width="46" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" red="0.37350875140000001" green="0.60648417470000004" blue="0.97632592920000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -77,9 +77,10 @@
                                         </constraints>
                                     </stackView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ITE-9m-UGS">
-                                        <rect key="frame" x="16" y="143.5" width="120" height="40.5"/>
+                                        <rect key="frame" x="16" y="144" width="120" height="40"/>
                                         <color key="backgroundColor" red="0.37350875140000001" green="0.60648417470000004" blue="0.97632592920000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="hM8-Cv-Ear"/>
                                             <constraint firstAttribute="width" constant="120" id="roa-ql-Keh"/>
                                         </constraints>
                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -90,7 +91,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xJg-tB-fIf">
-                                        <rect key="frame" x="278" y="143.5" width="120" height="40.5"/>
+                                        <rect key="frame" x="278" y="144" width="120" height="40"/>
                                         <color key="backgroundColor" red="0.37350875140000001" green="0.60648417470000004" blue="0.97632592920000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="120" id="kDn-7d-6bn"/>
@@ -183,14 +184,15 @@
                                 </connections>
                             </textField>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="RZz-sg-TiW">
-                                <rect key="frame" x="0.0" y="169" width="414" height="626"/>
+                                <rect key="frame" x="0.0" y="169" width="414" height="617"/>
                                 <color key="backgroundColor" systemColor="labelColor"/>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5N0-2k-sYo">
-                                <rect key="frame" x="147" y="811" width="120" height="31"/>
+                                <rect key="frame" x="107" y="802" width="200" height="40"/>
                                 <color key="backgroundColor" red="0.37350875140000001" green="0.60648417470000004" blue="0.97632592920000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="120" id="XWh-Ss-sqf"/>
+                                    <constraint firstAttribute="width" constant="200" id="XWh-Ss-sqf"/>
+                                    <constraint firstAttribute="height" constant="40" id="m7j-jC-1A6"/>
                                 </constraints>
                                 <color key="tintColor" systemColor="labelColor"/>
                                 <state key="normal" title="Button"/>

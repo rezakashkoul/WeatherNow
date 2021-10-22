@@ -1,6 +1,6 @@
 //
 //  WeatherViewController.swift
-//  wetherMether
+//  WeatherNow
 //
 //  Created by Reza Kashkoul on 28-Mehr-1400.
 //
