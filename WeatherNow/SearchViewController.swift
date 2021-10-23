@@ -23,7 +23,8 @@ class SearchViewController: UIViewController  {
         //        }
     }
     
-    var weatherObjects : [WeatherModel] = []
+//    var weatherObjects = [WeatherModel(weather: [], main: Main(), sys: Sys(), name: Name())]
+    var weatherObjects : [WeatherModel]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,34 +66,25 @@ class SearchViewController: UIViewController  {
         guard let urlString = URL(string: "https://api.openweathermap.org/data/2.5/weather?q=\(searchTextField.text!)&appid=a7acbfef3e0f470c7336e452e1a3c002") else { return }
         let task = URLSession.shared.dataTask(with: urlString) { data, response, error in
             if let data = data , error == nil {
-                do {
-                    guard let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String : Any] else { return }
-                    self.parse(json: data)
-                    print("****\(json)********")
-                    
-                    DispatchQueue.main.async {
-                        print("AAAAA\(json)AAAAA")
-
-                        self.tableView.reloadData()
-                    }
-                }
-                catch {
-                    print("Errorrrr")
-                }
+                self.parse(json: data)
+                
             }
         }
         task.resume()
+
     }
     
     func parse(json: Data) {
         let decoder = JSONDecoder()
-        if let weatherData = try? decoder.decode([WeatherModel].self, from: json) {
-            weatherObjects = weatherData
-            
-            print("******\(weatherData)******")
+        do {
+             let weatherObject = try decoder.decode(WeatherModel.self, from: json)
             DispatchQueue.main.async {
+                self.weatherObjects = [weatherObject]
                 self.tableView.reloadData()
+            
             }
+        } catch let error as NSError {
+            print("Parsing Error: \(error)")
         }
     }
         
@@ -106,14 +98,14 @@ class SearchViewController: UIViewController  {
 extension SearchViewController : UITableViewDelegate , UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return weatherObjects.count
+        return weatherObjects?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TableViewCell", for: indexPath) as! TableViewCell
-        cell.cityLabel.text = weatherObjects[indexPath.row].name.name
-        cell.minTemp.text = (((weatherObjects[indexPath.row].main.temp_min ?? 0) - 32) / 1.8).description
-        cell.maxTemp.text = (((weatherObjects[indexPath.row].main.temp_max ?? 0) - 32) / 1.8).description
+        cell.cityLabel.text = weatherObjects?[indexPath.row].name
+        cell.minTemp.text = (((weatherObjects?[indexPath.row].main.temp_min ?? 0) - 32) / 1.8).description
+        cell.maxTemp.text = (((weatherObjects?[indexPath.row].main.temp_max ?? 0) - 32) / 1.8).description
 
         
         return cell
