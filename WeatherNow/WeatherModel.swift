@@ -13,7 +13,7 @@ struct WeatherModel : Codable {
     var weather : [Weather]
     var main : Main
     var sys : Sys
-    var name : String?
+    var name : String
 //    init(weather: [Weather] , main: Main , sys: Sys, name: Name)  {
 //        self.weather = weather
 //        self.main = main
@@ -23,15 +23,15 @@ struct WeatherModel : Codable {
 }
 
 struct Weather : Codable {
-    var main : String?
+    var main : String
 }
 
 struct Main : Codable {
-    var temp : Double?
-    var temp_min : Double?
-    var temp_max : Double?
+    var temp : Double
+    var temp_min : Double
+    var temp_max : Double
 }
 
 struct Sys : Codable {
-    var country : String?
+    var country : String
 }
