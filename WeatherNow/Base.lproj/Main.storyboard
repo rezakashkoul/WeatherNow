@@ -96,7 +96,7 @@
                                             <action selector="sortListButtonAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="FgR-pM-rcg"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="🌥" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zUl-5R-G8l" userLabel="SkyLabel">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zUl-5R-G8l" userLabel="SkyLabel">
                                         <rect key="frame" x="324" y="15" width="75" height="75"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="75" id="WO9-uG-FvA"/>
@@ -149,6 +149,7 @@
                     <navigationItem key="navigationItem" id="RwQ-NA-bJn"/>
                     <connections>
                         <outlet property="addCityButton" destination="ITE-9m-UGS" id="ZqY-d2-qf0"/>
+                        <outlet property="downArrow" destination="GbE-AF-R64" id="vpY-w2-l6e"/>
                         <outlet property="maxTemp" destination="iKQ-tS-3Re" id="gaW-8V-0P3"/>
                         <outlet property="minTemp" destination="16p-av-1dt" id="H1s-cF-qPY"/>
                         <outlet property="skyLabel" destination="zUl-5R-G8l" id="c85-7V-mDI"/>
@@ -156,6 +157,7 @@
                         <outlet property="tableView" destination="LrZ-cn-l7r" id="JB9-D7-7RI"/>
                         <outlet property="topLocationLabel" destination="tca-hT-QW0" id="8jY-SY-mNN"/>
                         <outlet property="topTemperatureLabel" destination="dDU-xS-AYU" id="Ork-Dw-aH0"/>
+                        <outlet property="upArrow" destination="UQ4-EI-Zx2" id="wcq-2o-xUr"/>
                         <outlet property="updateTimeLabel" destination="s06-SO-Tgz" id="tW3-fN-FoR"/>
                         <segue destination="0Vf-CR-vzj" kind="show" id="CAg-Oq-RVW"/>
                     </connections>

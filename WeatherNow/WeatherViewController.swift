@@ -18,6 +18,8 @@ class WeatherViewController: UIViewController , SearchViewControllerDelegate {
     @IBOutlet weak var maxTemp: UILabel!
     @IBOutlet weak var sortListButton: UIButton!
     @IBOutlet weak var addCityButton: UIButton!
+    @IBOutlet weak var upArrow: UILabel!
+    @IBOutlet weak var downArrow: UILabel!
     
     @IBAction func sortListButtonAction(_ sender: Any) {
         if tableView.isEditing == true {
@@ -37,6 +39,11 @@ class WeatherViewController: UIViewController , SearchViewControllerDelegate {
     var weatherData : WeatherModel!
     var weatherList : [WeatherModel] = []
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        setTopViewWeatherData()
+
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTableView()
@@ -48,17 +55,51 @@ class WeatherViewController: UIViewController , SearchViewControllerDelegate {
         
     }
     
+
+    
     func setTopViewWeatherData() {
         if weatherList.count != 0 {
             topTemperatureLabel.text = weatherList[0].main.temp.description + " °"
-            skyLabel.text = "🌥"
+            setTopViewWeatherCondition()
             updateTimeLabel.text = "Few seconds ago"
             topLocationLabel.text = weatherList[0].name + ", " + weatherList[0].sys.country
             minTemp.text = weatherList[0].main.temp_min.description
             maxTemp.text = weatherList[0].main.temp_max.description
+        } else {
+            topTemperatureLabel.text = "Add a City"
+            //skyLabel.text = "🌤"
+            updateTimeLabel.text = ""
+            topLocationLabel.text = "From here👇🏼"
+            minTemp.text = ""
+            maxTemp.text = ""
+            upArrow.isHidden = true
+            downArrow.isHidden = true
         }
     }
     
+    func setTopViewWeatherCondition() {
+        switch weatherList[0].weather[0].main.description {
+        case "Clear" : skyLabel.text = "🌤"
+        case "Clouds" : skyLabel.text = "🌥"
+        case "Snow" : skyLabel.text = "❄️"
+        case "Drizzle" : skyLabel.text = "🌧"
+        case "Thunderstorm" : skyLabel.text = "⛈"
+        default:
+            skyLabel.text = "☀️"
+        }
+    }
+    
+    func setCellWeatherCondition(_ indexPath: IndexPath, _ cell: TableViewCell) {
+        switch weatherList[indexPath.row].weather[0].main.description {
+        case "Clear" : cell.skyLabel.text = "🌤"
+        case "Clouds" : cell.skyLabel.text = "🌥"
+        case "Snow" : cell.skyLabel.text = "❄️"
+        case "Drizzle" : cell.skyLabel.text = "🌧"
+        case "Thunderstorm" : cell.skyLabel.text = "⛈"
+        default:
+            cell.skyLabel.text = "☀️"
+        }
+    }
     
     func passingData(data: WeatherModel) {
         weatherData = data
@@ -101,14 +142,14 @@ extension WeatherViewController : UITableViewDataSource , UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return weatherList.count
     }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TableViewCell", for: indexPath) as! TableViewCell
         cell.cityLabel.text = weatherList[indexPath.row].name + ", " + weatherList[indexPath.row].sys.country
         cell.minTemp.text = weatherList[indexPath.row].main.temp_min.description
         cell.maxTemp.text = weatherList[indexPath.row].main.temp_max.description
-        if weatherList[indexPath.row].weather[0].main == "few clouds" {
-            cell.skyLabel.text = "🌥"
-        }
+
+        setCellWeatherCondition(indexPath, cell)
         
         return cell
     }

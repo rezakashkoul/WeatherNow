@@ -55,7 +55,7 @@
                             <constraint firstAttribute="width" constant="120" id="qZ0-9J-cc5"/>
                         </constraints>
                     </stackView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="🌦" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wyg-Wi-4T9">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wyg-Wi-4T9">
                         <rect key="frame" x="457" y="12.5" width="45" height="45"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="45" id="LXP-Z4-uFL"/>
@@ -78,7 +78,7 @@
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
-            <color key="backgroundColor" red="0.43137252329999998" green="0.60392159219999997" blue="0.93333339689999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+            <color key="backgroundColor" systemColor="labelColor"/>
             <connections>
                 <outlet property="cityLabel" destination="MS9-wb-ZOz" id="dZC-I7-tIS"/>
                 <outlet property="maxTemp" destination="sEA-am-Ybo" id="SBo-wR-iV8"/>
@@ -89,6 +89,9 @@
         </tableViewCell>
     </objects>
     <resources>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
         <systemColor name="systemBlueColor">
             <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
