@@ -45,7 +45,6 @@ class SearchViewController: UIViewController  {
             if self.searchTextField.text!.count >= 3 {
                 self.performSearch()
             }
-            
         }
     }
     
@@ -56,11 +55,10 @@ class SearchViewController: UIViewController  {
     
     func getDataFromApi() {
         //api.openweathermap.org/data/2.5/weather?q=tehran&appid=a7acbfef3e0f470c7336e452e1a3c002
-        guard let urlString = URL(string: "https://api.openweathermap.org/data/2.5/weather?q=\(searchTextField.text!)&appid=a7acbfef3e0f470c7336e452e1a3c002") else { return }
+        guard let urlString = URL(string: "https://api.openweathermap.org/data/2.5/weather?q=\(searchTextField.text!)&units=metric&appid=a7acbfef3e0f470c7336e452e1a3c002") else { return }
         let task = URLSession.shared.dataTask(with: urlString) { data, response, error in
             if let data = data , error == nil {
                 self.parse(json: data)
-                
             }
         }
         task.resume()
@@ -95,8 +93,8 @@ extension SearchViewController : UITableViewDelegate , UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TableViewCell", for: indexPath) as! TableViewCell
         cell.cityLabel.text = weatherObjects?[indexPath.row].name
-        cell.minTemp.text = weatherObjects?[indexPath.row].main.temp_min.toCelsius.description
-        cell.maxTemp.text = weatherObjects?[indexPath.row].main.temp_max.toCelsius.description
+        cell.minTemp.text = weatherObjects?[indexPath.row].main.temp_min.description
+        cell.maxTemp.text = weatherObjects?[indexPath.row].main.temp_max.description
         return cell
     }
     

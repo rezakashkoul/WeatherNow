@@ -12,7 +12,7 @@ class TableViewCell: UITableViewCell {
     @IBOutlet weak var cityLabel: UILabel!
     @IBOutlet weak var minTemp: UILabel!
     @IBOutlet weak var maxTemp: UILabel!
-    @IBOutlet weak var weatherStatusImage: UIImageView!
+    @IBOutlet weak var skyLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

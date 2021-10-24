@@ -17,13 +17,6 @@
                 <rect key="frame" x="0.0" y="0.0" width="518" height="70"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qM4-uv-fQ0">
-                        <rect key="frame" x="457" y="12.5" width="45" height="45"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="45" id="BOo-ZI-0bx"/>
-                            <constraint firstAttribute="width" secondItem="qM4-uv-fQ0" secondAttribute="height" multiplier="1:1" id="SCE-cH-gI3"/>
-                        </constraints>
-                    </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="City" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MS9-wb-ZOz">
                         <rect key="frame" x="16" y="25" width="305" height="20.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -62,24 +55,35 @@
                             <constraint firstAttribute="width" constant="120" id="qZ0-9J-cc5"/>
                         </constraints>
                     </stackView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="🌦" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wyg-Wi-4T9">
+                        <rect key="frame" x="457" y="12.5" width="45" height="45"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="45" id="LXP-Z4-uFL"/>
+                            <constraint firstAttribute="width" secondItem="wyg-Wi-4T9" secondAttribute="height" id="Tv0-ST-GC5"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="26"/>
+                        <color key="textColor" red="0.43137252329999998" green="0.60392159219999997" blue="0.93333339689999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
+                    <constraint firstItem="wyg-Wi-4T9" firstAttribute="leading" secondItem="a1a-Ig-ueN" secondAttribute="trailing" constant="8" id="Dyh-bS-fTu"/>
+                    <constraint firstItem="wyg-Wi-4T9" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Mra-uh-aBR"/>
                     <constraint firstItem="a1a-Ig-ueN" firstAttribute="leading" secondItem="MS9-wb-ZOz" secondAttribute="trailing" constant="8" id="NT3-H6-x79"/>
-                    <constraint firstItem="qM4-uv-fQ0" firstAttribute="leading" secondItem="a1a-Ig-ueN" secondAttribute="trailing" constant="8" id="Qv4-2W-ioD"/>
+                    <constraint firstAttribute="trailing" secondItem="wyg-Wi-4T9" secondAttribute="trailing" constant="16" id="Oih-xD-0Qk"/>
                     <constraint firstItem="MS9-wb-ZOz" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="aaj-6t-gAd"/>
                     <constraint firstItem="MS9-wb-ZOz" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="cgv-yd-xgq"/>
                     <constraint firstItem="a1a-Ig-ueN" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="kwZ-2t-7cZ"/>
-                    <constraint firstItem="qM4-uv-fQ0" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="vV7-JE-7W5"/>
-                    <constraint firstAttribute="trailing" secondItem="qM4-uv-fQ0" secondAttribute="trailing" constant="16" id="vbS-D6-XvQ"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <color key="backgroundColor" red="0.43137252329999998" green="0.60392159219999997" blue="0.93333339689999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
             <connections>
                 <outlet property="cityLabel" destination="MS9-wb-ZOz" id="dZC-I7-tIS"/>
                 <outlet property="maxTemp" destination="sEA-am-Ybo" id="SBo-wR-iV8"/>
                 <outlet property="minTemp" destination="1n9-ZY-Y3U" id="wb9-10-8wU"/>
-                <outlet property="weatherStatusImage" destination="qM4-uv-fQ0" id="rnD-QO-IBF"/>
+                <outlet property="skyLabel" destination="wyg-Wi-4T9" id="k0j-G5-B8p"/>
             </connections>
             <point key="canvasLocation" x="188.40579710144928" y="189.50892857142856"/>
         </tableViewCell>

@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		F78F1427272441B1009D3A75 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F78F1426272441B1009D3A75 /* Extension.swift */; };
 		F7B42E3E2722170C0058736D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B42E3D2722170C0058736D /* AppDelegate.swift */; };
 		F7B42E402722170C0058736D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B42E3F2722170C0058736D /* SceneDelegate.swift */; };
 		F7B42E422722170C0058736D /* WeatherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B42E412722170C0058736D /* WeatherViewController.swift */; };
@@ -21,7 +20,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		F78F1426272441B1009D3A75 /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		F7B42E3A2722170C0058736D /* WeatherNow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherNow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F7B42E3D2722170C0058736D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F7B42E3F2722170C0058736D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -70,7 +68,6 @@
 				F7B42E3F2722170C0058736D /* SceneDelegate.swift */,
 				F7B42E412722170C0058736D /* WeatherViewController.swift */,
 				F7B42E512722176E0058736D /* SearchViewController.swift */,
-				F78F1426272441B1009D3A75 /* Extension.swift */,
 				F7B42E532722179D0058736D /* WeatherModel.swift */,
 				F7B42E55272217C80058736D /* TableViewCell.swift */,
 				F7B42E56272217C80058736D /* TableViewCell.xib */,
@@ -156,7 +153,6 @@
 			files = (
 				F7B42E422722170C0058736D /* WeatherViewController.swift in Sources */,
 				F7B42E3E2722170C0058736D /* AppDelegate.swift in Sources */,
-				F78F1427272441B1009D3A75 /* Extension.swift in Sources */,
 				F7B42E522722176E0058736D /* SearchViewController.swift in Sources */,
 				F7B42E57272217C80058736D /* TableViewCell.swift in Sources */,
 				F7B42E402722170C0058736D /* SceneDelegate.swift in Sources */,

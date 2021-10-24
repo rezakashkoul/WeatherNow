@@ -9,9 +9,8 @@ import UIKit
 
 class WeatherViewController: UIViewController , SearchViewControllerDelegate {
     
-
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var topImage: UIImageView!
+    @IBOutlet weak var skyLabel: UILabel!
     @IBOutlet weak var topTemperatureLabel: UILabel!
     @IBOutlet weak var updateTimeLabel: UILabel!
     @IBOutlet weak var topLocationLabel: UILabel!
@@ -45,7 +44,21 @@ class WeatherViewController: UIViewController , SearchViewControllerDelegate {
         overrideUserInterfaceStyle = .light
         addCityButton.layer.cornerRadius = 20
         sortListButton.layer.cornerRadius = 20
+        setTopViewWeatherData()
+        
     }
+    
+    func setTopViewWeatherData() {
+        if weatherList.count != 0 {
+            topTemperatureLabel.text = weatherList[0].main.temp.description + " °"
+            skyLabel.text = "🌥"
+            updateTimeLabel.text = "Few seconds ago"
+            topLocationLabel.text = weatherList[0].name + ", " + weatherList[0].sys.country
+            minTemp.text = weatherList[0].main.temp_min.description
+            maxTemp.text = weatherList[0].main.temp_max.description
+        }
+    }
+    
     
     func passingData(data: WeatherModel) {
         weatherData = data
@@ -79,14 +92,24 @@ class WeatherViewController: UIViewController , SearchViewControllerDelegate {
 
 extension WeatherViewController : UITableViewDataSource , UITableViewDelegate {
     
+    func setupTableView() {
+        tableView.register(UINib(nibName: "TableViewCell", bundle: nil), forCellReuseIdentifier: "TableViewCell")
+        tableView.delegate = self
+        tableView.dataSource = self
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return weatherList.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TableViewCell", for: indexPath) as! TableViewCell
         cell.cityLabel.text = weatherList[indexPath.row].name + ", " + weatherList[indexPath.row].sys.country
-        cell.minTemp.text = weatherList[indexPath.row].main.temp_min.toCelsius.description
-        cell.maxTemp.text = weatherList[indexPath.row].main.temp_max.toCelsius.description
+        cell.minTemp.text = weatherList[indexPath.row].main.temp_min.description
+        cell.maxTemp.text = weatherList[indexPath.row].main.temp_max.description
+        if weatherList[indexPath.row].weather[0].main == "few clouds" {
+            cell.skyLabel.text = "🌥"
+        }
+        
         return cell
     }
     
@@ -98,12 +121,7 @@ extension WeatherViewController : UITableViewDataSource , UITableViewDelegate {
         let reorderedItem = weatherList[sourceIndexPath.row]
         weatherList.remove(at: sourceIndexPath.row)
         weatherList.insert(reorderedItem, at: destinationIndexPath.row)
-    }
-    
-    func setupTableView() {
-        tableView.register(UINib(nibName: "TableViewCell", bundle: nil), forCellReuseIdentifier: "TableViewCell")
-        tableView.delegate = self
-        tableView.dataSource = self
+        setTopViewWeatherData()
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
@@ -113,6 +131,7 @@ extension WeatherViewController : UITableViewDataSource , UITableViewDelegate {
             tableView.deleteRows(at: [indexPath], with: .fade)
             tableView.endUpdates()
             saveWeatherData()
+            setTopViewWeatherData()
         }
     }
     
@@ -121,7 +140,7 @@ extension WeatherViewController : UITableViewDataSource , UITableViewDelegate {
         if tableView.isEditing == false {
             return .delete
         } else {
-        return .none
+            return .none
         }
     }
     
