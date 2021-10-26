@@ -42,7 +42,7 @@ class WeatherViewController: UIViewController , SearchViewControllerDelegate {
     var weatherData : WeatherModel!
     var weatherList : [WeatherModel] = []
     let timer = Timer.scheduledTimer(timeInterval: 120.0, target: self, selector: #selector(fetchByTimer), userInfo: nil, repeats: true)
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTableView()
@@ -51,7 +51,7 @@ class WeatherViewController: UIViewController , SearchViewControllerDelegate {
         addCityButton.layer.cornerRadius = 20
         sortListButton.layer.cornerRadius = 20
         setTopViewWeatherData()
-         fetchData()
+        fetchData()
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -70,11 +70,12 @@ class WeatherViewController: UIViewController , SearchViewControllerDelegate {
     func fetchData() {
         var counter = 0
         for item in weatherList.map({$0.name}) {
+            counter += 1
             print("OOOO\(weatherList.map({$0.name}).count)OOOOO")
             guard let urlString = URL(string: "https://api.openweathermap.org/data/2.5/weather?q=\(item)&units=metric&appid=a7acbfef3e0f470c7336e452e1a3c002")
             else { return }
             //print("*#*#*#*\(urlString)#*#*#*#*")
-            counter += 1
+            
             let task = URLSession.shared.dataTask(with: urlString) { [self] data, response, error in
                 if let data = data , error == nil {
                     self.parse(json: data)
@@ -86,7 +87,7 @@ class WeatherViewController: UIViewController , SearchViewControllerDelegate {
                     }
                 }
             }
-            task.resume()
+          task.resume()
         }
     }
     
@@ -99,9 +100,9 @@ class WeatherViewController: UIViewController , SearchViewControllerDelegate {
             if weatherList.isEmpty {
                 weatherList.append(weatherObject)
             } else {
-              //  weatherList.removeAll()
+                //  weatherList.removeAll()
             }
-//            weatherList.removeAll()
+            //            weatherList.removeAll()
             print("####\(weatherObject)####")
         } catch let error as NSError {
             print("Parsing Error: \(error)")
@@ -109,7 +110,7 @@ class WeatherViewController: UIViewController , SearchViewControllerDelegate {
     }
     
     @objc func fetchByTimer () {
-         fetchData()
+        fetchData()
     }
     
     
@@ -162,8 +163,6 @@ class WeatherViewController: UIViewController , SearchViewControllerDelegate {
         weatherData.time = updateTime.getCleanTime().description
         weatherList.append(weatherData)
         tableView.reloadData()
-        
-        
         saveWeatherData()
     }
     
@@ -209,7 +208,7 @@ extension WeatherViewController : UITableViewDataSource , UITableViewDelegate {
         cell.maxTemp.text = weatherList[indexPath.row].main.temp_max.rounded().clean.description
         setCellWeatherCondition(indexPath, cell)
         cell.selectionStyle = .none
-
+        
         return cell
     }
     
@@ -263,3 +262,11 @@ extension Date {
         return self.get(.hour).description + ":" + self.get(.minute).description
     }
 }
+
+extension Sequence where Iterator.Element: Hashable {
+    func unique() -> [Iterator.Element] {
+        var seen: [Iterator.Element: Bool] = [:]
+        return self.filter { seen.updateValue(true, forKey: $0) == nil }
+    }
+}
+
