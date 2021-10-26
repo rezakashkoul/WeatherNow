@@ -31,6 +31,13 @@ class SearchViewController: UIViewController  {
     var weatherObjects : [WeatherModel]?
     var searchDelegate : SearchViewControllerDelegate!
     
+    func calculateRequestTime() {
+        let date = Date()
+        let calendar = Calendar.current
+        let hour = calendar.component(.hour, from: date)
+        print("the hour is \(hour)")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTableView()
@@ -38,6 +45,14 @@ class SearchViewController: UIViewController  {
         overrideUserInterfaceStyle = .light
         tableView.keyboardDismissMode = .onDrag
         searchTextField.delegate = self
+        searchTextField.layer.cornerRadius = 20
+        searchTextField.layer.borderColor = UIColor.customBlue.cgColor
+        searchTextField.layer.borderWidth = 2
+        searchTextField.attributedPlaceholder = NSAttributedString(
+            string: " Enter City Name",
+            attributes: [NSAttributedString.Key.foregroundColor: UIColor.customBlue]
+        )
+        
     }
     
     func doSearchActionWhileTyping() {
@@ -52,7 +67,6 @@ class SearchViewController: UIViewController  {
         getDataFromApi()
         tableView.reloadData()
     }
-    
     func getDataFromApi() {
         //api.openweathermap.org/data/2.5/weather?q=tehran&appid=a7acbfef3e0f470c7336e452e1a3c002
         guard let urlString = URL(string: "https://api.openweathermap.org/data/2.5/weather?q=\(searchTextField.text!)&units=metric&appid=a7acbfef3e0f470c7336e452e1a3c002") else { return }
@@ -93,8 +107,9 @@ extension SearchViewController : UITableViewDelegate , UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TableViewCell", for: indexPath) as! TableViewCell
         cell.cityLabel.text = weatherObjects?[indexPath.row].name
-        cell.minTemp.text = weatherObjects?[indexPath.row].main.temp_min.description
-        cell.maxTemp.text = weatherObjects?[indexPath.row].main.temp_max.description
+        cell.minTemp.text = weatherObjects?[indexPath.row].main.temp_min.rounded().clean.description
+        cell.maxTemp.text = weatherObjects?[indexPath.row].main.temp_max.rounded().clean.description
+        setCellWeatherCondition(indexPath, cell)
         return cell
     }
     
@@ -102,6 +117,18 @@ extension SearchViewController : UITableViewDelegate , UITableViewDataSource {
         searchDelegate.passingData(data: weatherObjects![indexPath.row])
         navigationController?.popViewController(animated: true)
     }
+    
+    func setCellWeatherCondition(_ indexPath: IndexPath, _ cell: TableViewCell) {
+        switch weatherObjects?[indexPath.row].weather[0].main.description {
+        case "Clear" : cell.skyLabel.text = "🌤"
+        case "Clouds" : cell.skyLabel.text = "🌥"
+        case "Snow" : cell.skyLabel.text = "❄️"
+        case "Drizzle" : cell.skyLabel.text = "🌧"
+        case "Thunderstorm" : cell.skyLabel.text = "⛈"
+        default:
+            cell.skyLabel.text = "☀️"
+        }
+    }    
 }
 
 extension SearchViewController : UITextFieldDelegate {
@@ -113,3 +140,8 @@ extension SearchViewController : UITextFieldDelegate {
     }
 }
 
+extension Double {
+    var clean: String {
+        return self.truncatingRemainder(dividingBy: 1) == 0 ? String(format: "%.0f", self) : String(self)
+    }
+}

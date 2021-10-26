@@ -14,6 +14,7 @@ struct WeatherModel : Codable {
     var main : Main
     var sys : Sys
     var name : String
+    var time : String?
 //    init(weather: [Weather] , main: Main , sys: Sys, name: Name)  {
 //        self.weather = weather
 //        self.main = main
