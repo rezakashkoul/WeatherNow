@@ -1,6 +1,5 @@
 //
 //  WeatherViewController.swift
-//  WeatherNow
 //
 //  Created by Reza Kashkoul on 28-Mehr-1400.
 //
@@ -41,7 +40,7 @@ class WeatherViewController: UIViewController , SearchViewControllerDelegate {
     let updateTime = Date()
     var weatherData : WeatherModel!
     var weatherList : [WeatherModel] = []
-    let timer = Timer.scheduledTimer(timeInterval: 120.0, target: self, selector: #selector(fetchByTimer), userInfo: nil, repeats: true)
+   // let timer = Timer.scheduledTimer(timeInterval: 120.0, target: self, selector: #selector(fetchByTimer), userInfo: nil, repeats: true)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -67,19 +66,22 @@ class WeatherViewController: UIViewController , SearchViewControllerDelegate {
         navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
+    var expiredItems : [WeatherModel] = []
+    
     func fetchData() {
         var counter = 0
-        for item in weatherList.map({$0.name}) {
+         expiredItems = weatherList.filter({ $0.time?.timeIntervalSinceNow ?? updateTime.timeIntervalSinceNow < -600})
+        for item in expiredItems {
             counter += 1
-            print("OOOO\(weatherList.map({$0.name}).count)OOOOO")
-            guard let urlString = URL(string: "https://api.openweathermap.org/data/2.5/weather?q=\(item)&units=metric&appid=a7acbfef3e0f470c7336e452e1a3c002")
+            print("Number of expired itmes : \(expiredItems.count)")
+            guard let urlString = URL(string: "https://api.openweathermap.org/data/2.5/weather?q=\(item.name)&units=metric&appid=a7acbfef3e0f470c7336e452e1a3c002")
             else { return }
             //print("*#*#*#*\(urlString)#*#*#*#*")
             
             let task = URLSession.shared.dataTask(with: urlString) { [self] data, response, error in
                 if let data = data , error == nil {
                     self.parse(json: data)
-                    if counter == weatherList.map({$0.name}).count {
+                    if counter == expiredItems.count {
                         DispatchQueue.main.async {
                             self.tableView.reloadData()
                             self.saveWeatherData()
@@ -87,22 +89,24 @@ class WeatherViewController: UIViewController , SearchViewControllerDelegate {
                     }
                 }
             }
-          task.resume()
+            task.resume()
         }
     }
     
     func parse(json: Data) {
         let decoder = JSONDecoder()
         do {
-            
             var weatherObject = try decoder.decode(WeatherModel.self, from: json)
-            weatherObject.time = updateTime.getCleanTime().description
-            if weatherList.isEmpty {
-                weatherList.append(weatherObject)
-            } else {
-                //  weatherList.removeAll()
+            weatherObject.time = updateTime
+            
+            for i in 0..<weatherList.count {
+                for j in 0..<expiredItems.count {
+                    if weatherList[i].name == expiredItems[j].name  {
+                        weatherList[i] = expiredItems[j]
+                    }
+                }
             }
-            //            weatherList.removeAll()
+            
             print("####\(weatherObject)####")
         } catch let error as NSError {
             print("Parsing Error: \(error)")
@@ -118,7 +122,7 @@ class WeatherViewController: UIViewController , SearchViewControllerDelegate {
         if weatherList.count != 0 {
             topTemperatureLabel.text = weatherList[0].main.temp.rounded().clean.description + " °"
             setTopViewWeatherCondition()
-            updateTimeLabel.text = " Last Update " + weatherList[0].time!
+            updateTimeLabel.text = " Last Update " + (weatherList[0].time?.getCleanTime().description)!
             topLocationLabel.text = weatherList[0].name + ", " + weatherList[0].sys.country
             minTemp.text = weatherList[0].main.temp_min.rounded().clean.description
             maxTemp.text = weatherList[0].main.temp_max.rounded().clean.description
@@ -160,7 +164,7 @@ class WeatherViewController: UIViewController , SearchViewControllerDelegate {
     func passingData(data: WeatherModel) {
         weatherData = data
         //   guard let passedData = weatherData else { return }
-        weatherData.time = updateTime.getCleanTime().description
+        weatherData.time = updateTime
         weatherList.append(weatherData)
         tableView.reloadData()
         saveWeatherData()
