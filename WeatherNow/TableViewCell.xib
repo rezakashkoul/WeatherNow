@@ -79,7 +79,7 @@
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
-            <color key="backgroundColor" systemColor="labelColor"/>
+            <color key="backgroundColor" name="darkolight"/>
             <connections>
                 <outlet property="cityLabel" destination="MS9-wb-ZOz" id="dZC-I7-tIS"/>
                 <outlet property="maxTemp" destination="sEA-am-Ybo" id="SBo-wR-iV8"/>
@@ -93,9 +93,6 @@
         <namedColor name="darkolight">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <systemColor name="labelColor">
-            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
         <systemColor name="systemBlueColor">
             <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>

@@ -18,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YxF-So-UTI" userLabel="TopView">
-                                <rect key="frame" x="0.0" y="30" width="414" height="200"/>
+                                <rect key="frame" x="0.0" y="113" width="414" height="200"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Temp" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dDU-xS-AYU">
                                         <rect key="frame" x="16" y="0.0" width="84" height="39.5"/>
@@ -132,17 +132,17 @@
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="LrZ-cn-l7r">
-                                <rect key="frame" x="0.0" y="230" width="414" height="666"/>
+                                <rect key="frame" x="0.0" y="313" width="414" height="583"/>
                                 <color key="backgroundColor" name="darkolight"/>
                             </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="u4G-qJ-DmB"/>
                         <color key="backgroundColor" name="darkolight"/>
                         <constraints>
-                            <constraint firstItem="YxF-So-UTI" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="30" id="3Ss-d7-5N5"/>
+                            <constraint firstItem="YxF-So-UTI" firstAttribute="top" secondItem="u4G-qJ-DmB" secondAttribute="top" constant="25" id="3Ss-d7-5N5"/>
                             <constraint firstAttribute="trailing" secondItem="LrZ-cn-l7r" secondAttribute="trailing" id="KkS-Vh-rTJ"/>
-                            <constraint firstItem="YxF-So-UTI" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Mhq-Aq-yZR"/>
-                            <constraint firstAttribute="trailing" secondItem="YxF-So-UTI" secondAttribute="trailing" id="a4m-QI-kVo"/>
+                            <constraint firstItem="YxF-So-UTI" firstAttribute="leading" secondItem="u4G-qJ-DmB" secondAttribute="leading" id="Mhq-Aq-yZR"/>
+                            <constraint firstItem="u4G-qJ-DmB" firstAttribute="trailing" secondItem="YxF-So-UTI" secondAttribute="trailing" id="a4m-QI-kVo"/>
                             <constraint firstItem="LrZ-cn-l7r" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="cAs-y2-Mfd"/>
                             <constraint firstAttribute="bottom" secondItem="LrZ-cn-l7r" secondAttribute="bottom" id="tTi-Id-4Pk"/>
                             <constraint firstItem="LrZ-cn-l7r" firstAttribute="top" secondItem="YxF-So-UTI" secondAttribute="bottom" id="zO1-Fv-Lax"/>
