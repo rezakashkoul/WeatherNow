@@ -67,13 +67,19 @@ class SearchViewController: UIViewController  {
     
     func getDataFromApi() {
         //api.openweathermap.org/data/2.5/weather?q=tehran&appid=a7acbfef3e0f470c7336e452e1a3c002
-        guard let urlString = URL(string: "https://api.openweathermap.org/data/2.5/weather?q=\(searchTextField.text!)&units=metric&appid=a7acbfef3e0f470c7336e452e1a3c002") else { return }
-        let task = URLSession.shared.dataTask(with: urlString) { data, response, error in
-            if let data = data , error == nil {
-                self.parse(json: data)
+        if let urlString = URL(string: "https://api.openweathermap.org/data/2.5/weather?q=\(searchTextField.text!)&units=metric&appid=a7acbfef3e0f470c7336e452e1a3c002") {
+            let task = URLSession.shared.dataTask(with: urlString) { data, response, error in
+                if let data = data , error == nil {
+                    self.parse(json: data)
+                    DispatchQueue.main.async {
+                        self.tableView.reloadData()
+                    }
+                } else {
+                    print("errorrrr")
+                }
             }
+            task.resume()
         }
-        task.resume()
     }
     
     func parse(json: Data) {
@@ -83,7 +89,7 @@ class SearchViewController: UIViewController  {
             DispatchQueue.main.async {
                 weatherObject.name = weatherObject.name.folding(options: .diacriticInsensitive, locale: .current)
                 self.weatherObjects = [weatherObject]
-                self.tableView.reloadData()
+               // self.tableView.reloadData()
             }
         } catch let error as NSError {
             print("Parsing Error: \(error)")
@@ -105,7 +111,7 @@ extension SearchViewController : UITableViewDelegate , UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TableViewCell", for: indexPath) as! TableViewCell
-        cell.cityLabel.text = weatherObjects?[indexPath.row].name //.folding(options: .diacriticInsensitive, locale: .current)
+        cell.cityLabel.text = weatherObjects?[indexPath.row].name
         cell.minTemp.text = weatherObjects?[indexPath.row].main.temp_min.rounded().clean.description
         cell.maxTemp.text = weatherObjects?[indexPath.row].main.temp_max.rounded().clean.description
         setCellWeatherCondition(indexPath, cell)

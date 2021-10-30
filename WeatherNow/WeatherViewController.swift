@@ -47,7 +47,7 @@ class WeatherViewController: UIViewController , SearchViewControllerDelegate {
         super.viewDidLoad()
         setupTableView()
         loadWeatherData()
-       // overrideUserInterfaceStyle = .light
+        // overrideUserInterfaceStyle = .light
         tableView.separatorStyle = .none
         addCityButton.layer.cornerRadius = 20
         sortListButton.layer.cornerRadius = 20
@@ -61,9 +61,9 @@ class WeatherViewController: UIViewController , SearchViewControllerDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: true)
-//        Array(Set(weatherList))
-    //    weatherList = Array(Set(weatherList))
-
+        //        Array(Set(weatherList))
+        //    weatherList = Array(Set(weatherList))
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -97,7 +97,6 @@ class WeatherViewController: UIViewController , SearchViewControllerDelegate {
                         //print("kish Error: \(String(describing: error))")
                         print("errorrrr")
                     }
-                    
                 }
                 task.resume()
             }
@@ -110,7 +109,7 @@ class WeatherViewController: UIViewController , SearchViewControllerDelegate {
             var weatherObject = try decoder.decode(WeatherModel.self, from: json)
             weatherObject.time = Date()
             for i in 0..<weatherList.count {
-                  weatherObject.name = weatherObject.name.folding(options: .diacriticInsensitive, locale: .current)
+                weatherObject.name = weatherObject.name.folding(options: .diacriticInsensitive, locale: .current)
                 if weatherList[i].name == weatherObject.name.folding(options: .diacriticInsensitive, locale: .current) {
                     weatherList[i] = weatherObject
                 }
@@ -178,11 +177,11 @@ class WeatherViewController: UIViewController , SearchViewControllerDelegate {
             let alert = UIAlertController(title: "Repetitve City", message: "\(weatherData.name) already exist in your list. Please add another city.", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
             present(alert, animated: true, completion: nil)
-   
+            
         } else {
-        weatherList.append(weatherData)
-        tableView.reloadData()
-        saveWeatherData()
+            weatherList.append(weatherData)
+            tableView.reloadData()
+            saveWeatherData()
         }
     }
     
@@ -266,15 +265,6 @@ extension WeatherViewController : UITableViewDataSource , UITableViewDelegate {
     func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
         return false
     }
-    // Change default icon (hamburger) for moving cells in UITableView
-     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-         let imageView = cell.subviews.first(where: { $0.description.contains("Reorder") })?.subviews.first(where: { $0 is UIImageView }) as? UIImageView
-
-         imageView?.image = UIImage(systemName: "list.bullet") // give here your's new image
-         imageView?.contentMode = .center
-
-         imageView?.frame.size.width = cell.bounds.height
-         imageView?.frame.size.height = cell.bounds.height
-     }
+    
 }
 
