@@ -34,7 +34,7 @@ class SearchViewController: UIViewController  {
         super.viewDidLoad()
         setupTableView()
         cancelButton.layer.cornerRadius = 20
-        overrideUserInterfaceStyle = .light
+        //overrideUserInterfaceStyle = .light
         tableView.keyboardDismissMode = .onDrag
         searchTextField.delegate = self
         searchTextField.layer.cornerRadius = 20

@@ -47,7 +47,8 @@ class WeatherViewController: UIViewController , SearchViewControllerDelegate {
         super.viewDidLoad()
         setupTableView()
         loadWeatherData()
-        overrideUserInterfaceStyle = .light
+       // overrideUserInterfaceStyle = .light
+        tableView.separatorStyle = .none
         addCityButton.layer.cornerRadius = 20
         sortListButton.layer.cornerRadius = 20
         setTopViewWeatherData()
@@ -60,6 +61,9 @@ class WeatherViewController: UIViewController , SearchViewControllerDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: true)
+//        Array(Set(weatherList))
+    //    weatherList = Array(Set(weatherList))
+
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -168,9 +172,18 @@ class WeatherViewController: UIViewController , SearchViewControllerDelegate {
         //   guard let passedData = weatherData else { return }
         weatherData.time = Date()
         weatherData.name = weatherData.name.folding(options: .diacriticInsensitive, locale: .current)
+        
+        if weatherList.contains(where: {$0.name == weatherData.name }) {
+            print("repetitve item")
+            let alert = UIAlertController(title: "Repetitve City", message: "\(weatherData.name) already exist in your list. Please add another city.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+            present(alert, animated: true, completion: nil)
+   
+        } else {
         weatherList.append(weatherData)
         tableView.reloadData()
         saveWeatherData()
+        }
     }
     
     func saveWeatherData() {
@@ -252,5 +265,12 @@ extension WeatherViewController : UITableViewDataSource , UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
         return false
+    }
+}
+
+extension Sequence where Element: Hashable {
+    func uniqued() -> [Element] {
+        var set = Set<Element>()
+        return filter { set.insert($0).inserted }
     }
 }
