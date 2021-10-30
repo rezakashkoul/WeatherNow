@@ -41,7 +41,7 @@ class SearchViewController: UIViewController  {
         searchTextField.layer.borderColor = UIColor.customBlue.cgColor
         searchTextField.layer.borderWidth = 2
         searchTextField.attributedPlaceholder = NSAttributedString(string: " Enter City Name",
-            attributes: [NSAttributedString.Key.foregroundColor: UIColor.customBlue])
+                                                                   attributes: [NSAttributedString.Key.foregroundColor: UIColor.customBlue])
         
     }
     
@@ -82,7 +82,6 @@ class SearchViewController: UIViewController  {
             var weatherObject = try decoder.decode(WeatherModel.self, from: json)
             DispatchQueue.main.async {
                 weatherObject.name = weatherObject.name.folding(options: .diacriticInsensitive, locale: .current)
-             //   weatherObject.name = self.searchTextField.text!
                 self.weatherObjects = [weatherObject]
                 self.tableView.reloadData()
             }

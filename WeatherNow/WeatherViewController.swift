@@ -266,11 +266,15 @@ extension WeatherViewController : UITableViewDataSource , UITableViewDelegate {
     func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
         return false
     }
+    // Change default icon (hamburger) for moving cells in UITableView
+     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+         let imageView = cell.subviews.first(where: { $0.description.contains("Reorder") })?.subviews.first(where: { $0 is UIImageView }) as? UIImageView
+
+         imageView?.image = UIImage(systemName: "list.bullet") // give here your's new image
+         imageView?.contentMode = .center
+
+         imageView?.frame.size.width = cell.bounds.height
+         imageView?.frame.size.height = cell.bounds.height
+     }
 }
 
-extension Sequence where Element: Hashable {
-    func uniqued() -> [Element] {
-        var set = Set<Element>()
-        return filter { set.insert($0).inserted }
-    }
-}
