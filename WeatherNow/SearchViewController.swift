@@ -21,22 +21,14 @@ class SearchViewController: UIViewController  {
         navigationController?.popViewController(animated: true)
     }
     
-    @IBAction func textFieldValueChanged(_ sender: UITextField) {
-        //        DispatchQueue.global(qos: .userInitiated).async {
-        //            self.doSearchActionWhileTyping()
-        //        }
+    @IBAction func textFieldEditingChanged(_ sender: UITextField) {
+        DispatchQueue.global(qos: .userInitiated).async {
+            self.doSearchActionWhileTyping()
+        }
     }
     
-    //    var weatherObjects = [WeatherModel(weather: [], main: Main(), sys: Sys(), name: Name())]
     var weatherObjects : [WeatherModel]?
     var searchDelegate : SearchViewControllerDelegate!
-    
-    func calculateRequestTime() {
-        let date = Date()
-        let calendar = Calendar.current
-        let hour = calendar.component(.hour, from: date)
-        print("the hour is \(hour)")
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,11 +40,16 @@ class SearchViewController: UIViewController  {
         searchTextField.layer.cornerRadius = 20
         searchTextField.layer.borderColor = UIColor.customBlue.cgColor
         searchTextField.layer.borderWidth = 2
-        searchTextField.attributedPlaceholder = NSAttributedString(
-            string: " Enter City Name",
-            attributes: [NSAttributedString.Key.foregroundColor: UIColor.customBlue]
-        )
+        searchTextField.attributedPlaceholder = NSAttributedString(string: " Enter City Name",
+            attributes: [NSAttributedString.Key.foregroundColor: UIColor.customBlue])
         
+    }
+    
+    func calculateRequestTime() {
+        let date = Date()
+        let calendar = Calendar.current
+        let hour = calendar.component(.hour, from: date)
+        print("the hour is \(hour)")
     }
     
     func doSearchActionWhileTyping() {
@@ -67,6 +64,7 @@ class SearchViewController: UIViewController  {
         getDataFromApi()
         tableView.reloadData()
     }
+    
     func getDataFromApi() {
         //api.openweathermap.org/data/2.5/weather?q=tehran&appid=a7acbfef3e0f470c7336e452e1a3c002
         guard let urlString = URL(string: "https://api.openweathermap.org/data/2.5/weather?q=\(searchTextField.text!)&units=metric&appid=a7acbfef3e0f470c7336e452e1a3c002") else { return }
@@ -81,8 +79,10 @@ class SearchViewController: UIViewController  {
     func parse(json: Data) {
         let decoder = JSONDecoder()
         do {
-            let weatherObject = try decoder.decode(WeatherModel.self, from: json)
+            var weatherObject = try decoder.decode(WeatherModel.self, from: json)
             DispatchQueue.main.async {
+                weatherObject.name = weatherObject.name.folding(options: .diacriticInsensitive, locale: .current)
+             //   weatherObject.name = self.searchTextField.text!
                 self.weatherObjects = [weatherObject]
                 self.tableView.reloadData()
             }
@@ -106,7 +106,7 @@ extension SearchViewController : UITableViewDelegate , UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TableViewCell", for: indexPath) as! TableViewCell
-        cell.cityLabel.text = weatherObjects?[indexPath.row].name
+        cell.cityLabel.text = weatherObjects?[indexPath.row].name //.folding(options: .diacriticInsensitive, locale: .current)
         cell.minTemp.text = weatherObjects?[indexPath.row].main.temp_min.rounded().clean.description
         cell.maxTemp.text = weatherObjects?[indexPath.row].main.temp_max.rounded().clean.description
         setCellWeatherCondition(indexPath, cell)
@@ -114,6 +114,7 @@ extension SearchViewController : UITableViewDelegate , UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        weatherObjects![indexPath.row].name = weatherObjects![indexPath.row].name.folding(options: .diacriticInsensitive, locale: .current)
         searchDelegate.passingData(data: weatherObjects![indexPath.row])
         navigationController?.popViewController(animated: true)
     }
@@ -128,7 +129,7 @@ extension SearchViewController : UITableViewDelegate , UITableViewDataSource {
         default:
             cell.skyLabel.text = "☀️"
         }
-    }    
+    }
 }
 
 extension SearchViewController : UITextFieldDelegate {
@@ -140,8 +141,3 @@ extension SearchViewController : UITextFieldDelegate {
     }
 }
 
-extension Double {
-    var clean: String {
-        return self.truncatingRemainder(dividingBy: 1) == 0 ? String(format: "%.0f", self) : String(self)
-    }
-}
