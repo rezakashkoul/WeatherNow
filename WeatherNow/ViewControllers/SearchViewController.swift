@@ -8,7 +8,7 @@
 import UIKit
 
 protocol SearchViewControllerDelegate {
-    func passingData(data: WeatherModel)
+    func transferData(data: SearchLocationModel)
 }
 
 class SearchViewController: UIViewController  {
@@ -27,14 +27,13 @@ class SearchViewController: UIViewController  {
         }
     }
     
-    var weatherObjects : [WeatherModel]?
+    var locationObjects : [SearchLocationModel]!
     var searchDelegate : SearchViewControllerDelegate!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTableView()
         cancelButton.layer.cornerRadius = 20
-        //overrideUserInterfaceStyle = .light
         tableView.keyboardDismissMode = .onDrag
         searchTextField.delegate = self
         searchTextField.layer.cornerRadius = 20
@@ -42,14 +41,6 @@ class SearchViewController: UIViewController  {
         searchTextField.layer.borderWidth = 2
         searchTextField.attributedPlaceholder = NSAttributedString(string: " Enter City Name",
                                                                    attributes: [NSAttributedString.Key.foregroundColor: UIColor.customBlue])
-        
-    }
-    
-    func calculateRequestTime() {
-        let date = Date()
-        let calendar = Calendar.current
-        let hour = calendar.component(.hour, from: date)
-        print("the hour is \(hour)")
     }
     
     func doSearchActionWhileTyping() {
@@ -61,79 +52,67 @@ class SearchViewController: UIViewController  {
     }
     
     func performSearch() {
-        getDataFromApi()
+        getSearchLocationFromApi()
         tableView.reloadData()
     }
     
-    func getDataFromApi() {
-        //api.openweathermap.org/data/2.5/weather?q=tehran&appid=a7acbfef3e0f470c7336e452e1a3c002
-        if let urlString = URL(string: "https://api.openweathermap.org/data/2.5/weather?q=\(searchTextField.text!)&units=metric&appid=a7acbfef3e0f470c7336e452e1a3c002") {
+    func getSearchLocationFromApi() {
+        //    https://api.weatherapi.com/v1/search.json?key=67b477a0e3404afeb5891850213110&q=tehran
+        if let urlString = URL(string: "https://api.weatherapi.com/v1/search.json?key=ec51c5f169d2409b85293311210511&q=\(searchTextField.text!)") {
             let task = URLSession.shared.dataTask(with: urlString) { data, response, error in
+                if let httpResponse = response as? HTTPURLResponse {
+                    print(httpResponse.statusCode)
+                }
                 if let data = data , error == nil {
-                    self.parse(json: data)
-                    DispatchQueue.main.async {
-                        self.tableView.reloadData()
-                    }
+                    self.parseLocation(json: data)
                 } else {
-                    print("errorrrr")
+                    print("\(String(describing: error)) in parsing locations")
                 }
             }
             task.resume()
+        } else {
+            let alert = UIAlertController(title: "Error in Place Name", message: "Please make sure the city you're looking for is in correct form.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Retry", style: .cancel, handler: nil))
         }
     }
     
-    func parse(json: Data) {
+    func parseLocation(json: Data) {
         let decoder = JSONDecoder()
         do {
-            var weatherObject = try decoder.decode(WeatherModel.self, from: json)
+            let locationObject = try decoder.decode([SearchLocationModel].self, from: json)
             DispatchQueue.main.async {
-                weatherObject.name = weatherObject.name.folding(options: .diacriticInsensitive, locale: .current)
-                self.weatherObjects = [weatherObject]
-               // self.tableView.reloadData()
+                self.locationObjects = locationObject
+                self.tableView.reloadData()
             }
         } catch let error as NSError {
-            print("Parsing Error: \(error)")
+            print("Location Parsing Error: \(error)")
         }
     }
     
     func setupTableView() {
-        tableView.register(UINib(nibName: "TableViewCell", bundle: nil), forCellReuseIdentifier: "TableViewCell")
+        //tableView.register(UINib(nibName: "TableViewCell", bundle: nil), forCellReuseIdentifier: "TableViewCell")
         tableView.delegate = self
         tableView.dataSource = self
     }
 }
 
+//MARK: TableView Extension
 extension SearchViewController : UITableViewDelegate , UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return weatherObjects?.count ?? 0
+        return locationObjects?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "TableViewCell", for: indexPath) as! TableViewCell
-        cell.cityLabel.text = weatherObjects?[indexPath.row].name
-        cell.minTemp.text = weatherObjects?[indexPath.row].main.temp_min.rounded().clean.description
-        cell.maxTemp.text = weatherObjects?[indexPath.row].main.temp_max.rounded().clean.description
-        setCellWeatherCondition(indexPath, cell)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        cell.textLabel!.text = locationObjects?[indexPath.row].name
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        weatherObjects![indexPath.row].name = weatherObjects![indexPath.row].name.folding(options: .diacriticInsensitive, locale: .current)
-        searchDelegate.passingData(data: weatherObjects![indexPath.row])
+        //locationObjects![indexPath.row].time = Date()
+        searchDelegate.transferData(data: locationObjects![indexPath.row])
         navigationController?.popViewController(animated: true)
-    }
-    
-    func setCellWeatherCondition(_ indexPath: IndexPath, _ cell: TableViewCell) {
-        switch weatherObjects?[indexPath.row].weather[0].main.description {
-        case "Clear" : cell.skyLabel.text = "🌤"
-        case "Clouds" : cell.skyLabel.text = "🌥"
-        case "Snow" : cell.skyLabel.text = "❄️"
-        case "Drizzle" : cell.skyLabel.text = "🌧"
-        case "Thunderstorm" : cell.skyLabel.text = "⛈"
-        default:
-            cell.skyLabel.text = "☀️"
-        }
     }
 }
 
@@ -145,4 +124,3 @@ extension SearchViewController : UITextFieldDelegate {
         return true
     }
 }
-

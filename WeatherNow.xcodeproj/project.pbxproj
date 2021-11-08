@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		CA6F34DA2726B1DC00DC4D8F /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6F34D92726B1DC00DC4D8F /* Extension.swift */; };
+		F75CB279272EA7DD00E51453 /* SearchLocationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75CB278272EA7DD00E51453 /* SearchLocationModel.swift */; };
 		F7B42E3E2722170C0058736D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B42E3D2722170C0058736D /* AppDelegate.swift */; };
 		F7B42E402722170C0058736D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B42E3F2722170C0058736D /* SceneDelegate.swift */; };
 		F7B42E422722170C0058736D /* WeatherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B42E412722170C0058736D /* WeatherViewController.swift */; };
@@ -22,6 +23,7 @@
 
 /* Begin PBXFileReference section */
 		CA6F34D92726B1DC00DC4D8F /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
+		F75CB278272EA7DD00E51453 /* SearchLocationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchLocationModel.swift; sourceTree = "<group>"; };
 		F7B42E3A2722170C0058736D /* WeatherNow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherNow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F7B42E3D2722170C0058736D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F7B42E3F2722170C0058736D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -47,6 +49,49 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F7A0AE982735C06B0009BD2B /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				F7B42E512722176E0058736D /* SearchViewController.swift */,
+				F7B42E412722170C0058736D /* WeatherViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		F7A0AE992735C0880009BD2B /* NetworkModel */ = {
+			isa = PBXGroup;
+			children = (
+				F7B42E532722179D0058736D /* WeatherModel.swift */,
+				F75CB278272EA7DD00E51453 /* SearchLocationModel.swift */,
+			);
+			path = NetworkModel;
+			sourceTree = "<group>";
+		};
+		F7A0AE9A2735C0A10009BD2B /* TableViewCustomCell */ = {
+			isa = PBXGroup;
+			children = (
+				F7B42E55272217C80058736D /* TableViewCell.swift */,
+				F7B42E56272217C80058736D /* TableViewCell.xib */,
+			);
+			path = TableViewCustomCell;
+			sourceTree = "<group>";
+		};
+		F7A0AE9B2735C0B10009BD2B /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				CA6F34D92726B1DC00DC4D8F /* Extension.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		F7A0AE9C2735C0C00009BD2B /* Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				F7B42E432722170C0058736D /* Main.storyboard */,
+			);
+			path = Storyboard;
+			sourceTree = "<group>";
+		};
 		F7B42E312722170C0058736D = {
 			isa = PBXGroup;
 			children = (
@@ -68,13 +113,11 @@
 			children = (
 				F7B42E3D2722170C0058736D /* AppDelegate.swift */,
 				F7B42E3F2722170C0058736D /* SceneDelegate.swift */,
-				F7B42E412722170C0058736D /* WeatherViewController.swift */,
-				F7B42E512722176E0058736D /* SearchViewController.swift */,
-				F7B42E532722179D0058736D /* WeatherModel.swift */,
-				F7B42E55272217C80058736D /* TableViewCell.swift */,
-				F7B42E56272217C80058736D /* TableViewCell.xib */,
-				F7B42E432722170C0058736D /* Main.storyboard */,
-				CA6F34D92726B1DC00DC4D8F /* Extension.swift */,
+				F7A0AE992735C0880009BD2B /* NetworkModel */,
+				F7A0AE982735C06B0009BD2B /* ViewControllers */,
+				F7A0AE9A2735C0A10009BD2B /* TableViewCustomCell */,
+				F7A0AE9C2735C0C00009BD2B /* Storyboard */,
+				F7A0AE9B2735C0B10009BD2B /* Extension */,
 				F7B42E46272217110058736D /* Assets.xcassets */,
 				F7B42E48272217110058736D /* LaunchScreen.storyboard */,
 				F7B42E4B272217110058736D /* Info.plist */,
@@ -158,6 +201,7 @@
 				F7B42E3E2722170C0058736D /* AppDelegate.swift in Sources */,
 				CA6F34DA2726B1DC00DC4D8F /* Extension.swift in Sources */,
 				F7B42E522722176E0058736D /* SearchViewController.swift in Sources */,
+				F75CB279272EA7DD00E51453 /* SearchLocationModel.swift in Sources */,
 				F7B42E57272217C80058736D /* TableViewCell.swift in Sources */,
 				F7B42E402722170C0058736D /* SceneDelegate.swift in Sources */,
 				F7B42E542722179D0058736D /* WeatherModel.swift in Sources */,
@@ -309,7 +353,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 8U9S422V4H;
+				DEVELOPMENT_TEAM = 967Q89UR83;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WeatherNow/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -337,7 +381,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 8U9S422V4H;
+				DEVELOPMENT_TEAM = 967Q89UR83;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WeatherNow/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
