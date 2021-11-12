@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Reachability
 
 protocol SearchViewControllerDelegate {
     func transferData(data: SearchLocationModel)
@@ -29,18 +30,17 @@ class SearchViewController: UIViewController  {
     
     var locationObjects : [SearchLocationModel]!
     var searchDelegate : SearchViewControllerDelegate!
+    let reachability = try! Reachability()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupTableView()
-        cancelButton.layer.cornerRadius = 20
-        tableView.keyboardDismissMode = .onDrag
-        searchTextField.delegate = self
-        searchTextField.layer.cornerRadius = 20
-        searchTextField.layer.borderColor = UIColor.customBlue.cgColor
-        searchTextField.layer.borderWidth = 2
-        searchTextField.attributedPlaceholder = NSAttributedString(string: " Enter City Name",
-                                                                   attributes: [NSAttributedString.Key.foregroundColor: UIColor.customBlue])
+        setupView()
+        checkInternetConnectionAndRequest()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        reachability.stopNotifier()
     }
     
     func doSearchActionWhileTyping() {
@@ -51,17 +51,30 @@ class SearchViewController: UIViewController  {
         }
     }
     
+    func setupView() {
+        setupTableView()
+        cancelButton.layer.cornerRadius = 20
+        setupSearchTextField()
+    }
+    
     func performSearch() {
         getSearchLocationFromApi()
-        tableView.reloadData()
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
     }
     
     func getSearchLocationFromApi() {
-        //    https://api.weatherapi.com/v1/search.json?key=67b477a0e3404afeb5891850213110&q=tehran
         if let urlString = URL(string: "https://api.weatherapi.com/v1/search.json?key=ec51c5f169d2409b85293311210511&q=\(searchTextField.text!)") {
             let task = URLSession.shared.dataTask(with: urlString) { data, response, error in
                 if let httpResponse = response as? HTTPURLResponse {
                     print(httpResponse.statusCode)
+                }
+                if error != nil {
+                    print("error in request")
+                    DispatchQueue.main.async {
+                        self.showErrorInFetchingData()
+                    }
                 }
                 if let data = data , error == nil {
                     self.parseLocation(json: data)
@@ -71,8 +84,9 @@ class SearchViewController: UIViewController  {
             }
             task.resume()
         } else {
-            let alert = UIAlertController(title: "Error in Place Name", message: "Please make sure the city you're looking for is in correct form.", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Retry", style: .cancel, handler: nil))
+            DispatchQueue.main.async {
+                self.showPlaceNameError()
+            }
         }
     }
     
@@ -80,6 +94,11 @@ class SearchViewController: UIViewController  {
         let decoder = JSONDecoder()
         do {
             let locationObject = try decoder.decode([SearchLocationModel].self, from: json)
+            if locationObject.isEmpty == true {
+                DispatchQueue.main.async {
+                    self.showPlaceNameError()
+                }
+            }
             DispatchQueue.main.async {
                 self.locationObjects = locationObject
                 self.tableView.reloadData()
@@ -89,15 +108,58 @@ class SearchViewController: UIViewController  {
         }
     }
     
+    func checkInternetConnectionAndRequest() {
+        reachability.whenReachable = { reachability in
+            if reachability.connection == .wifi || reachability.connection == .cellular {
+                print("Connected to the internet")
+                self.performSearch()
+            }
+        }
+        reachability.whenUnreachable = { _ in
+            print("Not Connected")
+            DispatchQueue.main.async {
+                self.showInternetConnectionError()
+            }
+        }
+        do {
+            try reachability.startNotifier()
+        } catch {
+            print("Unable to start notifier")
+        }
+    }
+}
+
+//MARK: Alert Extension
+extension SearchViewController {
+    
+    func showErrorInFetchingData() {
+        let alert = UIAlertController(title: "Error", message: "Due to poor internet connection, cannot access to updated weather data, Please check your internet connection", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
+    
+    func showPlaceNameError() {
+        let alert = UIAlertController(title: "Error in Place Name", message: "Please make sure the city you're looking for is in the correct form." , preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Retry", style: .cancel, handler: nil))
+        present(alert, animated: true, completion: .none)
+    }
+    func showInternetConnectionError() {
+        let alert = UIAlertController(title: "No Connection", message: "No internet connection, connect to the internet and try again.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "ok", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
+}
+
+
+//MARK: TableView Extension
+extension SearchViewController : UITableViewDelegate , UITableViewDataSource {
+    
     func setupTableView() {
         //tableView.register(UINib(nibName: "TableViewCell", bundle: nil), forCellReuseIdentifier: "TableViewCell")
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.keyboardDismissMode = .onDrag
     }
-}
-
-//MARK: TableView Extension
-extension SearchViewController : UITableViewDelegate , UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return locationObjects?.count ?? 0
@@ -122,5 +184,15 @@ extension SearchViewController : UITextFieldDelegate {
         textField.resignFirstResponder()
         performSearch()
         return true
+    }
+    
+    func setupSearchTextField() {
+        searchTextField.delegate = self
+        searchTextField.layer.cornerRadius = 20
+        searchTextField.clipsToBounds = true
+        searchTextField.layer.borderColor = UIColor.customBlue.cgColor
+        searchTextField.layer.borderWidth = 2
+        searchTextField.attributedPlaceholder = NSAttributedString(string: "Enter City Name", attributes: [NSAttributedString.Key.foregroundColor: UIColor.customBlue])
+        searchTextField.textAlignment = .center
     }
 }

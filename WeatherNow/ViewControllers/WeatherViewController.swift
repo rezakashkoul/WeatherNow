@@ -5,6 +5,8 @@
 //
 
 import UIKit
+import QuartzCore
+import Reachability
 
 class WeatherViewController: UIViewController , SearchViewControllerDelegate {
     
@@ -12,7 +14,7 @@ class WeatherViewController: UIViewController , SearchViewControllerDelegate {
     @IBOutlet weak var skyLabel: UILabel!
     @IBOutlet weak var topTemperatureLabel: UILabel!
     @IBOutlet weak var updateTimeLabel: UILabel!
-    @IBOutlet weak var topLocationLabel: UILabel!
+    @IBOutlet weak var topLocationLabel: MarqueeLabel!
     @IBOutlet weak var minTemp: UILabel!
     @IBOutlet weak var maxTemp: UILabel!
     @IBOutlet weak var sortListButton: UIButton!
@@ -44,13 +46,14 @@ class WeatherViewController: UIViewController , SearchViewControllerDelegate {
     var locationList : [SearchLocationModel] = []
     var expiredItems : [WeatherModel] = []
     var timer: Timer?
+    let reachability = try! Reachability()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
         loadWeatherData()
-        trigerTimer()
-        updateWeather()
+//        trigerTimer()
+        checkInternetConnectionAndRequest()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -69,8 +72,13 @@ class WeatherViewController: UIViewController , SearchViewControllerDelegate {
         navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        reachability.stopNotifier()
+    }
+    
     func trigerTimer() {
-        timer = Timer.scheduledTimer(withTimeInterval: 12, repeats: true) { (timer) in
+        timer = Timer.scheduledTimer(withTimeInterval: 120, repeats: true) { (timer) in
             self.updateWeather()
             print("Update by timer \(Date().getCleanTime())")
         }
@@ -99,17 +107,16 @@ class WeatherViewController: UIViewController , SearchViewControllerDelegate {
         }
     }
     
-    
     func updateWeather() {
         var counter = 0
-        expiredItems = weatherList.filter({ $0.time!.timeIntervalSinceNow  < -10})
+        expiredItems = weatherList.filter({ $0.time!.timeIntervalSinceNow  < -120})
         print("expiredItems.count", expiredItems.count)
         for _ in expiredItems {
             let fixedUrl = addPercentageToUrl(urlString: "https://api.weatherapi.com/v1/forecast.json?key=ec51c5f169d2409b85293311210511&q=\(weatherList[counter].location.name)-\(weatherList[counter].location.region)-\(weatherList[counter].location.country)&days=1&aqi=no&alerts=no")
-//            print("weatherList\(weatherList)")
+            //            print("weatherList\(weatherList)")
             if let urlString = URL(string: fixedUrl) {
                 counter += 1
-//                print("urlString", fixedUrl)
+                //                print("urlString", fixedUrl)
                 let task = URLSession.shared.dataTask(with: urlString) { [self] data, response, error in
                     if let data = data , error == nil {
                         self.parseForUpdate(json: data)
@@ -122,6 +129,9 @@ class WeatherViewController: UIViewController , SearchViewControllerDelegate {
                         }
                     } else {
                         print("Error in fetching data")
+                        DispatchQueue.main.async {
+                            self.showErrorInFetchingData()
+                        }
                     }
                 }
                 task.resume()
@@ -149,7 +159,6 @@ class WeatherViewController: UIViewController , SearchViewControllerDelegate {
             print("Weather Parsing Error: \(error)")
         }
     }
-    
     
     func parseNewWeather(json: Data) {
         let decoder = JSONDecoder()
@@ -198,6 +207,40 @@ class WeatherViewController: UIViewController , SearchViewControllerDelegate {
             }
         }
     }
+    
+    func checkInternetConnectionAndRequest() {
+        reachability.whenReachable = { reachability in
+            if reachability.connection == .wifi || reachability.connection == .cellular {
+                print("Connected to the internet")
+                self.updateWeather()
+                self.trigerTimer()
+            }
+        }
+        reachability.whenUnreachable = { _ in
+            print("Not Connected")
+            DispatchQueue.main.async {
+                self.showInternetConnectionError()
+                self.updateTimeLabel.text = "Expired Data. \n Last Update " + (self.weatherList[0].time?.getCleanTime().description)!
+            }
+        }
+        do {
+            try reachability.startNotifier()
+        } catch {
+            print("Unable to start notifier")
+        }
+    }
+    
+    func showErrorInFetchingData() {
+        let alert = UIAlertController(title: "Error", message: "Due to poor internet connection, cannot access to updated weather data, Please check your internet connection", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
+    
+    func showInternetConnectionError() {
+        let alert = UIAlertController(title: "No Connection", message: "No internet connection, connect to the internet and try again.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "ok", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
 }
 
 //MARK: Setup View Extension
@@ -211,7 +254,6 @@ extension WeatherViewController {
     }
     
     func setTopViewWeatherData() {
-        
         if weatherList.count != 0 {
             listStatus.isHidden = true
             tableView.isHidden = false
@@ -221,6 +263,8 @@ extension WeatherViewController {
             topLocationLabel.text = self.weatherList[0].location.name + ", " + self.weatherList[0].location.country
             minTemp.text = self.weatherList[0].forecast.forecastday[0].day.mintemp_c.rounded().clean.description
             maxTemp.text = self.weatherList[0].forecast.forecastday[0].day.maxtemp_c.rounded().clean.description
+            upArrow.isHidden = false
+            downArrow.isHidden = false
         } else {
             listStatus.isHidden = false
             tableView.isHidden = true

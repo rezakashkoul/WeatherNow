@@ -19,6 +19,9 @@
 		F7B42E542722179D0058736D /* WeatherModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B42E532722179D0058736D /* WeatherModel.swift */; };
 		F7B42E57272217C80058736D /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B42E55272217C80058736D /* TableViewCell.swift */; };
 		F7B42E58272217C80058736D /* TableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F7B42E56272217C80058736D /* TableViewCell.xib */; };
+		F7D4D8A1273EF1B300A99E98 /* Reachability in Frameworks */ = {isa = PBXBuildFile; productRef = F7D4D8A0273EF1B300A99E98 /* Reachability */; };
+		F7D78EEE273A9CD600E1E1EA /* MarqueeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D78EED273A9CD600E1E1EA /* MarqueeLabel.swift */; };
+		F7D78EF1273A9E5200E1E1EA /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7D78EF0273A9E5200E1E1EA /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +39,8 @@
 		F7B42E532722179D0058736D /* WeatherModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherModel.swift; sourceTree = "<group>"; };
 		F7B42E55272217C80058736D /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		F7B42E56272217C80058736D /* TableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TableViewCell.xib; sourceTree = "<group>"; };
+		F7D78EED273A9CD600E1E1EA /* MarqueeLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarqueeLabel.swift; sourceTree = "<group>"; };
+		F7D78EF0273A9E5200E1E1EA /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,6 +48,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F7D78EF1273A9E5200E1E1EA /* QuartzCore.framework in Frameworks */,
+				F7D4D8A1273EF1B300A99E98 /* Reachability in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -79,6 +86,7 @@
 		F7A0AE9B2735C0B10009BD2B /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				F7D78EED273A9CD600E1E1EA /* MarqueeLabel.swift */,
 				CA6F34D92726B1DC00DC4D8F /* Extension.swift */,
 			);
 			path = Extension;
@@ -97,6 +105,7 @@
 			children = (
 				F7B42E3C2722170C0058736D /* WeatherNow */,
 				F7B42E3B2722170C0058736D /* Products */,
+				F7D78EEF273A9E5200E1E1EA /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -125,6 +134,14 @@
 			path = WeatherNow;
 			sourceTree = "<group>";
 		};
+		F7D78EEF273A9E5200E1E1EA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F7D78EF0273A9E5200E1E1EA /* QuartzCore.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -141,6 +158,9 @@
 			dependencies = (
 			);
 			name = WeatherNow;
+			packageProductDependencies = (
+				F7D4D8A0273EF1B300A99E98 /* Reachability */,
+			);
 			productName = WeatherNow;
 			productReference = F7B42E3A2722170C0058736D /* WeatherNow.app */;
 			productType = "com.apple.product-type.application";
@@ -169,6 +189,9 @@
 				Base,
 			);
 			mainGroup = F7B42E312722170C0058736D;
+			packageReferences = (
+				F7D4D89F273EF1B300A99E98 /* XCRemoteSwiftPackageReference "Reachability" */,
+			);
 			productRefGroup = F7B42E3B2722170C0058736D /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -197,6 +220,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F7D78EEE273A9CD600E1E1EA /* MarqueeLabel.swift in Sources */,
 				F7B42E422722170C0058736D /* WeatherViewController.swift in Sources */,
 				F7B42E3E2722170C0058736D /* AppDelegate.swift in Sources */,
 				CA6F34DA2726B1DC00DC4D8F /* Extension.swift in Sources */,
@@ -359,6 +383,7 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationPortrait";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -387,6 +412,7 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationPortrait";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -424,6 +450,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		F7D4D89F273EF1B300A99E98 /* XCRemoteSwiftPackageReference "Reachability" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ashleymills/Reachability.swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		F7D4D8A0273EF1B300A99E98 /* Reachability */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F7D4D89F273EF1B300A99E98 /* XCRemoteSwiftPackageReference "Reachability" */;
+			productName = Reachability;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = F7B42E322722170C0058736D /* Project object */;
 }
