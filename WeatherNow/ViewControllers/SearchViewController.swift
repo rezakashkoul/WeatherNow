@@ -43,24 +43,24 @@ class SearchViewController: UIViewController  {
         reachability.stopNotifier()
     }
     
-    func doSearchActionWhileTyping() {
-        DispatchQueue.main.async {
-            if self.searchTextField.text!.count >= 3 {
-                self.performSearch()
-            }
-        }
-    }
-    
     func setupView() {
         setupTableView()
-        cancelButton.layer.cornerRadius = 20
         setupSearchTextField()
+        cancelButton.layer.cornerRadius = 20
     }
     
     func performSearch() {
         getSearchLocationFromApi()
         DispatchQueue.main.async {
             self.tableView.reloadData()
+        }
+    }
+    
+    func doSearchActionWhileTyping() {
+        DispatchQueue.main.async {
+            if self.searchTextField.text!.count >= 3 {
+                self.performSearch()
+            }
         }
     }
     
@@ -150,12 +150,10 @@ extension SearchViewController {
     }
 }
 
-
 //MARK: TableView Extension
 extension SearchViewController : UITableViewDelegate , UITableViewDataSource {
     
     func setupTableView() {
-        //tableView.register(UINib(nibName: "TableViewCell", bundle: nil), forCellReuseIdentifier: "TableViewCell")
         tableView.delegate = self
         tableView.dataSource = self
         tableView.keyboardDismissMode = .onDrag

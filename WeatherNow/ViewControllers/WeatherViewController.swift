@@ -52,7 +52,7 @@ class WeatherViewController: UIViewController , SearchViewControllerDelegate {
         super.viewDidLoad()
         setupView()
         loadWeatherData()
-//        trigerTimer()
+        //        trigerTimer()
         checkInternetConnectionAndRequest()
     }
     

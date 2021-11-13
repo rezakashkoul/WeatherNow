@@ -56,6 +56,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F724670D273FCA31000565E4 /* AppDelegate */ = {
+			isa = PBXGroup;
+			children = (
+				F7B42E3D2722170C0058736D /* AppDelegate.swift */,
+				F7B42E3F2722170C0058736D /* SceneDelegate.swift */,
+			);
+			path = AppDelegate;
+			sourceTree = "<group>";
+		};
 		F7A0AE982735C06B0009BD2B /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -65,13 +74,13 @@
 			path = ViewControllers;
 			sourceTree = "<group>";
 		};
-		F7A0AE992735C0880009BD2B /* NetworkModel */ = {
+		F7A0AE992735C0880009BD2B /* APIModels */ = {
 			isa = PBXGroup;
 			children = (
 				F7B42E532722179D0058736D /* WeatherModel.swift */,
 				F75CB278272EA7DD00E51453 /* SearchLocationModel.swift */,
 			);
-			path = NetworkModel;
+			path = APIModels;
 			sourceTree = "<group>";
 		};
 		F7A0AE9A2735C0A10009BD2B /* TableViewCustomCell */ = {
@@ -86,7 +95,6 @@
 		F7A0AE9B2735C0B10009BD2B /* Extension */ = {
 			isa = PBXGroup;
 			children = (
-				F7D78EED273A9CD600E1E1EA /* MarqueeLabel.swift */,
 				CA6F34D92726B1DC00DC4D8F /* Extension.swift */,
 			);
 			path = Extension;
@@ -120,16 +128,16 @@
 		F7B42E3C2722170C0058736D /* WeatherNow */ = {
 			isa = PBXGroup;
 			children = (
-				F7B42E3D2722170C0058736D /* AppDelegate.swift */,
-				F7B42E3F2722170C0058736D /* SceneDelegate.swift */,
-				F7A0AE992735C0880009BD2B /* NetworkModel */,
+				F724670D273FCA31000565E4 /* AppDelegate */,
 				F7A0AE982735C06B0009BD2B /* ViewControllers */,
+				F7A0AE992735C0880009BD2B /* APIModels */,
 				F7A0AE9A2735C0A10009BD2B /* TableViewCustomCell */,
 				F7A0AE9C2735C0C00009BD2B /* Storyboard */,
 				F7A0AE9B2735C0B10009BD2B /* Extension */,
 				F7B42E46272217110058736D /* Assets.xcassets */,
 				F7B42E48272217110058736D /* LaunchScreen.storyboard */,
 				F7B42E4B272217110058736D /* Info.plist */,
+				F7D78EED273A9CD600E1E1EA /* MarqueeLabel.swift */,
 			);
 			path = WeatherNow;
 			sourceTree = "<group>";
@@ -377,7 +385,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 967Q89UR83;
+				DEVELOPMENT_TEAM = 8U9S422V4H;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WeatherNow/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -391,7 +399,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = WeatherNow.WeatherNow;
+				PRODUCT_BUNDLE_IDENTIFIER = WeatherNow.Weatherfull;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -406,7 +414,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 967Q89UR83;
+				DEVELOPMENT_TEAM = 8U9S422V4H;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WeatherNow/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -420,7 +428,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = WeatherNow.WeatherNow;
+				PRODUCT_BUNDLE_IDENTIFIER = WeatherNow.Weatherfull;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
