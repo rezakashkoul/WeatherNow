@@ -68,8 +68,8 @@
 		F7A0AE982735C06B0009BD2B /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				F7B42E512722176E0058736D /* SearchViewController.swift */,
 				F7B42E412722170C0058736D /* WeatherViewController.swift */,
+				F7B42E512722176E0058736D /* SearchViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";

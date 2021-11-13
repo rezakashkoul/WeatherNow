@@ -294,7 +294,7 @@ extension WeatherViewController {
         case "Light snow showers" : skyLabel.text = "❄️"
         case "Light drizzle" : skyLabel.text = "🌧"
         default:
-            skyLabel.text = "🌤"
+            skyLabel.text = "？"
         }
     }
 }
@@ -340,7 +340,7 @@ extension WeatherViewController : UITableViewDataSource , UITableViewDelegate {
         case "Light snow showers" : cell.skyLabel.text = "❄️"
         case "Light drizzle" : cell.skyLabel.text = "🌧"
         default:
-            cell.skyLabel.text = "🌤"
+            cell.skyLabel.text = "？"
         }
     }
     

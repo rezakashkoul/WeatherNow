@@ -56,13 +56,13 @@
                             <constraint firstAttribute="width" constant="70" id="qZ0-9J-cc5"/>
                         </constraints>
                     </stackView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="☀️" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wyg-Wi-4T9">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wyg-Wi-4T9">
                         <rect key="frame" x="474" y="21" width="28" height="28"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="28" id="LXP-Z4-uFL"/>
                             <constraint firstAttribute="width" secondItem="wyg-Wi-4T9" secondAttribute="height" id="Tv0-ST-GC5"/>
                         </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="28"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="27"/>
                         <color key="textColor" red="0.43137252329999998" green="0.60392159219999997" blue="0.93333339689999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <nil key="highlightedColor"/>
                     </label>
