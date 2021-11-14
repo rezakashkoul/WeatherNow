@@ -27,6 +27,7 @@ class WeatherViewController: UIViewController , SearchViewControllerDelegate {
         if tableView.isEditing == true {
             tableView.setEditing(false, animated: true)
             sortListButton.setTitle("Sort List", for: .normal)
+            saveLocationData()
             saveWeatherData()
         } else {
             tableView.setEditing(true, animated: true)
@@ -52,7 +53,8 @@ class WeatherViewController: UIViewController , SearchViewControllerDelegate {
         super.viewDidLoad()
         setupView()
         loadWeatherData()
-        //        trigerTimer()
+        loadLocationData()
+        trigerTimer()
         checkInternetConnectionAndRequest()
     }
     
@@ -96,6 +98,7 @@ class WeatherViewController: UIViewController , SearchViewControllerDelegate {
                     self.parseNewWeather(json: data)
                     DispatchQueue.main.async {
                         self.saveWeatherData()
+                        self.saveLocationData()
                         self.tableView.reloadData()
                         self.setTopViewWeatherData()
                     }
@@ -123,6 +126,7 @@ class WeatherViewController: UIViewController , SearchViewControllerDelegate {
                         if counter == expiredItems.count {
                             DispatchQueue.main.async {
                                 self.saveWeatherData()
+                                self.saveLocationData()
                                 self.tableView.reloadData()
                                 self.setTopViewWeatherData()
                             }
@@ -152,6 +156,7 @@ class WeatherViewController: UIViewController , SearchViewControllerDelegate {
                 }
             }
             saveWeatherData()
+            saveLocationData()
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
@@ -168,6 +173,7 @@ class WeatherViewController: UIViewController , SearchViewControllerDelegate {
             weatherObject.weatherUrl = locationData.url
             weatherList.append(weatherObject)
             saveWeatherData()
+            saveLocationData()
         } catch {
             print("Weather Parsing Error: \(error)")
         }
@@ -184,6 +190,28 @@ class WeatherViewController: UIViewController , SearchViewControllerDelegate {
         } else {
             locationList.append(locationData)
             getWeather()
+            saveLocationData()
+        }
+    }
+    
+    func saveLocationData() {
+        do {
+            let encoder = JSONEncoder()
+            let data = try encoder.encode(locationList)
+            UserDefaults.standard.set(data, forKey: "location")
+        } catch {
+            print("Unable to Encode LocationData (\(error))")
+        }
+    }
+    
+    func loadLocationData() {
+        if let data = UserDefaults.standard.data(forKey: "location") {
+            do {
+                let decoder = JSONDecoder()
+                locationList = try decoder.decode([SearchLocationModel].self, from: data)
+            } catch {
+                print("Unable to Decode LocationData (\(error))")
+            }
         }
     }
     
@@ -257,6 +285,7 @@ extension WeatherViewController {
         if weatherList.count != 0 {
             listStatus.isHidden = true
             tableView.isHidden = false
+            sortListButton.isEnabled = true
             topTemperatureLabel.text = self.weatherList[0].current.temp_c.rounded().clean.description + " °"
             setTopViewWeatherCondition()
             updateTimeLabel.text = " Last Update " + (self.weatherList[0].time?.getCleanTime().description)!
@@ -268,6 +297,7 @@ extension WeatherViewController {
         } else {
             listStatus.isHidden = false
             tableView.isHidden = true
+            sortListButton.isEnabled = false
             topTemperatureLabel.text = "Add a City"
             updateTimeLabel.text = ""
             topLocationLabel.text = "From here👇🏼"
@@ -351,7 +381,9 @@ extension WeatherViewController : UITableViewDataSource , UITableViewDelegate {
     func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         let reorderedItem = weatherList[sourceIndexPath.row]
         weatherList.remove(at: sourceIndexPath.row)
+        locationList.remove(at: sourceIndexPath.row)
         weatherList.insert(reorderedItem, at: destinationIndexPath.row)
+        locationList.insert(locationList[sourceIndexPath.row], at: destinationIndexPath.row)
         setTopViewWeatherData()
     }
     
@@ -359,9 +391,11 @@ extension WeatherViewController : UITableViewDataSource , UITableViewDelegate {
         if editingStyle == .delete {
             tableView.beginUpdates()
             weatherList.remove(at: indexPath.row)
+            locationList.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
             tableView.endUpdates()
             saveWeatherData()
+            saveLocationData()
             setTopViewWeatherData()
         }
     }

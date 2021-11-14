@@ -56,15 +56,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		F724670D273FCA31000565E4 /* AppDelegate */ = {
-			isa = PBXGroup;
-			children = (
-				F7B42E3D2722170C0058736D /* AppDelegate.swift */,
-				F7B42E3F2722170C0058736D /* SceneDelegate.swift */,
-			);
-			path = AppDelegate;
-			sourceTree = "<group>";
-		};
 		F7A0AE982735C06B0009BD2B /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -128,7 +119,8 @@
 		F7B42E3C2722170C0058736D /* WeatherNow */ = {
 			isa = PBXGroup;
 			children = (
-				F724670D273FCA31000565E4 /* AppDelegate */,
+				F7B42E3D2722170C0058736D /* AppDelegate.swift */,
+				F7B42E3F2722170C0058736D /* SceneDelegate.swift */,
 				F7A0AE982735C06B0009BD2B /* ViewControllers */,
 				F7A0AE992735C0880009BD2B /* APIModels */,
 				F7A0AE9A2735C0A10009BD2B /* TableViewCustomCell */,
