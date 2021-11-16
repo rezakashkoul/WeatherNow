@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="19455" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
+    <device id="watch45"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="19454"/>
+    </dependencies>
+    <scenes>
+        <!--Interface Controller-->
+        <scene sceneID="aou-V4-d1y">
+            <objects>
+                <controller fullScreen="YES" id="AgC-eL-Hgc" customClass="InterfaceController" customModule="WeatherNowWatch" customModuleProvider="target">
+                    <items>
+                        <label width="136" height="61" alignment="left" text="City Name" textAlignment="left" id="DsT-VF-Ff5">
+                            <color key="textColor" red="0.37350875140000001" green="0.60648417470000004" blue="0.97632592920000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <fontDescription key="font" style="UICTFontTextStyleTitle2"/>
+                        </label>
+                        <label alignment="left" text="🌤" id="Mux-cB-Xrf">
+                            <fontDescription key="font" style="UICTFontTextStyleTitle0"/>
+                        </label>
+                        <label alignment="left" text="30°" id="Vhe-6R-XtT">
+                            <color key="textColor" red="0.37350875140000001" green="0.60648417470000004" blue="0.97632592920000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <fontDescription key="font" style="UICTFontTextStyleTitle0"/>
+                        </label>
+                        <group width="1" alignment="left" id="ZLW-Gp-n9j">
+                            <items>
+                                <label alignment="left" text="↓" id="RUW-Mp-zS6">
+                                    <color key="textColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </label>
+                                <label alignment="left" text="Min" id="s3U-0h-UxV"/>
+                                <label alignment="left" text="↑" id="rCW-FL-vPL">
+                                    <color key="textColor" red="0.37350875140000001" green="0.60648417470000004" blue="0.97632592920000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </label>
+                                <label alignment="left" text="Max" id="PHe-RQ-Yu3"/>
+                            </items>
+                        </group>
+                        <group width="1" alignment="left" id="aUf-RQ-oPw">
+                            <items>
+                                <label alignment="left" text="Updated on: " textAlignment="left" id="q5N-XS-sCo">
+                                    <color key="textColor" red="0.37350875140000001" green="0.60648417470000004" blue="0.97632592920000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </label>
+                                <label alignment="left" text="Time" textAlignment="right" id="eRj-Kv-g3o">
+                                    <color key="textColor" red="0.37350875140000001" green="0.60648417470000004" blue="0.97632592920000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </label>
+                            </items>
+                        </group>
+                    </items>
+                    <connections>
+                        <outlet property="cityName" destination="DsT-VF-Ff5" id="CFt-rs-ajm"/>
+                        <outlet property="maxTemp" destination="PHe-RQ-Yu3" id="v8X-dJ-JBe"/>
+                        <outlet property="minTemp" destination="s3U-0h-UxV" id="Rha-jd-dk0"/>
+                        <outlet property="skyLabel" destination="Mux-cB-Xrf" id="97c-RI-xpc"/>
+                        <outlet property="temperatureLabel" destination="Vhe-6R-XtT" id="p8n-JB-MKf"/>
+                        <outlet property="timeOfUpdate" destination="eRj-Kv-g3o" id="kKs-Io-oZn"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="-16.484848484848484" y="-19.669421487603305"/>
+        </scene>
+    </scenes>
+</document>

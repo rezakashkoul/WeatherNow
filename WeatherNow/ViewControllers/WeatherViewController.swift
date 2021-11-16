@@ -4,6 +4,7 @@
 //  Created by Reza Kashkoul on 28-Mehr-1400.
 //
 
+#if os(iOS)
 import UIKit
 import QuartzCore
 import Reachability
@@ -220,6 +221,9 @@ class WeatherViewController: UIViewController , SearchViewControllerDelegate {
             let encoder = JSONEncoder()
             let data = try encoder.encode(weatherList)
             UserDefaults.standard.set(data, forKey: "weather")
+            let documentsDirectory = FileManager().containerURL(forSecurityApplicationGroupIdentifier: "group.com.rileytestut.AltStore.8U9S422V")
+            
+
         } catch {
             print("Unable to Encode weatherData (\(error))")
         }
@@ -381,9 +385,9 @@ extension WeatherViewController : UITableViewDataSource , UITableViewDelegate {
     func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         let reorderedItem = weatherList[sourceIndexPath.row]
         weatherList.remove(at: sourceIndexPath.row)
-        locationList.remove(at: sourceIndexPath.row)
+//        locationList.remove(at: sourceIndexPath.row)
         weatherList.insert(reorderedItem, at: destinationIndexPath.row)
-        locationList.insert(locationList[sourceIndexPath.row], at: destinationIndexPath.row)
+//        locationList.insert(locationList[sourceIndexPath.row], at: destinationIndexPath.row)
         setTopViewWeatherData()
     }
     
@@ -413,3 +417,4 @@ extension WeatherViewController : UITableViewDataSource , UITableViewDelegate {
         return false
     }
 }
+#endif
