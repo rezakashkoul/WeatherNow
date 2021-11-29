@@ -8,6 +8,18 @@
 
 /* Begin PBXBuildFile section */
 		CA6F34DA2726B1DC00DC4D8F /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6F34D92726B1DC00DC4D8F /* Extension.swift */; };
+		F700E8852754FC2400ADB62A /* SecondInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F700E8832754FC2400ADB62A /* SecondInterfaceController.swift */; };
+		F700E8862754FC2400ADB62A /* WatchCustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F700E8842754FC2400ADB62A /* WatchCustomCell.swift */; };
+		F700E88D2755024E00ADB62A /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F700E88C2755024E00ADB62A /* WidgetKit.framework */; };
+		F700E88F2755024E00ADB62A /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F700E88E2755024E00ADB62A /* SwiftUI.framework */; };
+		F700E8922755024E00ADB62A /* WeatherNowWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = F700E8912755024E00ADB62A /* WeatherNowWidget.swift */; };
+		F700E8952755025100ADB62A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F700E8942755025100ADB62A /* Assets.xcassets */; };
+		F700E8972755025100ADB62A /* WeatherNowWidget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = F700E8932755024E00ADB62A /* WeatherNowWidget.intentdefinition */; };
+		F700E8982755025100ADB62A /* WeatherNowWidget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = F700E8932755024E00ADB62A /* WeatherNowWidget.intentdefinition */; };
+		F700E89B2755025100ADB62A /* WeatherNowWidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = F700E88B2755024E00ADB62A /* WeatherNowWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		F700E8A02755029200ADB62A /* SearchLocationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75CB278272EA7DD00E51453 /* SearchLocationModel.swift */; };
+		F700E8A12755029200ADB62A /* WeatherModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B42E532722179D0058736D /* WeatherModel.swift */; };
+		F700E8A22755029B00ADB62A /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6F34D92726B1DC00DC4D8F /* Extension.swift */; };
 		F75CB279272EA7DD00E51453 /* SearchLocationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75CB278272EA7DD00E51453 /* SearchLocationModel.swift */; };
 		F7B42E3E2722170C0058736D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B42E3D2722170C0058736D /* AppDelegate.swift */; };
 		F7B42E402722170C0058736D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B42E3F2722170C0058736D /* SceneDelegate.swift */; };
@@ -36,6 +48,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		F700E8992755025100ADB62A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F7B42E322722170C0058736D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F700E88A2755024E00ADB62A;
+			remoteInfo = WeatherNowWidgetExtension;
+		};
 		F7C8BF51274137AC000F59D6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F7B42E322722170C0058736D /* Project object */;
@@ -53,6 +72,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		F700E89F2755025100ADB62A /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				F700E89B2755025100ADB62A /* WeatherNowWidgetExtension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F7C8BF60274137AD000F59D6 /* Embed Watch Content */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -79,6 +109,16 @@
 
 /* Begin PBXFileReference section */
 		CA6F34D92726B1DC00DC4D8F /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
+		F700E8832754FC2400ADB62A /* SecondInterfaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecondInterfaceController.swift; sourceTree = "<group>"; };
+		F700E8842754FC2400ADB62A /* WatchCustomCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchCustomCell.swift; sourceTree = "<group>"; };
+		F700E88B2755024E00ADB62A /* WeatherNowWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = WeatherNowWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		F700E88C2755024E00ADB62A /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		F700E88E2755024E00ADB62A /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		F700E8912755024E00ADB62A /* WeatherNowWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherNowWidget.swift; sourceTree = "<group>"; };
+		F700E8932755024E00ADB62A /* WeatherNowWidget.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = WeatherNowWidget.intentdefinition; sourceTree = "<group>"; };
+		F700E8942755025100ADB62A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F700E8962755025100ADB62A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F734C0EF275512B400FFE127 /* WeatherNowWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WeatherNowWidgetExtension.entitlements; sourceTree = "<group>"; };
 		F747D4542743B8760069DAE0 /* WeatherNow.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WeatherNow.entitlements; sourceTree = "<group>"; };
 		F747D4552743B94A0069DAE0 /* WeatherNowWatch.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WeatherNowWatch.entitlements; sourceTree = "<group>"; };
 		F75CB278272EA7DD00E51453 /* SearchLocationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchLocationModel.swift; sourceTree = "<group>"; };
@@ -108,6 +148,15 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		F700E8882755024E00ADB62A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F700E88F2755024E00ADB62A /* SwiftUI.framework in Frameworks */,
+				F700E88D2755024E00ADB62A /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F7B42E372722170C0058736D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -127,6 +176,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F700E8902755024E00ADB62A /* WeatherNowWidget */ = {
+			isa = PBXGroup;
+			children = (
+				F700E8912755024E00ADB62A /* WeatherNowWidget.swift */,
+				F700E8932755024E00ADB62A /* WeatherNowWidget.intentdefinition */,
+				F700E8942755025100ADB62A /* Assets.xcassets */,
+				F700E8962755025100ADB62A /* Info.plist */,
+			);
+			path = WeatherNowWidget;
+			sourceTree = "<group>";
+		};
 		F7A0AE982735C06B0009BD2B /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -165,9 +225,11 @@
 		F7B42E312722170C0058736D = {
 			isa = PBXGroup;
 			children = (
+				F734C0EF275512B400FFE127 /* WeatherNowWidgetExtension.entitlements */,
 				F7B42E3C2722170C0058736D /* WeatherNow */,
 				F7C8BF45274137AB000F59D6 /* WeatherNowWatch */,
 				F7C8BF53274137AC000F59D6 /* WeatherNowWatch WatchKit Extension */,
+				F700E8902755024E00ADB62A /* WeatherNowWidget */,
 				F7B42E3B2722170C0058736D /* Products */,
 				F7D78EEF273A9E5200E1E1EA /* Frameworks */,
 			);
@@ -179,6 +241,7 @@
 				F7B42E3A2722170C0058736D /* WeatherNow.app */,
 				F7C8BF44274137AB000F59D6 /* WeatherNowWatch.app */,
 				F7C8BF4F274137AC000F59D6 /* WeatherNowWatch WatchKit Extension.appex */,
+				F700E88B2755024E00ADB62A /* WeatherNowWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -216,6 +279,8 @@
 			isa = PBXGroup;
 			children = (
 				F7C8BF54274137AC000F59D6 /* InterfaceController.swift */,
+				F700E8832754FC2400ADB62A /* SecondInterfaceController.swift */,
+				F700E8842754FC2400ADB62A /* WatchCustomCell.swift */,
 				F7C8BF56274137AC000F59D6 /* ExtensionDelegate.swift */,
 				F7C8BF58274137AC000F59D6 /* ComplicationController.swift */,
 				F7C8BF5A274137AD000F59D6 /* Assets.xcassets */,
@@ -228,6 +293,8 @@
 			isa = PBXGroup;
 			children = (
 				F7D78EF0273A9E5200E1E1EA /* QuartzCore.framework */,
+				F700E88C2755024E00ADB62A /* WidgetKit.framework */,
+				F700E88E2755024E00ADB62A /* SwiftUI.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -235,6 +302,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		F700E88A2755024E00ADB62A /* WeatherNowWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F700E89C2755025100ADB62A /* Build configuration list for PBXNativeTarget "WeatherNowWidgetExtension" */;
+			buildPhases = (
+				F700E8872755024E00ADB62A /* Sources */,
+				F700E8882755024E00ADB62A /* Frameworks */,
+				F700E8892755024E00ADB62A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = WeatherNowWidgetExtension;
+			productName = WeatherNowWidgetExtension;
+			productReference = F700E88B2755024E00ADB62A /* WeatherNowWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		F7B42E392722170C0058736D /* WeatherNow */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = F7B42E4E272217110058736D /* Build configuration list for PBXNativeTarget "WeatherNow" */;
@@ -243,11 +327,13 @@
 				F7B42E372722170C0058736D /* Frameworks */,
 				F7B42E382722170C0058736D /* Resources */,
 				F7C8BF60274137AD000F59D6 /* Embed Watch Content */,
+				F700E89F2755025100ADB62A /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				F7C8BF5E274137AD000F59D6 /* PBXTargetDependency */,
+				F700E89A2755025100ADB62A /* PBXTargetDependency */,
 			);
 			name = WeatherNow;
 			packageProductDependencies = (
@@ -301,6 +387,9 @@
 				LastSwiftUpdateCheck = 1310;
 				LastUpgradeCheck = 1300;
 				TargetAttributes = {
+					F700E88A2755024E00ADB62A = {
+						CreatedOnToolsVersion = 13.1;
+					};
 					F7B42E392722170C0058736D = {
 						CreatedOnToolsVersion = 13.0;
 					};
@@ -331,11 +420,20 @@
 				F7B42E392722170C0058736D /* WeatherNow */,
 				F7C8BF43274137AB000F59D6 /* WeatherNowWatch */,
 				F7C8BF4E274137AC000F59D6 /* WeatherNowWatch WatchKit Extension */,
+				F700E88A2755024E00ADB62A /* WeatherNowWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		F700E8892755024E00ADB62A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F700E8952755025100ADB62A /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F7B42E382722170C0058736D /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -367,10 +465,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		F700E8872755024E00ADB62A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F700E8A22755029B00ADB62A /* Extension.swift in Sources */,
+				F700E8972755025100ADB62A /* WeatherNowWidget.intentdefinition in Sources */,
+				F700E8A02755029200ADB62A /* SearchLocationModel.swift in Sources */,
+				F700E8A12755029200ADB62A /* WeatherModel.swift in Sources */,
+				F700E8922755024E00ADB62A /* WeatherNowWidget.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F7B42E362722170C0058736D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F700E8982755025100ADB62A /* WeatherNowWidget.intentdefinition in Sources */,
 				F7D78EEE273A9CD600E1E1EA /* MarqueeLabel.swift in Sources */,
 				F7B42E422722170C0058736D /* WeatherViewController.swift in Sources */,
 				F7B42E3E2722170C0058736D /* AppDelegate.swift in Sources */,
@@ -389,7 +500,9 @@
 			files = (
 				F7C8BF57274137AC000F59D6 /* ExtensionDelegate.swift in Sources */,
 				F7FEBB7B2742618300CDA45F /* WeatherViewController.swift in Sources */,
+				F700E8862754FC2400ADB62A /* WatchCustomCell.swift in Sources */,
 				F7C8BF55274137AC000F59D6 /* InterfaceController.swift in Sources */,
+				F700E8852754FC2400ADB62A /* SecondInterfaceController.swift in Sources */,
 				F7C8BF59274137AC000F59D6 /* ComplicationController.swift in Sources */,
 				F7FEBB802742744400CDA45F /* SearchLocationModel.swift in Sources */,
 				F7FEBB7F2742744100CDA45F /* WeatherModel.swift in Sources */,
@@ -399,6 +512,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		F700E89A2755025100ADB62A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F700E88A2755024E00ADB62A /* WeatherNowWidgetExtension */;
+			targetProxy = F700E8992755025100ADB62A /* PBXContainerItemProxy */;
+		};
 		F7C8BF52274137AC000F59D6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = F7C8BF4E274137AC000F59D6 /* WeatherNowWatch WatchKit Extension */;
@@ -439,10 +557,67 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		F700E89D2755025100ADB62A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = WeatherNowWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 967Q89UR83;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = WeatherNowWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = WeatherNowWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = weatherNowApp.widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		F700E89E2755025100ADB62A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = WeatherNowWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 967Q89UR83;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = WeatherNowWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = WeatherNowWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = weatherNowApp.widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		F7B42E4C272217110058736D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_STICKER_PACK_IDENTIFIER_PREFIX = "";
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
@@ -494,6 +669,7 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -504,6 +680,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_STICKER_PACK_IDENTIFIER_PREFIX = "";
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
@@ -548,6 +725,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "";
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
@@ -558,14 +736,16 @@
 		F7B42E4F272217110058736D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = WeatherNow/WeatherNow.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 8U9S422V4H;
+				DEVELOPMENT_TEAM = 967Q89UR83;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WeatherNow/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = WeatherNow;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -577,7 +757,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = WeatherNow.Weatherfull;
+				PRODUCT_BUNDLE_IDENTIFIER = weatherNowApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -588,14 +768,16 @@
 		F7B42E50272217110058736D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = WeatherNow/WeatherNow.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 8U9S422V4H;
+				DEVELOPMENT_TEAM = 967Q89UR83;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WeatherNow/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = WeatherNow;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -607,7 +789,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = WeatherNow.Weatherfull;
+				PRODUCT_BUNDLE_IDENTIFIER = weatherNowApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -629,9 +811,9 @@
 				IBSC_MODULE = WeatherNowWatch_WatchKit_Extension;
 				INFOPLIST_KEY_CFBundleDisplayName = WeatherNowWatch;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = WeatherNow.Weatherfull;
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = weatherNowApp;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = WeatherNow.Weatherfull.watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = weatherNowApp.watchapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -656,9 +838,9 @@
 				IBSC_MODULE = WeatherNowWatch_WatchKit_Extension;
 				INFOPLIST_KEY_CFBundleDisplayName = WeatherNowWatch;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = WeatherNow.Weatherfull;
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = weatherNowApp;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = WeatherNow.Weatherfull.watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = weatherNowApp.watchapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -678,17 +860,17 @@
 				DEVELOPMENT_TEAM = 8U9S422V4H;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "WeatherNowWatch WatchKit Extension/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = "WeatherNowWatch WatchKit Extension";
-				INFOPLIST_KEY_CLKComplicationPrincipalClass = "$(PRODUCT_MODULE_NAME).ComplicationController";
+				INFOPLIST_KEY_CFBundleDisplayName = WeatherNowWatchExtension;
+				INFOPLIST_KEY_CLKComplicationPrincipalClass = WeatherNowWatch_WatchKit_Extension.ComplicationController;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				INFOPLIST_KEY_WKExtensionDelegateClassName = "$(PRODUCT_MODULE_NAME).ExtensionDelegate";
+				INFOPLIST_KEY_WKExtensionDelegateClassName = WeatherNowWatch_WatchKit_Extension.ExtensionDelegate;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = WeatherNow.Weatherfull.watchkitapp.watchkitextension;
+				PRODUCT_BUNDLE_IDENTIFIER = weatherNowApp.watchapp.extention;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -708,17 +890,17 @@
 				DEVELOPMENT_TEAM = 8U9S422V4H;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "WeatherNowWatch WatchKit Extension/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = "WeatherNowWatch WatchKit Extension";
-				INFOPLIST_KEY_CLKComplicationPrincipalClass = "$(PRODUCT_MODULE_NAME).ComplicationController";
+				INFOPLIST_KEY_CFBundleDisplayName = WeatherNowWatchExtension;
+				INFOPLIST_KEY_CLKComplicationPrincipalClass = WeatherNowWatch_WatchKit_Extension.ComplicationController;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				INFOPLIST_KEY_WKExtensionDelegateClassName = "$(PRODUCT_MODULE_NAME).ExtensionDelegate";
+				INFOPLIST_KEY_WKExtensionDelegateClassName = WeatherNowWatch_WatchKit_Extension.ExtensionDelegate;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = WeatherNow.Weatherfull.watchkitapp.watchkitextension;
+				PRODUCT_BUNDLE_IDENTIFIER = weatherNowApp.watchapp.extention;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -732,6 +914,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		F700E89C2755025100ADB62A /* Build configuration list for PBXNativeTarget "WeatherNowWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F700E89D2755025100ADB62A /* Debug */,
+				F700E89E2755025100ADB62A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		F7B42E352722170C0058736D /* Build configuration list for PBXProject "WeatherNow" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

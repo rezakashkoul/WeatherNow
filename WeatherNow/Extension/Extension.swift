@@ -28,7 +28,7 @@ extension Date {
     }
     
     func getCleanTime()-> String {
-        return self.get(.hour).description + ":" + self.get(.minute).description + ":" + self.get(.second).description
+        return self.get(.hour).description + ":" + self.get(.minute).description// + ":" + self.get(.second).description
     }
     
     func getFormattedDate(format: String) -> String {
@@ -58,4 +58,8 @@ extension String {
         dateFormatter.dateFormat = "12:38 AM"
         return dateFormatter.date(from: self) // replace Date String
     }
+}
+
+extension UserDefaults {
+  static let group = UserDefaults(suiteName: "group.com.your.domain")!
 }

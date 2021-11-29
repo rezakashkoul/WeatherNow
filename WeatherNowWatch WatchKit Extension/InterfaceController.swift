@@ -7,9 +7,9 @@
 
 import WatchKit
 import Foundation
+import WatchConnectivity
 
-class InterfaceController: WKInterfaceController {
-    
+class InterfaceController: WKInterfaceController, WCSessionDelegate {
     
     @IBOutlet weak var cityName: WKInterfaceLabel!
     @IBOutlet weak var skyLabel: WKInterfaceLabel!
@@ -17,34 +17,91 @@ class InterfaceController: WKInterfaceController {
     @IBOutlet weak var minTemp: WKInterfaceLabel!
     @IBOutlet weak var maxTemp: WKInterfaceLabel!
     @IBOutlet weak var timeOfUpdate: WKInterfaceLabel!
+    @IBOutlet weak var weatherDataStatus: WKInterfaceLabel!
+    @IBOutlet weak var currentGroup: WKInterfaceGroup!
+    @IBOutlet weak var minMaxGroup: WKInterfaceGroup!
+    @IBOutlet weak var timeGroup: WKInterfaceGroup!
+    @IBOutlet weak var tableView: WKInterfaceTable!
     
-    var locationData : SearchLocationModel!
     var weatherData : WeatherModel!
     var weatherList : [WeatherModel] = []
     var locationList : [SearchLocationModel] = []
     var expiredItems : [WeatherModel] = []
     var timer: Timer?
-//    let reachability = try! Reachability()
+    var wcSession : WCSession!
     
-    override func awake(withContext context: Any?) {
-        
+        override func awake(withContext context: Any?) {
+        super.awake(withContext: context)
+
         loadWeatherData()
-        loadLocationData()
-        cityName.setText(weatherList[0].location.name)
-        setWeatherCondition()
-        temperatureLabel.setText(weatherList[0].current.temp_c.description)
-        minTemp.setText(weatherList[0].forecast.forecastday[0].day.mintemp_c.description)
-        maxTemp.setText(weatherList[0].forecast.forecastday[0].day.maxtemp_c.description)
-        timeOfUpdate.setText(weatherList[0].time?.description)
-        
+        DispatchQueue.main.async {
+            self.setupTable()
+            self.setupWeatherUIToPresent()
+        }
     }
     
     override func willActivate() {
-        // This method is called when watch view controller is about to be visible to user
+        super.willActivate()
+        wcSession = WCSession.default
+        wcSession.delegate = self
+        wcSession.activate()
+        loadWeatherData()
+        DispatchQueue.main.async {
+            self.setupTable()
+            self.setupWeatherBanner()
+            self.setupWeatherUIToPresent()
+            self.scroll(to: self.cityName, at: .top , animated: true)
+        }
+        updateWeather()
+        trigerTimer()
     }
     
     override func didDeactivate() {
-        // This method is called when watch view controller is no longer visible
+        super.didDeactivate()
+    }
+    
+    func setupTable() {
+        if tableView == nil { return }
+        tableView.setNumberOfRows(weatherList.count, withRowType: "watchCell")
+        
+        for (index, item) in weatherList.enumerated() {
+            let row = tableView.rowController(at: index) as! WatchCustomCell
+            row.cityName.setText(item.location.name)
+            row.currentTemp.setText(item.current.temp_c.rounded().clean.description + " °C")
+        }
+    }
+    
+    override func table(_ table: WKInterfaceTable, didSelectRowAt rowIndex: Int) {
+        pushController(withName: "SecondInterfaceController", context: (index: rowIndex, data: weatherList[rowIndex]))
+    }
+    
+    func setupWeatherUIToPresent() {
+        if weatherList.count == 0 {
+            weatherDataStatus.setHidden(false)
+            cityName.setHidden(true)
+            currentGroup.setHidden(true)
+            minMaxGroup.setHidden(true)
+            timeGroup.setHidden(true)
+            tableView.setHidden(true)
+        } else {
+            weatherDataStatus.setHidden(true)
+            cityName.setHidden(false)
+            currentGroup.setHidden(false)
+            minMaxGroup.setHidden(false)
+            timeGroup.setHidden(false)
+            tableView.setHidden(false)
+        }
+    }
+    
+    func setupWeatherBanner() {
+        if weatherList.count != 0 {
+            cityName.setText(weatherList[0].location.name)
+            setWeatherCondition()
+            timeOfUpdate.setText((weatherList[0].time?.getCleanTime().description)!)
+            temperatureLabel.setText(weatherList[0].current.temp_c.rounded().clean.description + " °C")
+            minTemp.setText(weatherList[0].forecast.forecastday[0].day.mintemp_c.rounded().clean.description + " °C")
+            maxTemp.setText(weatherList[0].forecast.forecastday[0].day.maxtemp_c.rounded().clean.description + " °C")
+        }
     }
     
     func setWeatherCondition() {
@@ -67,32 +124,15 @@ class InterfaceController: WKInterfaceController {
         }
     }
     
-//    func trigerTimer() {
-//        timer = Timer.scheduledTimer(withTimeInterval: 120, repeats: true) { (timer) in
-//            self.updateWeather()
-//            print("Update by timer \(Date().getCleanTime())")
-//        }
-//    }
+    func trigerTimer() {
+        timer = Timer.scheduledTimer(withTimeInterval: 120, repeats: true) { (timer) in
+            self.updateWeather()
+            print("Update by timer \(Date().getCleanTime())")
+        }
+    }
     
     func addPercentageToUrl(urlString : String) -> String{
         return urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
-    }
-    
-    func getWeather() {
-        let fixedUrl = addPercentageToUrl(urlString: "https://api.weatherapi.com/v1/forecast.json?key=ec51c5f169d2409b85293311210511&q=\(locationData.url)&days=1&aqi=no&alerts=no")
-        if let urlString = URL(string: fixedUrl) {
-            let task = URLSession.shared.dataTask(with: urlString) { [self] data, response, error in
-                if let data = data , error == nil {
-                    self.parseNewWeather(json: data)
-                    DispatchQueue.main.async {
-//                        self.tableView.reloadData()
-                    }
-                } else {
-                    print("Error in fetching data")
-                }
-            }
-            task.resume()
-        }
     }
     
     func updateWeather() {
@@ -110,14 +150,13 @@ class InterfaceController: WKInterfaceController {
                         self.parseForUpdate(json: data)
                         if counter == expiredItems.count {
                             DispatchQueue.main.async {
-//                                self.saveWeatherData()
-//                                self.saveLocationData()
+                                self.saveWeatherData()
                             }
                         }
                     } else {
                         print("Error in fetching data")
                         DispatchQueue.main.async {
-//                            self.showErrorInFetchingData()
+                            //                            self.showErrorInFetchingData()
                         }
                     }
                 }
@@ -138,48 +177,70 @@ class InterfaceController: WKInterfaceController {
                     }
                 }
             }
-//            saveWeatherData()
-//            saveLocationData()
-            DispatchQueue.main.async {
-            }
+            saveWeatherData()
         } catch {
-            print("Weather Parsing Error: \(error)")
+            print("Watch Weather Parsing Error: \(error)")
         }
     }
     
-    func parseNewWeather(json: Data) {
-        let decoder = JSONDecoder()
+    func saveWeatherData() {
         do {
-            var weatherObject = try decoder.decode(WeatherModel.self, from: json)
-            weatherObject.time = Date()
-            weatherObject.weatherUrl = locationData.url
-            weatherList.append(weatherObject)
-//            saveWeatherData()
-//            saveLocationData()
+            let encoder = JSONEncoder()
+            let data = try encoder.encode(weatherList)
+            UserDefaults.standard.set(data, forKey: "watch")
         } catch {
-            print("Weather Parsing Error: \(error)")
-        }
-    }
-    
-    func loadLocationData() {
-        if let data = UserDefaults.standard.data(forKey: "location") {
-            do {
-                let decoder = JSONDecoder()
-                locationList = try decoder.decode([SearchLocationModel].self, from: data)
-            } catch {
-                print("Unable to Decode LocationData (\(error))")
-            }
+            print("Unable to Encode weatherData (\(error))")
         }
     }
     
     func loadWeatherData() {
-        if let data = UserDefaults.standard.data(forKey: "weather") {
+        if let data = UserDefaults.standard.data(forKey: "watch") {
             do {
                 let decoder = JSONDecoder()
                 weatherList = try decoder.decode([WeatherModel].self, from: data)
-            } catch {
+            }
+            catch {
                 print("Unable to Decode weatherData (\(error))")
             }
         }
+    }
+    
+    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
+    }
+    
+    func session(_ session: WCSession, didReceiveMessageData messageData: Data) {
+        do {
+            let decoder = JSONDecoder()
+            weatherList = try decoder.decode([WeatherModel].self, from: messageData)
+            saveWeatherData()
+            DispatchQueue.main.async {
+                self.setupWeatherUIToPresent()
+                self.setupWeatherBanner()
+                self.setupTable()
+            }
+        } catch {
+            print("Unable to Decode weatherData (\(error))")
+        }
+    }
+}
+
+extension Double {
+    var clean: String {
+        return self.truncatingRemainder(dividingBy: 1) == 0 ? String(format: "%.0f", self) : String(self)
+    }
+}
+
+extension Date {
+    
+    func get(_ components: Calendar.Component..., calendar: Calendar = Calendar.current) -> DateComponents {
+        return calendar.dateComponents(Set(components), from: self)
+    }
+    
+    func get(_ component: Calendar.Component, calendar: Calendar = Calendar.current) -> Int {
+        return calendar.component(component, from: self)
+    }
+    
+    func getCleanTime()-> String {
+        return self.get(.hour).description + ":" + self.get(.minute).description
     }
 }

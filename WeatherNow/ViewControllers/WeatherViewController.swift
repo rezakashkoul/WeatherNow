@@ -8,8 +8,10 @@
 import UIKit
 import QuartzCore
 import Reachability
+import WatchConnectivity
+import WidgetKit
 
-class WeatherViewController: UIViewController , SearchViewControllerDelegate {
+class WeatherViewController: UIViewController, SearchViewControllerDelegate, WCSessionDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var skyLabel: UILabel!
@@ -49,6 +51,7 @@ class WeatherViewController: UIViewController , SearchViewControllerDelegate {
     var expiredItems : [WeatherModel] = []
     var timer: Timer?
     let reachability = try! Reachability()
+    var wcSession : WCSession! = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,17 +60,26 @@ class WeatherViewController: UIViewController , SearchViewControllerDelegate {
         loadLocationData()
         trigerTimer()
         checkInternetConnectionAndRequest()
+        wcSession = WCSession.default
+        wcSession.delegate = self
+        wcSession.activate()
+        sendWeatherListToWatch()
+        sendWeatherListToWidgets()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: true)
         tableView.reloadData()
+//        sendWeatherListToWidgets()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         setTopViewWeatherData()
+        sendWeatherListToWatch()
+        sendWeatherListToWidgets()
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -176,7 +188,7 @@ class WeatherViewController: UIViewController , SearchViewControllerDelegate {
             saveWeatherData()
             saveLocationData()
         } catch {
-            print("Weather Parsing Error: \(error)")
+            print("iPhone App Weather Parsing Error: \(error)")
         }
     }
     
@@ -192,6 +204,32 @@ class WeatherViewController: UIViewController , SearchViewControllerDelegate {
             locationList.append(locationData)
             getWeather()
             saveLocationData()
+        }
+    }
+    
+    func sendWeatherListToWidgets() {
+        do {
+            let encoder = JSONEncoder()
+            let data = try encoder.encode(weatherList)
+            
+            let userDefaults = UserDefaults(suiteName: "group.weatherNow")
+            userDefaults?.set(data, forKey: "weatherForWidget")
+            WidgetCenter.shared.reloadAllTimelines()
+            
+        } catch {
+            print("Unable to Encode weatherData for sendWeatherListToWidgets: (\(error))")
+        }
+    }
+    
+    func sendWeatherListToWatch() {
+        do {
+            let encoder = JSONEncoder()
+            let data = try encoder.encode(weatherList)
+            wcSession.sendMessageData(data, replyHandler: nil) { error in
+                print(error.localizedDescription)
+            }
+        } catch {
+            print("Unable to Encode weatherData for sendWeatherListToWatch: (\(error))")
         }
     }
     
@@ -221,9 +259,6 @@ class WeatherViewController: UIViewController , SearchViewControllerDelegate {
             let encoder = JSONEncoder()
             let data = try encoder.encode(weatherList)
             UserDefaults.standard.set(data, forKey: "weather")
-            let documentsDirectory = FileManager().containerURL(forSecurityApplicationGroupIdentifier: "group.com.rileytestut.AltStore.8U9S422V")
-            
-
         } catch {
             print("Unable to Encode weatherData (\(error))")
         }
@@ -290,7 +325,7 @@ extension WeatherViewController {
             listStatus.isHidden = true
             tableView.isHidden = false
             sortListButton.isEnabled = true
-            topTemperatureLabel.text = self.weatherList[0].current.temp_c.rounded().clean.description + " °"
+            topTemperatureLabel.text = self.weatherList[0].current.temp_c.rounded().clean.description + " °C"
             setTopViewWeatherCondition()
             updateTimeLabel.text = " Last Update " + (self.weatherList[0].time?.getCleanTime().description)!
             topLocationLabel.text = self.weatherList[0].location.name + ", " + self.weatherList[0].location.country
@@ -385,10 +420,12 @@ extension WeatherViewController : UITableViewDataSource , UITableViewDelegate {
     func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         let reorderedItem = weatherList[sourceIndexPath.row]
         weatherList.remove(at: sourceIndexPath.row)
-//        locationList.remove(at: sourceIndexPath.row)
+        //        locationList.remove(at: sourceIndexPath.row)
         weatherList.insert(reorderedItem, at: destinationIndexPath.row)
-//        locationList.insert(locationList[sourceIndexPath.row], at: destinationIndexPath.row)
+        //        locationList.insert(locationList[sourceIndexPath.row], at: destinationIndexPath.row)
         setTopViewWeatherData()
+        sendWeatherListToWatch()
+        sendWeatherListToWidgets()
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
@@ -401,6 +438,8 @@ extension WeatherViewController : UITableViewDataSource , UITableViewDelegate {
             saveWeatherData()
             saveLocationData()
             setTopViewWeatherData()
+            sendWeatherListToWatch()
+            sendWeatherListToWidgets()
         }
     }
     
@@ -416,5 +455,34 @@ extension WeatherViewController : UITableViewDataSource , UITableViewDelegate {
     func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
         return false
     }
+}
+
+extension WeatherViewController {
+    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
+    }
+    
+    func sessionDidBecomeInactive(_ session: WCSession) {
+    }
+    
+    func sessionDidDeactivate(_ session: WCSession) {
+    }
+    
+    func session(_ session: WCSession, didReceiveMessageData messageData: Data) {
+        do {
+            let decoder = JSONDecoder()
+            weatherList = try decoder.decode([WeatherModel].self, from: messageData)
+            saveWeatherData()
+            DispatchQueue.main.async {
+                self.setTopViewWeatherData()
+                self.tableView.reloadData()
+            }
+        } catch {
+            print("Unable to Decode weatherData (\(error))")
+        }
+    }
+}
+
+extension UserDefaults {
+    static let groups = UserDefaults(suiteName: "group.WeatherFullPackContainer")!
 }
 #endif

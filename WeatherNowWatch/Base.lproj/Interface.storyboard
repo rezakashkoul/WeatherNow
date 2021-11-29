@@ -11,51 +11,135 @@
             <objects>
                 <controller fullScreen="YES" id="AgC-eL-Hgc" customClass="InterfaceController" customModule="WeatherNowWatch" customModuleProvider="target">
                     <items>
+                        <label alignment="center" verticalAlignment="center" hidden="YES" text="There's nothing to show. Please add a city in iPhone's Weather app" textAlignment="center" numberOfLines="0" id="5NL-xg-fsd"/>
                         <label width="136" height="61" alignment="left" text="City Name" textAlignment="left" id="DsT-VF-Ff5">
                             <color key="textColor" red="0.37350875140000001" green="0.60648417470000004" blue="0.97632592920000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <fontDescription key="font" style="UICTFontTextStyleTitle2"/>
                         </label>
-                        <label alignment="left" text="🌤" id="Mux-cB-Xrf">
-                            <fontDescription key="font" style="UICTFontTextStyleTitle0"/>
-                        </label>
-                        <label alignment="left" text="30°" id="Vhe-6R-XtT">
-                            <color key="textColor" red="0.37350875140000001" green="0.60648417470000004" blue="0.97632592920000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <fontDescription key="font" style="UICTFontTextStyleTitle0"/>
-                        </label>
-                        <group width="1" alignment="left" id="ZLW-Gp-n9j">
+                        <group width="1" alignment="center" id="oNK-pz-Thv" userLabel="currentGroup">
+                            <items>
+                                <label alignment="left" verticalAlignment="center" text="30°" id="Vhe-6R-XtT">
+                                    <fontDescription key="font" style="UICTFontTextStyleTitle0"/>
+                                </label>
+                                <label alignment="right" verticalAlignment="center" text="🌤" textAlignment="right" id="Mux-cB-Xrf">
+                                    <fontDescription key="font" style="UICTFontTextStyleTitle0"/>
+                                </label>
+                            </items>
+                        </group>
+                        <group width="1" alignment="left" id="ZLW-Gp-n9j" userLabel="minMaxGroup">
                             <items>
                                 <label alignment="left" text="↓" id="RUW-Mp-zS6">
-                                    <color key="textColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="textColor" red="0.42745098469999998" green="0.60392159219999997" blue="0.94901961089999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 </label>
                                 <label alignment="left" text="Min" id="s3U-0h-UxV"/>
                                 <label alignment="left" text="↑" id="rCW-FL-vPL">
-                                    <color key="textColor" red="0.37350875140000001" green="0.60648417470000004" blue="0.97632592920000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="textColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </label>
                                 <label alignment="left" text="Max" id="PHe-RQ-Yu3"/>
                             </items>
                         </group>
-                        <group width="1" alignment="left" id="aUf-RQ-oPw">
+                        <group width="1" alignment="left" id="aUf-RQ-oPw" userLabel="timeGroup">
                             <items>
-                                <label alignment="left" text="Updated on: " textAlignment="left" id="q5N-XS-sCo">
+                                <label alignment="left" verticalAlignment="center" text="Updated on: " textAlignment="left" id="q5N-XS-sCo">
                                     <color key="textColor" red="0.37350875140000001" green="0.60648417470000004" blue="0.97632592920000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </label>
-                                <label alignment="left" text="Time" textAlignment="right" id="eRj-Kv-g3o">
-                                    <color key="textColor" red="0.37350875140000001" green="0.60648417470000004" blue="0.97632592920000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </label>
+                                <label alignment="right" verticalAlignment="center" text="Time" textAlignment="right" id="eRj-Kv-g3o"/>
                             </items>
                         </group>
+                        <table alignment="left" id="5sa-n4-8oh">
+                            <items>
+                                <tableRow identifier="watchCell" id="om0-BN-qvM" customClass="WatchCustomCell" customModule="WeatherNowWatch_WatchKit_Extension">
+                                    <group key="rootItem" width="1" alignment="left" id="g7b-S2-p1H">
+                                        <items>
+                                            <label alignment="left" verticalAlignment="center" text="City" textAlignment="left" id="aum-Am-uPB">
+                                                <color key="textColor" red="0.42745098469999998" green="0.60392159219999997" blue="0.94901961089999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                            </label>
+                                            <label alignment="right" verticalAlignment="center" text="Temp" textAlignment="right" id="OgK-mW-JXS"/>
+                                        </items>
+                                    </group>
+                                    <connections>
+                                        <outlet property="cityName" destination="aum-Am-uPB" id="9fS-jj-VIJ"/>
+                                        <outlet property="currentTemp" destination="OgK-mW-JXS" id="2xR-qg-ZsN"/>
+                                    </connections>
+                                </tableRow>
+                            </items>
+                        </table>
                     </items>
                     <connections>
                         <outlet property="cityName" destination="DsT-VF-Ff5" id="CFt-rs-ajm"/>
+                        <outlet property="currentGroup" destination="oNK-pz-Thv" id="bg1-JT-MYg"/>
                         <outlet property="maxTemp" destination="PHe-RQ-Yu3" id="v8X-dJ-JBe"/>
+                        <outlet property="minMaxGroup" destination="ZLW-Gp-n9j" id="num-sy-aPX"/>
                         <outlet property="minTemp" destination="s3U-0h-UxV" id="Rha-jd-dk0"/>
                         <outlet property="skyLabel" destination="Mux-cB-Xrf" id="97c-RI-xpc"/>
+                        <outlet property="tableView" destination="5sa-n4-8oh" id="c7N-bz-Azv"/>
                         <outlet property="temperatureLabel" destination="Vhe-6R-XtT" id="p8n-JB-MKf"/>
+                        <outlet property="timeGroup" destination="aUf-RQ-oPw" id="5ID-AN-AyT"/>
                         <outlet property="timeOfUpdate" destination="eRj-Kv-g3o" id="kKs-Io-oZn"/>
+                        <outlet property="weatherDataStatus" destination="5NL-xg-fsd" id="CsC-n9-GeN"/>
                     </connections>
                 </controller>
             </objects>
             <point key="canvasLocation" x="-16.484848484848484" y="-19.669421487603305"/>
+        </scene>
+        <!--SecondInterfaceController-->
+        <scene sceneID="wnl-du-NKb">
+            <objects>
+                <controller identifier="SecondInterfaceController" id="dlz-7i-QPj" customClass="SecondInterfaceController" customModule="WeatherNowWatch_WatchKit_Extension">
+                    <items>
+                        <label width="136" height="61" alignment="left" text="City Name" textAlignment="left" id="Ujv-TE-I8u">
+                            <color key="textColor" red="0.37350875140000001" green="0.60648417470000004" blue="0.97632592920000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <fontDescription key="font" style="UICTFontTextStyleTitle2"/>
+                        </label>
+                        <group width="1" alignment="center" id="2t7-lY-38y">
+                            <items>
+                                <label alignment="left" verticalAlignment="center" text="30°" id="pwx-qY-tIc">
+                                    <fontDescription key="font" style="UICTFontTextStyleTitle0"/>
+                                </label>
+                                <label alignment="right" verticalAlignment="center" text="🌤" textAlignment="right" id="MD7-6S-SDn">
+                                    <fontDescription key="font" style="UICTFontTextStyleTitle0"/>
+                                </label>
+                            </items>
+                        </group>
+                        <group width="1" alignment="left" id="sBF-Sd-SWu">
+                            <items>
+                                <label alignment="left" text="↓" id="Po0-wE-LFP">
+                                    <color key="textColor" red="0.42745098469999998" green="0.60392159219999997" blue="0.94901961089999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                </label>
+                                <label alignment="left" text="Min" id="2Fy-Ba-e5o"/>
+                                <label alignment="left" text="↑" id="9WR-ft-VCQ">
+                                    <color key="textColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </label>
+                                <label alignment="left" text="Max" id="7UT-gE-slg"/>
+                            </items>
+                        </group>
+                        <group width="1" alignment="left" id="o86-Ug-JdH">
+                            <items>
+                                <label alignment="left" verticalAlignment="center" text="Updated on: " textAlignment="left" id="fBJ-nd-PhT">
+                                    <color key="textColor" red="0.37350875140000001" green="0.60648417470000004" blue="0.97632592920000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </label>
+                                <label alignment="right" verticalAlignment="center" text="Time" textAlignment="right" id="H40-VP-qbq"/>
+                            </items>
+                        </group>
+                        <button width="126" height="32" alignment="center" verticalAlignment="bottom" title="Pin to Top" id="uRD-sl-t1E">
+                            <color key="titleColor" red="0.42745098469999998" green="0.60392159219999997" blue="0.94901961089999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                            <fontDescription key="font" type="system" pointSize="17"/>
+                            <connections>
+                                <action selector="makeItDefaultButton" destination="dlz-7i-QPj" id="eyB-3l-XIH"/>
+                            </connections>
+                        </button>
+                    </items>
+                    <connections>
+                        <outlet property="city" destination="Ujv-TE-I8u" id="Sph-uJ-zEK"/>
+                        <outlet property="maximumTemp" destination="7UT-gE-slg" id="Xb2-s9-53Y"/>
+                        <outlet property="minimumTemp" destination="2Fy-Ba-e5o" id="BKv-FK-jX3"/>
+                        <outlet property="tempLabel" destination="pwx-qY-tIc" id="Urs-5g-e1m"/>
+                        <outlet property="updateTime" destination="H40-VP-qbq" id="r9r-KL-qoB"/>
+                        <outlet property="weatherLabel" destination="MD7-6S-SDn" id="PXY-9z-rdD"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="228.72727272727275" y="-19.669421487603305"/>
         </scene>
     </scenes>
 </document>

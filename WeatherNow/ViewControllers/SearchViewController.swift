@@ -29,7 +29,7 @@ class SearchViewController: UIViewController  {
     }
     
     var locationObjects : [SearchLocationModel]!
-    var searchDelegate : SearchViewControllerDelegate!
+    var searchDelegate : SearchViewControllerDelegate?
     let reachability = try! Reachability()
     
     override func viewDidLoad() {
@@ -84,9 +84,9 @@ class SearchViewController: UIViewController  {
             }
             task.resume()
         } else {
-//            DispatchQueue.main.async {
-//                self.showPlaceNameError()
-//            }
+            //            DispatchQueue.main.async {
+            //                self.showPlaceNameError()
+            //            }
         }
     }
     
@@ -95,9 +95,9 @@ class SearchViewController: UIViewController  {
         do {
             let locationObject = try decoder.decode([SearchLocationModel].self, from: json)
             if locationObject.isEmpty == true {
-//                DispatchQueue.main.async {
-//                    self.showPlaceNameError()
-//                }
+                //                DispatchQueue.main.async {
+                //                    self.showPlaceNameError()
+                //                }
             }
             DispatchQueue.main.async {
                 self.locationObjects = locationObject
@@ -138,11 +138,11 @@ extension SearchViewController {
         present(alert, animated: true, completion: nil)
     }
     
-//    func showPlaceNameError() {
-//        let alert = UIAlertController(title: "Error in Place Name", message: "Please make sure the city you're looking for is in the correct form." , preferredStyle: .alert)
-//        alert.addAction(UIAlertAction(title: "Retry", style: .cancel, handler: nil))
-//        present(alert, animated: true, completion: .none)
-//    }
+    //    func showPlaceNameError() {
+    //        let alert = UIAlertController(title: "Error in Place Name", message: "Please make sure the city you're looking for is in the correct form." , preferredStyle: .alert)
+    //        alert.addAction(UIAlertAction(title: "Retry", style: .cancel, handler: nil))
+    //        present(alert, animated: true, completion: .none)
+    //    }
     func showInternetConnectionError() {
         let alert = UIAlertController(title: "No Connection", message: "No internet connection, connect to the internet and try again.", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "ok", style: .default, handler: nil))
@@ -171,7 +171,7 @@ extension SearchViewController : UITableViewDelegate , UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //locationObjects![indexPath.row].time = Date()
-        searchDelegate.transferData(data: locationObjects![indexPath.row])
+        searchDelegate?.transferData(data: locationObjects![indexPath.row])
         navigationController?.popViewController(animated: true)
     }
 }
