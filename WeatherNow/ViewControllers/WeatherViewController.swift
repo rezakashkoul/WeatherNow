@@ -204,6 +204,7 @@ class WeatherViewController: UIViewController, SearchViewControllerDelegate, WCS
             locationList.append(locationData)
             getWeather()
             saveLocationData()
+            sendWeatherListToWidgets()
         }
     }
     
