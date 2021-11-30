@@ -55,48 +55,49 @@ struct SimpleEntry: TimelineEntry {
 
 struct WeatherNowWidgetEntryView : View {
     
-    @Environment(\.colorScheme) var colorScheme
+    //    @Environment(\.colorScheme) var colorScheme
     @Environment(\.widgetFamily) var family
-//    @ViewBuilder
     
     var entry: Provider.Entry
-    var bwColor: some View {
-        colorScheme == .dark ? Color.black : Color.white
-    }
-    
+    //    var bwColor: some View {
+    //        colorScheme == .dark ? Color.black : Color.white
+    //    }
     var body: some View {
         switch family {
         case .systemSmall:
-        
-            if weatherList.count == 0 {
-                Text("Please add some cities")
-            }
+//            Text("hello")
+            //            if weatherList.count == 0 {
+            //                Text("Please add some cities")
+            //            }
+            SmallWidget(entry: entry)
+
+        case .systemMedium:
+            //            if weatherList.count == 0 {
+            //                Text("Please add some cities")
+            //            }
+            Text("Medium")
             
+        case .systemLarge:
+            //            if weatherList.count == 0 {
+            //                Text("Please add some cities")
+            //            }
+            Text("Large")
+            
+        default:
+            Text("Some other WidgetFamily in the future.")
+        }
+    }
+    
+    struct SmallWidget: View {
+        var entry: Provider.Entry
+        var body: some View {
             VStack(alignment: .leading) {
                 HStack {
                     Text(entry.weather.current.temp_c.rounded().clean.description + " °C")
                         .minimumScaleFactor(0.5)
                         .font(.system(size: 27))
                         .foregroundColor(Color.customBlue)
-                    //
-                    switch entry.weather.current.condition.text {
-                    case "Sunny" : Text("☀️") .font(.system(size: 32))
-                    case "Partly cloudy" : Text("🌤") .font(.system(size: 32))
-                    case "Cloudy" : Text("🌥") .font(.system(size: 32))
-                    case "Overcast" : Text("🌩") .font(.system(size: 32))
-                    case "Mist" : Text("💧") .font(.system(size: 32))
-                    case "Thundery outbreaks possible" : Text("⛈") .font(.system(size: 32))
-                    case "Blowing snow" : Text("🌬") .font(.system(size: 32))
-                    case "Fog" : Text("🌫") .font(.system(size: 32))
-                    case "Clear" : Text("🌤") .font(.system(size: 32))
-                    case "Light rain" : Text("☔️") .font(.system(size: 32))
-                    case "Heavy rain" : Text("🌧") .font(.system(size: 32))
-                    case "Light snow showers" : Text("❄️") .font(.system(size: 32))
-                    case "Light drizzle" : Text("🌧") .font(.system(size: 32))
-                    default:
-                        Text("🌤")
-                            .font(.system(size: 32))
-                    }
+                    WeatherEmoji(entry: entry)
                 }
                 Text(entry.weather.location.name)
                     .foregroundColor(Color.customBlue)
@@ -110,18 +111,21 @@ struct WeatherNowWidgetEntryView : View {
                     .lineLimit(1)
                     .font(.system(size: 14))
                     .minimumScaleFactor(0.5)
-                HStack(alignment: .center, spacing: 3, content: {
+                HStack(alignment: .center, spacing: 3) {
                     Text("↓").foregroundColor(.blue)
                         .font(.system(size: 12))
-                    Text(entry.weather.forecast.forecastday[0].day.mintemp_c.rounded().clean.description)
+                    //                    Text(entry.weather.forecast.forecastday[0].day.mintemp_c.rounded().clean.description)
+                    Text("12 ")
                         .foregroundColor(Color.customBlue)
                         .font(.system(size: 12))
-                    Text("↑").foregroundColor(.red)
+                    Text("↑")
+                        .foregroundColor(.red)
                         .font(.system(size: 12))
-                    Text(entry.weather.forecast.forecastday[0].day.maxtemp_c.rounded().clean.description)
+                    //                    Text(entry.weather.forecast.forecastday[0].day.maxtemp_c.rounded().clean.description)
+                    Text("5")
                         .foregroundColor(Color.customBlue)
                         .font(.system(size: 12))
-                })
+                }
                 
                 HStack(alignment: .center, spacing: 3, content: {
                     Text("Last Update: ")
@@ -133,20 +137,30 @@ struct WeatherNowWidgetEntryView : View {
                         .font(.system(size: 12))
                 })
             }
-        case .systemMedium:
-//            if weatherList.count == 0 {
-//                Text("Please add some cities")
-//            }
-            Text("Medium")
-
-        case .systemLarge:
-//            if weatherList.count == 0 {
-//                Text("Please add some cities")
-//            }
-            Text("Large")
-
-        default:
-            Text("Some other WidgetFamily in the future.")
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color(.systemBackground))
+        }
+    }
+    
+    struct WeatherEmoji: View {
+        var entry: Provider.Entry
+        var body: some View {
+            switch entry.weather.current.condition.text {
+            case "Sunny" : Text("☀️") .font(.system(size: 32))
+            case "Partly cloudy" : Text("🌤") .font(.system(size: 32))
+            case "Cloudy" : Text("🌥") .font(.system(size: 32))
+            case "Overcast" : Text("🌩") .font(.system(size: 32))
+            case "Mist" : Text("💧") .font(.system(size: 32))
+            case "Thundery outbreaks possible" : Text("⛈") .font(.system(size: 32))
+            case "Blowing snow" : Text("🌬") .font(.system(size: 32))
+            case "Fog" : Text("🌫") .font(.system(size: 32))
+            case "Clear" : Text("🌤") .font(.system(size: 32))
+            case "Light rain" : Text("☔️") .font(.system(size: 32))
+            case "Heavy rain" : Text("🌧") .font(.system(size: 32))
+            case "Light snow showers" : Text("❄️") .font(.system(size: 32))
+            case "Light drizzle" : Text("🌧") .font(.system(size: 32))
+            default: Text("🌤").font(.system(size: 32))
+            }
         }
     }
 }
@@ -159,6 +173,7 @@ struct WeatherNowWidget: Widget {
     var body: some WidgetConfiguration {
         IntentConfiguration(kind: kind, intent: ConfigurationIntent.self, provider: Provider()) { entry in
             WeatherNowWidgetEntryView(entry: entry)
+            
         }
         .configurationDisplayName("WeatherNow Widget")
         .description("A powerful weather app. I hope you enjoy")
@@ -172,18 +187,19 @@ struct WeatherNowWidget_Previews: PreviewProvider {
     
     static var previews: some View {
         WeatherNowWidgetEntryView(entry: SimpleEntry(date: Date(), weather: sampleData, configuration: ConfigurationIntent()))
-            .previewContext(WidgetPreviewContext(family: .systemSmall))
+            .showWidgetPreviews(for: .systemSmall)
         
-        WeatherNowWidgetEntryView(entry: SimpleEntry(date: Date(), weather: sampleData, configuration: ConfigurationIntent()))
-            .redacted(reason: .placeholder)
-            .previewContext(WidgetPreviewContext(family: .systemSmall))
+        //        WeatherNowWidgetEntryView(entry: SimpleEntry(date: Date(), weather: sampleData, configuration: ConfigurationIntent()))
+        //            .redacted(reason: .placeholder)
+        //            .previewContext(WidgetPreviewContext(family: .systemSmall))
     }
 }
 
 var weatherList: [WeatherModel] = []
 var locationList: [SearchLocationModel] = []
 var expiredItems: [WeatherModel] = []
-var sampleData: WeatherModel = WeatherModel(location: WeatherLocation.init(country: "USA", name: "California", region: "LA"), current: CurrentWeather(temp_c: 25, condition: WeatherCondition(text: "Sunny")), forecast: Forecast(forecastday: [ForecastDay].init()), time: Date.init(), weatherUrl: "")
+var forecast = [ForecastDay]()
+var sampleData: WeatherModel = WeatherModel(location: WeatherLocation(country: "USA", name: "California", region: "LA"), current: CurrentWeather(temp_c: 25, condition: WeatherCondition(text: "Sunny")), forecast: Forecast(forecastday: forecast), time: Date(), weatherUrl: "")
 
 func addPercentageToUrl(urlString : String) -> String{
     return urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
@@ -271,4 +287,26 @@ func loadWeatherData() {
 
 extension Color {
     static let customBlue = Color(red: 109.0/255.0, green: 154.0/255.0, blue: 242.0/255.0)
+}
+
+extension View {
+    
+    func showWidgetPreviews(for family: WidgetFamily) -> some View {
+        Group {
+            let devices = ["iPhone 13", "iPhone 11 pro Max", "iPhone SE"]
+            ForEach(devices, id:\.self) { device in
+                self
+                    .previewContext(WidgetPreviewContext(family: family))
+                    .previewDevice(PreviewDevice(rawValue: device))
+                    .colorScheme(.light)
+                    .previewDisplayName(device)
+                
+                self
+                    .previewContext(WidgetPreviewContext(family: family))
+                    .previewDevice(PreviewDevice(rawValue: device))
+                    .colorScheme(.dark)
+                    .previewDisplayName(device)
+            }
+        }
+    }
 }
