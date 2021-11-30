@@ -9,163 +9,176 @@ import WidgetKit
 import SwiftUI
 import Intents
 
+struct Provider: IntentTimelineProvider {
+    
+    let weather = WeatherModel(location: WeatherLocation.init(country: "", name: "", region: ""), current: CurrentWeather(temp_c: 0.0, condition: WeatherCondition(text: "")), forecast: Forecast(forecastday: [ForecastDay].init()), time: Date.init(), weatherUrl: "")
+    
+    func placeholder(in context: Context) -> SimpleEntry {
+        SimpleEntry(date: Date(), weather: weather , configuration: ConfigurationIntent())
+    }
+    
+    func getSnapshot(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (SimpleEntry) -> ()) {
+        let entry = SimpleEntry(date: Date(), weather: weather ,configuration: configuration)
+        completion(entry)
+    }
+    
+    func getTimeline(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
+        var entries: [SimpleEntry] = []
+        
+        // Generate a timeline consisting of five entries an hour apart, starting from the current date.
+        let currentDate = Date()
+        for hourOffset in 0 ..< 30 {
+            let entryDate = Calendar.current.date(byAdding: .minute, value: hourOffset, to: currentDate)!
+            getWeatherDataFromiPhone()
+            updateWeather()
+            saveWeatherData()
+            if weatherList.count != 0 {
+                let entry = SimpleEntry(date: entryDate, weather: weatherList[0] ,configuration: configuration)
+                entries.append(entry)
+            } else {
+                print("***** weatherList in empty *****")
+                let entry = SimpleEntry(date: entryDate, weather: sampleData ,configuration: configuration)
+                entries.append(entry)
+            }
+        }
+        
+        let timeline = Timeline(entries: entries, policy: .atEnd)
+        completion(timeline)
+    }
+}
 
-//struct Provider: IntentTimelineProvider {
-//
-//    func placeholder(in context: Context) -> SimpleEntry {
-//        return SimpleEntry(date: Date(), weather: weather, configuration: ConfigurationIntent())
-//    }
-//
-//    func getSnapshot(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (SimpleEntry) -> ()) {
-//        let entry =  SimpleEntry(date: Date().getCleanTime().getDateFromString() ?? Date() , weather: weather, configuration: ConfigurationIntent())
-//        completion(entry)
-//    }
-//
-//    func getTimeline(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
-//        var entries: [SimpleEntry] = []
-//        getWeatherDataFromiPhone()
-//        updateWeather()
-//        saveWeatherData()
-//
-//
-//        // Generate a timeline consisting of five entries an hour apart, starting from the current date.
-//        let currentDate = Date()
-//        for hourOffset in 0 ..< 5 {
-//            let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
-//            let entry =  SimpleEntry(date: entryDate, weather: weatherData ?? sampleData, configuration: ConfigurationIntent())
-//            entries.append(entry)
-//        }
-//
-//        let timeline = Timeline(entries: entries, policy: .atEnd)
-//        completion(timeline)
-//
-//    }
-//
-//    let weather = WeatherModel(location: WeatherLocation.init(country: "", name: "", region: ""), current: CurrentWeather(temp_c: 0.0, condition: WeatherCondition(text: "")), forecast: Forecast(forecastday: [ForecastDay].init()), time: Date.init(), weatherUrl: "")
-//}
-//
-//struct SimpleEntry: TimelineEntry {
-//    let date: Date
-//    let weather: WeatherModel
-//    let configuration: ConfigurationIntent
-//}
-//
-//struct WeatherNowWidgetEntryView : View {
-//    @Environment(\.colorScheme) var colorScheme
-//
-//    var entry: Provider.Entry
-//    var bwColor: some View {
-//        colorScheme == .dark ? Color.black : Color.white
-//    }
-//
-//    var body: some View {
-//        if weatherList.count != 0 {
-//
-//            ZStack {
-//                bwColor
-//                //                Color(UIColor.white)
-//
-//                VStack(alignment: .leading) {
-//
-//                    HStack {
-//
-//                        Text(entry.weather.current.temp_c.rounded().clean.description + "°C")
-//                            .minimumScaleFactor(0.5)
-//                            .font(.system(size: 32))
-//                            .foregroundColor(Color.customBlue)
-//
-//                        switch entry.weather.current.condition.text {
-//                        case "Sunny" : Text("☀️") .font(.system(size: 32))
-//                        case "Partly cloudy" : Text("🌤") .font(.system(size: 32))
-//                        case "Cloudy" : Text("🌥") .font(.system(size: 32))
-//                        case "Overcast" : Text("🌩") .font(.system(size: 32))
-//                        case "Mist" : Text("💧") .font(.system(size: 32))
-//                        case "Thundery outbreaks possible" : Text("⛈") .font(.system(size: 32))
-//                        case "Blowing snow" : Text("🌬") .font(.system(size: 32))
-//                        case "Fog" : Text("🌫") .font(.system(size: 32))
-//                        case "Clear" : Text("🌤") .font(.system(size: 32))
-//                        case "Light rain" : Text("☔️") .font(.system(size: 32))
-//                        case "Heavy rain" : Text("🌧") .font(.system(size: 32))
-//                        case "Light snow showers" : Text("❄️") .font(.system(size: 32))
-//                        case "Light drizzle" : Text("🌧") .font(.system(size: 32))
-//                        default:
-//                            Text("🌤")
-//                                .font(.system(size: 32))
-//                        }
-//                    }
-//
-//
-//                    Text(entry.weather.location.name)
-//                        .foregroundColor(Color.customBlue)
-//                        .multilineTextAlignment(.leading)
-//                        .lineLimit(nil)
-//                        .minimumScaleFactor(0.5)
-//                        .font(.system(size: 25))
-//
-//                    Text(entry.weather.location.country)
-//                        .font(.system(size: 14))
-//                        .minimumScaleFactor(0.5)
-//
-//                        .foregroundColor(Color.customBlue)
-//                        .multilineTextAlignment(.leading)
-//                        .lineLimit(1)
-//                    //
-//                    HStack(spacing: 3) {
-//                        Text("↓").foregroundColor(.blue)
-//                            .font(.system(size: 12))
-//                        Text(entry.weather.forecast.forecastday[0].day.mintemp_c.rounded().clean.description).foregroundColor(Color.customBlue)
-//                            .font(.system(size: 12))
-//                        Text("↑").foregroundColor(.red)
-//                            .font(.system(size: 12))
-//                        Text(entry.weather.forecast.forecastday[0].day.maxtemp_c.rounded().clean.description).foregroundColor(Color.customBlue)
-//                            .font(.system(size: 12))
-//
-//
-//                    }
-//                    VStack {
-//                        Text("Last Update: " + (entry.weather.time?.getCleanTime())! ?? "None").foregroundColor(Color.customBlue)
-//                            .font(.system(size: 12))
-//                    }
-//
-//
-//
-//
-//
-//
-//                }.padding()
-//                    .onAppear {
-//                        //                    loadWeatherData()
-//                    }
+struct SimpleEntry: TimelineEntry {
+    let date: Date
+    let weather: WeatherModel
+    let configuration: ConfigurationIntent
+}
+
+struct WeatherNowWidgetEntryView : View {
+    
+    @Environment(\.colorScheme) var colorScheme
+    @Environment(\.widgetFamily) var family
+//    @ViewBuilder
+    
+    var entry: Provider.Entry
+    var bwColor: some View {
+        colorScheme == .dark ? Color.black : Color.white
+    }
+    
+    var body: some View {
+        switch family {
+        case .systemSmall:
+        
+            if weatherList.count == 0 {
+                Text("Please add some cities")
+            }
+            
+            VStack(alignment: .leading) {
+                HStack {
+                    Text(entry.weather.current.temp_c.rounded().clean.description + " °C")
+                        .minimumScaleFactor(0.5)
+                        .font(.system(size: 27))
+                        .foregroundColor(Color.customBlue)
+                    //
+                    switch entry.weather.current.condition.text {
+                    case "Sunny" : Text("☀️") .font(.system(size: 32))
+                    case "Partly cloudy" : Text("🌤") .font(.system(size: 32))
+                    case "Cloudy" : Text("🌥") .font(.system(size: 32))
+                    case "Overcast" : Text("🌩") .font(.system(size: 32))
+                    case "Mist" : Text("💧") .font(.system(size: 32))
+                    case "Thundery outbreaks possible" : Text("⛈") .font(.system(size: 32))
+                    case "Blowing snow" : Text("🌬") .font(.system(size: 32))
+                    case "Fog" : Text("🌫") .font(.system(size: 32))
+                    case "Clear" : Text("🌤") .font(.system(size: 32))
+                    case "Light rain" : Text("☔️") .font(.system(size: 32))
+                    case "Heavy rain" : Text("🌧") .font(.system(size: 32))
+                    case "Light snow showers" : Text("❄️") .font(.system(size: 32))
+                    case "Light drizzle" : Text("🌧") .font(.system(size: 32))
+                    default:
+                        Text("🌤")
+                            .font(.system(size: 32))
+                    }
+                }
+                Text(entry.weather.location.name)
+                    .foregroundColor(Color.customBlue)
+                    .multilineTextAlignment(.leading)
+                    .lineLimit(nil)
+                    .font(.system(size: 25))
+                    .minimumScaleFactor(0.5)
+                Text(entry.weather.location.country)
+                    .foregroundColor(Color.customBlue)
+                    .multilineTextAlignment(.leading)
+                    .lineLimit(1)
+                    .font(.system(size: 14))
+                    .minimumScaleFactor(0.5)
+                HStack(alignment: .center, spacing: 3, content: {
+                    Text("↓").foregroundColor(.blue)
+                        .font(.system(size: 12))
+                    Text(entry.weather.forecast.forecastday[0].day.mintemp_c.rounded().clean.description)
+                        .foregroundColor(Color.customBlue)
+                        .font(.system(size: 12))
+                    Text("↑").foregroundColor(.red)
+                        .font(.system(size: 12))
+                    Text(entry.weather.forecast.forecastday[0].day.maxtemp_c.rounded().clean.description)
+                        .foregroundColor(Color.customBlue)
+                        .font(.system(size: 12))
+                })
+                
+                HStack(alignment: .center, spacing: 3, content: {
+                    Text("Last Update: ")
+                        .foregroundColor(Color.customBlue)
+                        .font(.system(size: 12))
+                    
+                    Text(entry.weather.time?.getCleanTime() ?? "None")
+                        .foregroundColor(Color.customBlue)
+                        .font(.system(size: 12))
+                })
+            }
+        case .systemMedium:
+//            if weatherList.count == 0 {
+//                Text("Please add some cities")
 //            }
-//        }
-//    }
-//}
-//
-//@main
-//struct WeatherNowWidget: Widget {
-//    let kind: String = "WeatherNowWidget"
-//
-//    var body: some WidgetConfiguration {
-//        IntentConfiguration(kind: kind, intent: ConfigurationIntent.self, provider: Provider()) { entry in
-//            WeatherNowWidgetEntryView(entry: entry)
-//        }
-//        .configurationDisplayName("WeatherNow Widget")
-//        .description("A powerful weather app. I hope you enjoy")
-//        .supportedFamilies([.systemSmall , .systemMedium])
-//    }
-//}
-//
-//struct WeatherNowWidget_Previews: PreviewProvider {
-//    static var previews: some View {
-//        WeatherNowWidgetEntryView(entry:  SimpleEntry(date: Date(), weather: WeatherModel(location: WeatherLocation.init(country: "", name: "", region: ""), current: CurrentWeather(temp_c: 27, condition: WeatherCondition(text: "")), forecast: Forecast(forecastday: [ForecastDay].init()), time: Date.init(), weatherUrl: ""), configuration: ConfigurationIntent()))
-//            .previewContext(WidgetPreviewContext(family: .systemSmall))
-//
-//        WeatherNowWidgetEntryView(entry:  SimpleEntry(date: Date(), weather: WeatherModel(location: WeatherLocation.init(country: "", name: "", region: ""), current: CurrentWeather(temp_c: -12, condition: WeatherCondition(text: "")), forecast: Forecast(forecastday: [ForecastDay].init()), time: Date.init(), weatherUrl: ""), configuration: ConfigurationIntent()))
-//            .redacted(reason: .placeholder)
-//            .previewContext(WidgetPreviewContext(family: .systemSmall))
-//
-//    }
-//}
+            Text("Medium")
+
+        case .systemLarge:
+//            if weatherList.count == 0 {
+//                Text("Please add some cities")
+//            }
+            Text("Large")
+
+        default:
+            Text("Some other WidgetFamily in the future.")
+        }
+    }
+}
+
+@main
+
+struct WeatherNowWidget: Widget {
+    
+    let kind: String = "WeatherNowWidget"
+    var body: some WidgetConfiguration {
+        IntentConfiguration(kind: kind, intent: ConfigurationIntent.self, provider: Provider()) { entry in
+            WeatherNowWidgetEntryView(entry: entry)
+        }
+        .configurationDisplayName("WeatherNow Widget")
+        .description("A powerful weather app. I hope you enjoy")
+        .supportedFamilies([.systemSmall , .systemMedium , .systemLarge])
+    }
+}
+
+struct WeatherNowWidget_Previews: PreviewProvider {
+    
+    let weather = WeatherModel(location: WeatherLocation.init(country: "", name: "", region: ""), current: CurrentWeather(temp_c: 0.0, condition: WeatherCondition(text: "")), forecast: Forecast(forecastday: [ForecastDay].init()), time: Date.init(), weatherUrl: "")
+    
+    static var previews: some View {
+        WeatherNowWidgetEntryView(entry: SimpleEntry(date: Date(), weather: sampleData, configuration: ConfigurationIntent()))
+            .previewContext(WidgetPreviewContext(family: .systemSmall))
+        
+        WeatherNowWidgetEntryView(entry: SimpleEntry(date: Date(), weather: sampleData, configuration: ConfigurationIntent()))
+            .redacted(reason: .placeholder)
+            .previewContext(WidgetPreviewContext(family: .systemSmall))
+    }
+}
 
 var weatherList: [WeatherModel] = []
 var locationList: [SearchLocationModel] = []
@@ -259,222 +272,3 @@ func loadWeatherData() {
 extension Color {
     static let customBlue = Color(red: 109.0/255.0, green: 154.0/255.0, blue: 242.0/255.0)
 }
-
-struct Provider: IntentTimelineProvider {
-    
-    let weather = WeatherModel(location: WeatherLocation.init(country: "", name: "", region: ""), current: CurrentWeather(temp_c: 0.0, condition: WeatherCondition(text: "")), forecast: Forecast(forecastday: [ForecastDay].init()), time: Date.init(), weatherUrl: "")
-    
-    func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date(), weather: weather , configuration: ConfigurationIntent())
-    }
-    
-    func getSnapshot(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (SimpleEntry) -> ()) {
-        let entry = SimpleEntry(date: Date(), weather: weather ,configuration: configuration)
-        completion(entry)
-    }
-    
-    func getTimeline(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
-        var entries: [SimpleEntry] = []
-        
-        // Generate a timeline consisting of five entries an hour apart, starting from the current date.
-        let currentDate = Date()
-        for hourOffset in 0 ..< 30 {
-            let entryDate = Calendar.current.date(byAdding: .minute, value: hourOffset, to: currentDate)!
-            getWeatherDataFromiPhone()
-            updateWeather()
-            saveWeatherData()
-            if weatherList.count != 0 {
-                let entry = SimpleEntry(date: entryDate, weather: weatherList[0] ,configuration: configuration)
-                entries.append(entry)
-            } else {
-                print("weatherList in empty*****")
-                let entry = SimpleEntry(date: entryDate, weather: sampleData ,configuration: configuration)
-                entries.append(entry)
-            }
-        }
-        
-        let timeline = Timeline(entries: entries, policy: .atEnd)
-        completion(timeline)
-    }
-}
-
-struct SimpleEntry: TimelineEntry {
-    let date: Date
-    let weather: WeatherModel
-    let configuration: ConfigurationIntent
-}
-
-struct WeatherNowWidgetEntryView : View {
-    
-    @Environment(\.colorScheme) var colorScheme
-    
-    var entry: Provider.Entry
-    var bwColor: some View {
-        colorScheme == .dark ? Color.black : Color.white
-    }
-    
-    
-    var body: some View {
-        if weatherList.count == 0 {
-            Text("Please add some cities")
-        }
-//        else {
-//            Text(entry.date, style: .time)
-        HStack {
-            Text(entry.weather.current.temp_c.rounded().clean.description + " °C")
-                .minimumScaleFactor(0.5)
-                .font(.system(size: 27))
-                .foregroundColor(Color.customBlue)
-        //
-            switch entry.weather.current.condition.text {
-            case "Sunny" : Text("☀️") .font(.system(size: 32))
-            case "Partly cloudy" : Text("🌤") .font(.system(size: 32))
-            case "Cloudy" : Text("🌥") .font(.system(size: 32))
-            case "Overcast" : Text("🌩") .font(.system(size: 32))
-            case "Mist" : Text("💧") .font(.system(size: 32))
-            case "Thundery outbreaks possible" : Text("⛈") .font(.system(size: 32))
-            case "Blowing snow" : Text("🌬") .font(.system(size: 32))
-            case "Fog" : Text("🌫") .font(.system(size: 32))
-            case "Clear" : Text("🌤") .font(.system(size: 32))
-            case "Light rain" : Text("☔️") .font(.system(size: 32))
-            case "Heavy rain" : Text("🌧") .font(.system(size: 32))
-            case "Light snow showers" : Text("❄️") .font(.system(size: 32))
-            case "Light drizzle" : Text("🌧") .font(.system(size: 32))
-            default:
-                Text("🌤")
-                    .font(.system(size: 32))
-            }
-                        }
-        Text(entry.weather.location.name)
-            .foregroundColor(Color.customBlue)
-            .multilineTextAlignment(.leading)
-            .lineLimit(nil)
-            .font(.system(size: 25))
-            .minimumScaleFactor(0.5)
-        Text(entry.weather.location.country)
-            .foregroundColor(Color.customBlue)
-            .multilineTextAlignment(.leading)
-            .lineLimit(1)
-            .font(.system(size: 14))
-            .minimumScaleFactor(0.5)
-        HStack(spacing: 3) {
-            Text("↓").foregroundColor(.blue)
-                .font(.system(size: 12))
-            Text(entry.weather.forecast.forecastday[0].day.mintemp_c.rounded().clean.description)
-                .foregroundColor(Color.customBlue)
-                .font(.system(size: 12))
-            Text("↑").foregroundColor(.red)
-                .font(.system(size: 12))
-            Text(entry.weather.forecast.forecastday[0].day.maxtemp_c.rounded().clean.description)
-                .foregroundColor(Color.customBlue)
-                .font(.system(size: 12))
-        }
-        VStack {
-            Text("Last Update: ")
-                .foregroundColor(Color.customBlue)
-                .font(.system(size: 12))
-
-            Text(entry.weather.time?.getCleanTime() ?? "None")
-                .foregroundColor(Color.customBlue)
-                .font(.system(size: 12))
-        }
-
-        
-        
-            //        }
-        
-//        ZStack {
-//            bwColor
-//            //            Color(UIColor.white)
-//            VStack(alignment: .leading) {
-//                HStack {
-//                    Text(entry.weather.current.temp_c.rounded().clean.description + "°C")
-//                        .minimumScaleFactor(0.5)
-//                        .font(.system(size: 32))
-//                        .foregroundColor(Color.customBlue)
-//
-//                    switch entry.weather.current.condition.text {
-//                    case "Sunny" : Text("☀️") .font(.system(size: 32))
-//                    case "Partly cloudy" : Text("🌤") .font(.system(size: 32))
-//                    case "Cloudy" : Text("🌥") .font(.system(size: 32))
-//                    case "Overcast" : Text("🌩") .font(.system(size: 32))
-//                    case "Mist" : Text("💧") .font(.system(size: 32))
-//                    case "Thundery outbreaks possible" : Text("⛈") .font(.system(size: 32))
-//                    case "Blowing snow" : Text("🌬") .font(.system(size: 32))
-//                    case "Fog" : Text("🌫") .font(.system(size: 32))
-//                    case "Clear" : Text("🌤") .font(.system(size: 32))
-//                    case "Light rain" : Text("☔️") .font(.system(size: 32))
-//                    case "Heavy rain" : Text("🌧") .font(.system(size: 32))
-//                    case "Light snow showers" : Text("❄️") .font(.system(size: 32))
-//                    case "Light drizzle" : Text("🌧") .font(.system(size: 32))
-//                    default:
-//                        Text("🌤")
-//                            .font(.system(size: 32))
-//                    }
-//                }
-//                //
-//                Text(entry.weather.location.name)
-//                    .foregroundColor(Color.customBlue)
-//                    .multilineTextAlignment(.leading)
-//                    .lineLimit(nil)
-//                    .font(.system(size: 25))
-//                    .minimumScaleFactor(0.5)
-//                Text(entry.weather.location.country)
-//                    .foregroundColor(Color.customBlue)
-//                    .multilineTextAlignment(.leading)
-//                    .lineLimit(1)
-//                    .font(.system(size: 14))
-//                    .minimumScaleFactor(0.5)
-//
-//                HStack(spacing: 3) {
-//                    Text("↓").foregroundColor(.blue)
-//                        .font(.system(size: 12))
-//                    Text(entry.weather.forecast.forecastday[0].day.mintemp_c.rounded().clean.description).foregroundColor(Color.customBlue)
-//                        .font(.system(size: 12))
-//                    Text("↑").foregroundColor(.red)
-//                        .font(.system(size: 12))
-//                    Text(entry.weather.forecast.forecastday[0].day.maxtemp_c.rounded().clean.description).foregroundColor(Color.customBlue)
-//                        .font(.system(size: 12))
-//                }
-//                VStack {
-//                    Text("Last Update: ") + Text(entry.weather.time?.getCleanTime() ?? "None")
-//                        .foregroundColor(Color.customBlue)
-//                        .font(.system(size: 12))
-//                }
-//            }
-//        .padding()
-//             .onAppear {
-//             }
-//        }
-    }
-}
-
-@main
-
-struct WeatherNowWidget: Widget {
-    
-    let kind: String = "WeatherNowWidget"
-    var body: some WidgetConfiguration {
-        IntentConfiguration(kind: kind, intent: ConfigurationIntent.self, provider: Provider()) { entry in
-            WeatherNowWidgetEntryView(entry: entry)
-        }
-        .configurationDisplayName("WeatherNow Widget")
-        .description("A powerful weather app. I hope you enjoy")
-        .supportedFamilies([.systemSmall , .systemMedium])
-    }
-}
-
-struct WeatherNowWidget_Previews: PreviewProvider {
-    
-    let weather = WeatherModel(location: WeatherLocation.init(country: "", name: "", region: ""), current: CurrentWeather(temp_c: 0.0, condition: WeatherCondition(text: "")), forecast: Forecast(forecastday: [ForecastDay].init()), time: Date.init(), weatherUrl: "")
-    
-    static var previews: some View {
-        WeatherNowWidgetEntryView(entry:  SimpleEntry(date: Date(), weather: sampleData, configuration: ConfigurationIntent()))
-            .previewContext(WidgetPreviewContext(family: .systemSmall))
-        
-        WeatherNowWidgetEntryView(entry:  SimpleEntry(date: Date(), weather: sampleData, configuration: ConfigurationIntent()))
-            .redacted(reason: .placeholder)
-            .previewContext(WidgetPreviewContext(family: .systemSmall))
-    }
-}
-
