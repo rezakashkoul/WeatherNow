@@ -48,6 +48,7 @@ struct Provider: IntentTimelineProvider {
 }
 
 struct SimpleEntry: TimelineEntry {
+    
     let date: Date
     let weather: WeatherModel
     let configuration: ConfigurationIntent
@@ -55,27 +56,28 @@ struct SimpleEntry: TimelineEntry {
 
 struct WeatherNowWidgetEntryView : View {
     
-    //    @Environment(\.colorScheme) var colorScheme
     @Environment(\.widgetFamily) var family
-    
     var entry: Provider.Entry
-    //    var bwColor: some View {
-    //        colorScheme == .dark ? Color.black : Color.white
-    //    }
     var body: some View {
+        
+        //        WeatherItemsForList(entry: entry)
+        
         switch family {
         case .systemSmall:
-//            Text("hello")
-            //            if weatherList.count == 0 {
-            //                Text("Please add some cities")
-            //            }
             SmallWidget(entry: entry)
-
-        case .systemMedium:
+            //            Text("hello")
             //            if weatherList.count == 0 {
             //                Text("Please add some cities")
             //            }
-            Text("Medium")
+            
+            
+        case .systemMedium:
+            MediumWidget(entry: entry)
+            
+            //            if weatherList.count == 0 {
+            //                Text("Please add some cities")
+            //            }
+            //            Text("Medium")
             
         case .systemLarge:
             //            if weatherList.count == 0 {
@@ -136,7 +138,91 @@ struct WeatherNowWidgetEntryView : View {
                         .foregroundColor(Color.customBlue)
                         .font(.system(size: 12))
                 })
+                
+                
+                
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color(.systemBackground))
+        }
+    }
+    
+    struct MediumWidget: View {
+        var entry: Provider.Entry
+        var body: some View {
+            HStack(alignment: .center, spacing: 10) {
+                VStack {
+                    HStack {
+                        Text(entry.weather.current.temp_c.rounded().clean.description + " °C")
+                            .minimumScaleFactor(0.5)
+                            .font(.system(size: 27))
+                            .foregroundColor(Color.customBlue)
+                        WeatherEmoji(entry: entry)
+                    }
+                    Text(entry.weather.location.name)
+                        .foregroundColor(Color.customBlue)
+                        .multilineTextAlignment(.leading)
+                        .lineLimit(nil)
+                        .font(.system(size: 25))
+                        .minimumScaleFactor(0.5)
+                    Text(entry.weather.location.country)
+                        .foregroundColor(Color.customBlue)
+                        .multilineTextAlignment(.leading)
+                        .lineLimit(1)
+                        .font(.system(size: 14))
+                        .minimumScaleFactor(0.5)
+                    HStack(alignment: .center, spacing: 3) {
+                        Text("↓").foregroundColor(.blue)
+                            .font(.system(size: 12))
+                        //                    Text(entry.weather.forecast.forecastday[0].day.mintemp_c.rounded().clean.description)
+                        Text("12 ")
+                            .foregroundColor(Color.customBlue)
+                            .font(.system(size: 12))
+                        Text("↑")
+                            .foregroundColor(.red)
+                            .font(.system(size: 12))
+                        //                    Text(entry.weather.forecast.forecastday[0].day.maxtemp_c.rounded().clean.description)
+                        Text("5")
+                            .foregroundColor(Color.customBlue)
+                            .font(.system(size: 12))
+                    }
+                    
+                    HStack(alignment: .center, spacing: 3, content: {
+                        Text("Last Update: ")
+                            .foregroundColor(Color.customBlue)
+                            .font(.system(size: 12))
+                        
+                        Text(entry.weather.time?.getCleanTime() ?? "None")
+                            .foregroundColor(Color.customBlue)
+                            .font(.system(size: 12))
+                    })
+                }
+                VStack(alignment: .trailing, spacing: 7) {
+                    ForEach(weatherList) { item in
+                        HStack {
+                            Text("\(item.location.name)")
+                                .foregroundColor(Color.customBlue)
+                                .font(.system(size: 14))
+                            Text("🌤")
+                            Text("↓").foregroundColor(.blue)
+                                .font(.system(size: 12))
+                            Text(item.forecast.forecastday[0].day.mintemp_c.rounded().clean.description)
+                                .foregroundColor(Color.customBlue)
+                                .font(.system(size: 12))
+                            Text("↑")
+                                .foregroundColor(.red)
+                                .font(.system(size: 12))
+                            Text(item.forecast.forecastday[0].day.maxtemp_c.rounded().clean.description)
+                                .foregroundColor(Color.customBlue)
+                                .font(.system(size: 12))
+                            
+                        }.onAppear {
+                            print("shit")
+                        }
+                    }
+                }
+            }
+            
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color(.systemBackground))
         }
@@ -186,20 +272,32 @@ struct WeatherNowWidget_Previews: PreviewProvider {
     let weather = WeatherModel(location: WeatherLocation.init(country: "", name: "", region: ""), current: CurrentWeather(temp_c: 0.0, condition: WeatherCondition(text: "")), forecast: Forecast(forecastday: [ForecastDay].init()), time: Date.init(), weatherUrl: "")
     
     static var previews: some View {
-        WeatherNowWidgetEntryView(entry: SimpleEntry(date: Date(), weather: sampleData, configuration: ConfigurationIntent()))
+        WeatherNowWidgetEntryView(entry: SimpleEntry(date: Date(), weather: mockData, configuration: ConfigurationIntent()))
             .showWidgetPreviews(for: .systemSmall)
         
-        //        WeatherNowWidgetEntryView(entry: SimpleEntry(date: Date(), weather: sampleData, configuration: ConfigurationIntent()))
-        //            .redacted(reason: .placeholder)
-        //            .previewContext(WidgetPreviewContext(family: .systemSmall))
+        WeatherNowWidgetEntryView(entry: SimpleEntry(date: Date(), weather: mockData, configuration: ConfigurationIntent()))
+            .redacted(reason: .placeholder)
+            .previewContext(WidgetPreviewContext(family: .systemSmall))
+        //            .previewContext(WidgetPreviewContext(family: .systemMedium))
+        
     }
 }
 
-var weatherList: [WeatherModel] = []
+
+
+var weatherList: [WeatherModel] = [
+    WeatherModel(location: WeatherLocation(country: "Iran", name: "Tehran", region: "LA"), current: CurrentWeather(temp_c: 14, condition: WeatherCondition(text: "Sunny")), forecast: Forecast(forecastday: forecastArray) , time: nil, weatherUrl: nil),
+    WeatherModel(location: WeatherLocation(country: "USA", name: "California", region: "LA"), current: CurrentWeather(temp_c: 12, condition: WeatherCondition(text: "Sunny")), forecast: Forecast(forecastday: forecastArray) , time: nil, weatherUrl: nil)
+]
 var locationList: [SearchLocationModel] = []
 var expiredItems: [WeatherModel] = []
 var forecast = [ForecastDay]()
 var sampleData: WeatherModel = WeatherModel(location: WeatherLocation(country: "USA", name: "California", region: "LA"), current: CurrentWeather(temp_c: 25, condition: WeatherCondition(text: "Sunny")), forecast: Forecast(forecastday: forecast), time: Date(), weatherUrl: "")
+
+var forecastArray = [ForecastDay(day: Day(maxtemp_c: 20, mintemp_c: 4))]
+var mockData = WeatherModel(location: WeatherLocation(country: "USA", name: "California", region: "LA"), current: CurrentWeather(temp_c: 12, condition: WeatherCondition(text: "Sunny")), forecast: Forecast(forecastday: forecastArray) , time: nil, weatherUrl: nil)
+
+
 
 func addPercentageToUrl(urlString : String) -> String{
     return urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
@@ -293,10 +391,10 @@ extension View {
     
     func showWidgetPreviews(for family: WidgetFamily) -> some View {
         Group {
-            let devices = ["iPhone 13", "iPhone 11 pro Max", "iPhone SE"]
+            let devices = ["iPhone 13" , "iPhone SE"] //, "iPhone 11 pro Max", "iPhone SE"]
             ForEach(devices, id:\.self) { device in
                 self
-                    .previewContext(WidgetPreviewContext(family: family))
+                    .previewContext(WidgetPreviewContext(family: .systemMedium))
                     .previewDevice(PreviewDevice(rawValue: device))
                     .colorScheme(.light)
                     .previewDisplayName(device)

@@ -8,10 +8,9 @@
 import Foundation
 //https://api.weatherapi.com/v1/forecast.json?key=67b477a0e3404afeb5891850213110&q=tehran&days=1&aqi=no&alerts=no
 
-struct WeatherModel: Codable , Equatable {
-    
+struct WeatherModel: Codable, Equatable, Identifiable {
+    var id:Int? = (0...999999999999).randomElement()!
     static func == (lhs: WeatherModel, rhs: WeatherModel) -> Bool {
-        
         return lhs.location.region == rhs.location.region && lhs.location.name == rhs.location.name && lhs.location.country == rhs.location.country
     }
     
