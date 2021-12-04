@@ -30,14 +30,14 @@ struct Provider: IntentTimelineProvider {
         for hourOffset in 0 ..< 30 {
             let entryDate = Calendar.current.date(byAdding: .minute, value: hourOffset, to: currentDate)!
             getWeatherDataFromiPhone()
-            updateWeather()
+//            updateWeather()
             saveWeatherData()
             if weatherList.count != 0 {
                 let entry = SimpleEntry(date: entryDate, weather: weatherList[0] ,configuration: configuration)
                 entries.append(entry)
             } else {
                 print("***** weatherList in empty *****")
-                let entry = SimpleEntry(date: entryDate, weather: sampleData ,configuration: configuration)
+                let entry = SimpleEntry(date: entryDate, weather: mockData ,configuration: configuration)
                 entries.append(entry)
             }
         }
@@ -83,7 +83,7 @@ struct WeatherNowWidgetEntryView : View {
             //            if weatherList.count == 0 {
             //                Text("Please add some cities")
             //            }
-            Text("Large")
+            Text("X-Large")
             
         default:
             Text("Some other WidgetFamily in the future.")
@@ -117,14 +117,14 @@ struct WeatherNowWidgetEntryView : View {
                     Text("↓").foregroundColor(.blue)
                         .font(.system(size: 12))
                     //                    Text(entry.weather.forecast.forecastday[0].day.mintemp_c.rounded().clean.description)
-                    Text("12 ")
+                    Text("5 ")
                         .foregroundColor(Color.customBlue)
                         .font(.system(size: 12))
                     Text("↑")
                         .foregroundColor(.red)
                         .font(.system(size: 12))
                     //                    Text(entry.weather.forecast.forecastday[0].day.maxtemp_c.rounded().clean.description)
-                    Text("5")
+                    Text("12")
                         .foregroundColor(Color.customBlue)
                         .font(.system(size: 12))
                 }
@@ -175,14 +175,14 @@ struct WeatherNowWidgetEntryView : View {
                         Text("↓").foregroundColor(.blue)
                             .font(.system(size: 12))
                         //                    Text(entry.weather.forecast.forecastday[0].day.mintemp_c.rounded().clean.description)
-                        Text("12 ")
+                        Text("5 ")
                             .foregroundColor(Color.customBlue)
                             .font(.system(size: 12))
                         Text("↑")
                             .foregroundColor(.red)
                             .font(.system(size: 12))
                         //                    Text(entry.weather.forecast.forecastday[0].day.maxtemp_c.rounded().clean.description)
-                        Text("5")
+                        Text("12")
                             .foregroundColor(Color.customBlue)
                             .font(.system(size: 12))
                     }
@@ -284,18 +284,20 @@ struct WeatherNowWidget_Previews: PreviewProvider {
 }
 
 
+var forecastArray = [ForecastDay(day: Day(maxtemp_c: 20, mintemp_c: -2))]
+var mockData = WeatherModel(location: WeatherLocation(country: "USA", name: "California", region: "LA"), current: CurrentWeather(temp_c: 12, condition: WeatherCondition(text: "Sunny")), forecast: Forecast(forecastday: forecastArray) , time: nil, weatherUrl: nil)
+var weatherList: [WeatherModel] = []
+//= [
+//    WeatherModel(location: WeatherLocation(country: "Iran", name: "Tehran", region: "LA"), current: CurrentWeather(temp_c: 14, condition: WeatherCondition(text: "Sunny")), forecast: Forecast(forecastday: forecastArray) , time: nil, weatherUrl: nil),
+//    WeatherModel(location: WeatherLocation(country: "USA", name: "California", region: "LA"), current: CurrentWeather(temp_c: 12, condition: WeatherCondition(text: "Sunny")), forecast: Forecast(forecastday: forecastArray) , time: nil, weatherUrl: nil)
+//]
 
-var weatherList: [WeatherModel] = [
-    WeatherModel(location: WeatherLocation(country: "Iran", name: "Tehran", region: "LA"), current: CurrentWeather(temp_c: 14, condition: WeatherCondition(text: "Sunny")), forecast: Forecast(forecastday: forecastArray) , time: nil, weatherUrl: nil),
-    WeatherModel(location: WeatherLocation(country: "USA", name: "California", region: "LA"), current: CurrentWeather(temp_c: 12, condition: WeatherCondition(text: "Sunny")), forecast: Forecast(forecastday: forecastArray) , time: nil, weatherUrl: nil)
-]
 var locationList: [SearchLocationModel] = []
 var expiredItems: [WeatherModel] = []
 var forecast = [ForecastDay]()
 var sampleData: WeatherModel = WeatherModel(location: WeatherLocation(country: "USA", name: "California", region: "LA"), current: CurrentWeather(temp_c: 25, condition: WeatherCondition(text: "Sunny")), forecast: Forecast(forecastday: forecast), time: Date(), weatherUrl: "")
 
-var forecastArray = [ForecastDay(day: Day(maxtemp_c: 20, mintemp_c: 4))]
-var mockData = WeatherModel(location: WeatherLocation(country: "USA", name: "California", region: "LA"), current: CurrentWeather(temp_c: 12, condition: WeatherCondition(text: "Sunny")), forecast: Forecast(forecastday: forecastArray) , time: nil, weatherUrl: nil)
+
 
 
 
@@ -310,6 +312,7 @@ func getWeatherDataFromiPhone() {
             let decoder = JSONDecoder()
             weatherList = try decoder.decode([WeatherModel].self, from: data as! Data)
             print("weatherList.count is \(weatherList)")
+            print("Widget got Weather Data From iPhone")
         } catch {
             print("Unable to Decode weatherData (\(error))")
         }

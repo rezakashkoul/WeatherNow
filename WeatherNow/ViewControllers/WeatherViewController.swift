@@ -78,7 +78,7 @@ class WeatherViewController: UIViewController, SearchViewControllerDelegate, WCS
         super.viewDidAppear(animated)
         setTopViewWeatherData()
         sendWeatherListToWatch()
-        sendWeatherListToWidgets()
+//        sendWeatherListToWidgets()
         
     }
     
@@ -212,7 +212,7 @@ class WeatherViewController: UIViewController, SearchViewControllerDelegate, WCS
         do {
             let encoder = JSONEncoder()
             let data = try encoder.encode(weatherList)
-            
+            print("weather list has been sent to the widget")
             let userDefaults = UserDefaults(suiteName: "group.weatherNow")
             userDefaults?.set(data, forKey: "weatherForWidget")
             WidgetCenter.shared.reloadAllTimelines()

@@ -54,8 +54,10 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <RemoteRunnable
+         runnableDebuggingMode = "2"
+         BundleIdentifier = "com.apple.Carousel"
+         RemotePath = "/WeatherNowWatch">
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "F7C8BF43274137AB000F59D6"
@@ -63,7 +65,7 @@
             BlueprintName = "WeatherNowWatch"
             ReferencedContainer = "container:WeatherNow.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </RemoteRunnable>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -71,8 +73,10 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <RemoteRunnable
+         runnableDebuggingMode = "2"
+         BundleIdentifier = "com.apple.Carousel"
+         RemotePath = "/WeatherNowWatch">
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "F7C8BF43274137AB000F59D6"
@@ -80,7 +84,16 @@
             BlueprintName = "WeatherNowWatch"
             ReferencedContainer = "container:WeatherNow.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </RemoteRunnable>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "F7C8BF43274137AB000F59D6"
+            BuildableName = "WeatherNowWatch.app"
+            BlueprintName = "WeatherNowWatch"
+            ReferencedContainer = "container:WeatherNow.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
