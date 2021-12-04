@@ -78,7 +78,8 @@ class WeatherViewController: UIViewController, SearchViewControllerDelegate, WCS
         super.viewDidAppear(animated)
         setTopViewWeatherData()
         sendWeatherListToWatch()
-//        sendWeatherListToWidgets()
+        print("weatherList for send to widget ", weatherList.count)
+        sendWeatherListToWidgets()
         
     }
     

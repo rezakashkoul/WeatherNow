@@ -151,7 +151,7 @@ struct WeatherNowWidgetEntryView : View {
         var entry: Provider.Entry
         var body: some View {
             HStack(alignment: .center, spacing: 10) {
-                VStack {
+                VStack(alignment: .leading, spacing: 1) {
                     HStack {
                         Text(entry.weather.current.temp_c.rounded().clean.description + " °C")
                             .minimumScaleFactor(0.5)
@@ -197,13 +197,14 @@ struct WeatherNowWidgetEntryView : View {
                             .font(.system(size: 12))
                     })
                 }
-                VStack(alignment: .trailing, spacing: 7) {
-                    ForEach(weatherList, id: \.self) { item in
-                        HStack {
+                VStack(alignment: .leading, spacing: 3) {
+                    ForEach(weatherList.dropFirst(), id: \.self) { item in
+                        HStack(spacing: 3) {
                             Text("\(item.location.name)")
                                 .foregroundColor(Color.customBlue)
                                 .font(.system(size: 14))
-                            Text("🌤")
+                            WeatherEmoji(entry: entry)
+//                            Text("🌤")
                             Text("↓").foregroundColor(.blue)
                                 .font(.system(size: 12))
                             Text(item.forecast.forecastday[0].day.mintemp_c.rounded().clean.description)
