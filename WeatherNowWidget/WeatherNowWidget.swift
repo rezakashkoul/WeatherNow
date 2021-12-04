@@ -30,7 +30,7 @@ struct Provider: IntentTimelineProvider {
         for hourOffset in 0 ..< 30 {
             let entryDate = Calendar.current.date(byAdding: .minute, value: hourOffset, to: currentDate)!
             getWeatherDataFromiPhone()
-//            updateWeather()
+            //            updateWeather()
             saveWeatherData()
             if weatherList.count != 0 {
                 let entry = SimpleEntry(date: entryDate, weather: weatherList[0] ,configuration: configuration)
@@ -82,8 +82,11 @@ struct WeatherNowWidgetEntryView : View {
         case .systemLarge:
             //            if weatherList.count == 0 {
             //                Text("Please add some cities")
-            //            }
-            Text("X-Large")
+            //
+            LargeWidget(entry: entry)
+            //            Text("X-Large")
+            
+            
             
         default:
             Text("Some other WidgetFamily in the future.")
@@ -101,7 +104,7 @@ struct WeatherNowWidgetEntryView : View {
                         .foregroundColor(Color.customBlue)
                     WeatherEmoji(entry: entry)
                 }
-                Text(entry.weather.location.name)
+                Text(entry.weather.location.name).bold()
                     .foregroundColor(Color.customBlue)
                     .multilineTextAlignment(.leading)
                     .lineLimit(nil)
@@ -151,6 +154,8 @@ struct WeatherNowWidgetEntryView : View {
         var entry: Provider.Entry
         var body: some View {
             HStack(alignment: .center, spacing: 10) {
+                Spacer()
+                    .frame(width: 15)
                 VStack(alignment: .leading, spacing: 1) {
                     HStack {
                         Text(entry.weather.current.temp_c.rounded().clean.description + " °C")
@@ -159,7 +164,7 @@ struct WeatherNowWidgetEntryView : View {
                             .foregroundColor(Color.customBlue)
                         WeatherEmoji(entry: entry)
                     }
-                    Text(entry.weather.location.name)
+                    Text(entry.weather.location.name).bold()
                         .foregroundColor(Color.customBlue)
                         .multilineTextAlignment(.leading)
                         .lineLimit(nil)
@@ -197,30 +202,46 @@ struct WeatherNowWidgetEntryView : View {
                             .font(.system(size: 12))
                     })
                 }
+                
                 VStack(alignment: .leading, spacing: 3) {
-                    ForEach(weatherList.dropFirst(), id: \.self) { item in
+                    Spacer()
+                    ForEach(weatherList.dropFirst().prefix(5), id: \.self) { item in
                         HStack(spacing: 3) {
+//                            Spacer()
+//                                .frame(width: 15)
+                            WeatherEmoji(entry: entry)
                             Text("\(item.location.name)")
                                 .foregroundColor(Color.customBlue)
-                                .font(.system(size: 14))
-                            WeatherEmoji(entry: entry)
-//                            Text("🌤")
+                                .font(.system(size: 12))
+                                .lineLimit(nil)
+                                .minimumScaleFactor(0.5)
+                            Spacer()
                             Text("↓").foregroundColor(.blue)
                                 .font(.system(size: 12))
+                            //                        Spacer()
+                            
                             Text(item.forecast.forecastday[0].day.mintemp_c.rounded().clean.description)
                                 .foregroundColor(Color.customBlue)
                                 .font(.system(size: 12))
+                            //                        Spacer()
+                            
                             Text("↑")
                                 .foregroundColor(.red)
                                 .font(.system(size: 12))
+                            //                        Spacer()
+                            
                             Text(item.forecast.forecastday[0].day.maxtemp_c.rounded().clean.description)
                                 .foregroundColor(Color.customBlue)
                                 .font(.system(size: 12))
+                            Spacer()
+                                .frame(width: 10)
                             
                         }.onAppear {
                             print("shit")
                         }
+
                     }
+                    Spacer()
                 }
             }
             
@@ -229,24 +250,131 @@ struct WeatherNowWidgetEntryView : View {
         }
     }
     
+    struct LargeWidget: View {
+        var entry: Provider.Entry
+        var body: some View {
+            VStack {
+                Spacer()
+                    .frame(height: 20)
+            HStack(alignment: .center, spacing: 60) {
+                VStack(alignment: .center, spacing: 0) {
+                    HStack(alignment: .center, spacing: 5) {
+                        Text(entry.weather.location.name + ",").bold()
+                            .foregroundColor(Color.customBlue)
+                            .multilineTextAlignment(.leading)
+                            .lineLimit(nil)
+                            .font(.system(size: 35))
+                        Text(entry.weather.current.temp_c.rounded().clean.description + " °C")
+                            .font(.system(size: 35))
+                            .foregroundColor(Color.customBlue)
+                    }
+                    Text(entry.weather.location.country)
+                        .foregroundColor(Color.customBlue)
+                        .multilineTextAlignment(.leading)
+                        .lineLimit(1)
+                        .font(.system(size: 28))
+                        .minimumScaleFactor(0.8)
+                    HStack {
+                        Text(entry.weather.current.condition.text)
+                            .foregroundColor(Color.customBlue)
+                        .font(.system(size: 16))
+                        WeatherEmoji(entry: entry)
+                    }
+                    
+                    HStack(alignment: .top , spacing: 3) {
+                        Text("↓").foregroundColor(.blue).bold()
+                            .font(.system(size: 12))
+                        //                    Text(entry.weather.forecast.forecastday[0].day.mintemp_c.rounded().clean.description)
+                        Text("5 ")
+                            .foregroundColor(Color.customBlue)
+                            .font(.system(size: 12))
+                        Text("↑").bold()
+                            .foregroundColor(.red)
+                            .font(.system(size: 12))
+                        //                    Text(entry.weather.forecast.forecastday[0].day.maxtemp_c.rounded().clean.description)
+                        Text("12")
+                            .foregroundColor(Color.customBlue)
+                            .font(.system(size: 12))
+                    }
+                    
+                    HStack(alignment: .center, spacing: 3) {
+                        Text("Last Update: ")
+                            .foregroundColor(Color.customBlue)
+                            .font(.system(size: 12))
+                        
+                        Text(entry.weather.time?.getCleanTime() ?? "None")
+                            .foregroundColor(Color.customBlue)
+                            .font(.system(size: 12))
+                    }
+                }
+            }
+            Spacer()
+                    .frame(height: 15)
+            VStack(alignment: .leading, spacing: 3) {
+
+                ForEach(weatherList.dropFirst().prefix(7), id: \.self) { item in
+                    HStack(spacing: 3) {
+                        Spacer()
+                            .frame(width: 15)
+                        WeatherEmoji(entry: entry)
+                        
+                        Text("\(item.location.name)")
+                            .foregroundColor(Color.customBlue)
+                            .font(.system(size: 14))
+                        Spacer()
+                        Text("↓").foregroundColor(.blue)
+                            .font(.system(size: 12))
+                        //                        Spacer()
+                        
+                        Text(item.forecast.forecastday[0].day.mintemp_c.rounded().clean.description)
+                            .foregroundColor(Color.customBlue)
+                            .font(.system(size: 12))
+                        //                        Spacer()
+                        
+                        Text("↑")
+                            .foregroundColor(.red)
+                            .font(.system(size: 12))
+                        //                        Spacer()
+                        
+                        Text(item.forecast.forecastday[0].day.maxtemp_c.rounded().clean.description)
+                            .foregroundColor(Color.customBlue)
+                            .font(.system(size: 12))
+                        Spacer()
+                            .frame(width: 20)
+                        
+                    }.onAppear {
+                        print("shit")
+                    }
+                }
+
+            }
+            
+            }
+            Spacer()
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color(.systemBackground))
+        }
+        
+    }
+    
     struct WeatherEmoji: View {
         var entry: Provider.Entry
         var body: some View {
             switch entry.weather.current.condition.text {
-            case "Sunny" : Text("☀️") .font(.system(size: 32))
-            case "Partly cloudy" : Text("🌤") .font(.system(size: 32))
-            case "Cloudy" : Text("🌥") .font(.system(size: 32))
-            case "Overcast" : Text("🌩") .font(.system(size: 32))
-            case "Mist" : Text("💧") .font(.system(size: 32))
-            case "Thundery outbreaks possible" : Text("⛈") .font(.system(size: 32))
-            case "Blowing snow" : Text("🌬") .font(.system(size: 32))
-            case "Fog" : Text("🌫") .font(.system(size: 32))
-            case "Clear" : Text("🌤") .font(.system(size: 32))
-            case "Light rain" : Text("☔️") .font(.system(size: 32))
-            case "Heavy rain" : Text("🌧") .font(.system(size: 32))
-            case "Light snow showers" : Text("❄️") .font(.system(size: 32))
-            case "Light drizzle" : Text("🌧") .font(.system(size: 32))
-            default: Text("🌤").font(.system(size: 32))
+            case "Sunny" : Text("☀️") .font(.system(size: 20))
+            case "Partly cloudy" : Text("🌤") .font(.system(size: 20))
+            case "Cloudy" : Text("🌥") .font(.system(size: 20))
+            case "Overcast" : Text("🌩") .font(.system(size: 20))
+            case "Mist" : Text("💧") .font(.system(size: 20))
+            case "Thundery outbreaks possible" : Text("⛈") .font(.system(size: 20))
+            case "Blowing snow" : Text("🌬") .font(.system(size: 20))
+            case "Fog" : Text("🌫") .font(.system(size: 20))
+            case "Clear" : Text("🌤") .font(.system(size: 20))
+            case "Light rain" : Text("☔️") .font(.system(size: 20))
+            case "Heavy rain" : Text("🌧") .font(.system(size: 20))
+            case "Light snow showers" : Text("❄️") .font(.system(size: 20))
+            case "Light drizzle" : Text("🌧") .font(.system(size: 20))
+            default: Text("🌤").font(.system(size: 20))
             }
         }
     }
@@ -398,7 +526,9 @@ extension View {
             let devices = ["iPhone 13" , "iPhone SE"] //, "iPhone 11 pro Max", "iPhone SE"]
             ForEach(devices, id:\.self) { device in
                 self
-                    .previewContext(WidgetPreviewContext(family: .systemMedium))
+                //                    .previewContext(WidgetPreviewContext(family: .systemMedium))
+                    .previewContext(WidgetPreviewContext(family: .systemLarge))
+                
                     .previewDevice(PreviewDevice(rawValue: device))
                     .colorScheme(.light)
                     .previewDisplayName(device)
