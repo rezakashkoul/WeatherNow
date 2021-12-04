@@ -198,7 +198,7 @@ struct WeatherNowWidgetEntryView : View {
                     })
                 }
                 VStack(alignment: .trailing, spacing: 7) {
-                    ForEach(weatherList) { item in
+                    ForEach(weatherList, id: \.self) { item in
                         HStack {
                             Text("\(item.location.name)")
                                 .foregroundColor(Color.customBlue)
