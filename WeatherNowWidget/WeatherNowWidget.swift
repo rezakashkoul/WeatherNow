@@ -106,8 +106,10 @@ struct WeatherNowWidgetEntryView : View {
     struct SmallWidget: View {
         var entry: Provider.Entry
         var body: some View {
+            HStack {
+                Spacer()
             VStack(alignment: .leading) {
-                HStack {
+                    HStack {
                     Text(entry.weather.current.temp_c.rounded().clean.description + " °C")
                         .minimumScaleFactor(0.5)
                         .font(.system(size: 27))
@@ -148,6 +150,9 @@ struct WeatherNowWidgetEntryView : View {
                         .foregroundColor(Color.customBlue)
                         .font(.system(size: 12))
                 })
+            }
+                Spacer()
+
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color(.systemBackground))
@@ -329,7 +334,6 @@ struct WeatherNowWidgetEntryView : View {
                     }
                 }
             }
-//            Spacer()
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .background(Color(.systemBackground))
         }
