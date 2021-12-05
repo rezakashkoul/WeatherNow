@@ -30,7 +30,7 @@ struct Provider: IntentTimelineProvider {
         for hourOffset in 0 ..< 30 {
             let entryDate = Calendar.current.date(byAdding: .minute, value: hourOffset, to: currentDate)!
             getWeatherDataFromiPhone()
-//            updateWeather()
+            //            updateWeather()
             saveWeatherData()
             if weatherList.count != 0 {
                 let entry = WeatherEntry(date: entryDate, weather: weatherList[0] ,configuration: configuration)
@@ -108,75 +108,10 @@ struct WeatherNowWidgetEntryView : View {
         var body: some View {
             HStack {
                 Spacer()
-            VStack(alignment: .leading) {
-                Spacer()
-                    HStack {
-//                        Spacer()
-                    Text(entry.weather.current.temp_c.rounded().clean.description + " °C")
-                        .minimumScaleFactor(0.5)
-                        .font(.system(size: 27))
-                        .foregroundColor(Color.customBlue)
-                    WidgetEmoji(input: entry.weather)
-                }
-                Spacer()
-                Text(entry.weather.location.name).bold()
-                    .foregroundColor(Color.customBlue)
-                    .multilineTextAlignment(.leading)
-                    .lineLimit(1)
-                    .font(.system(size: 25))
-                    .minimumScaleFactor(0.5)
-                Spacer()
-                Text(entry.weather.location.country)
-                    .foregroundColor(Color.customBlue)
-                    .multilineTextAlignment(.leading)
-                    .lineLimit(1)
-                    .font(.system(size: 14))
-                    .minimumScaleFactor(0.5)
-                Spacer()
-                HStack(alignment: .center, spacing: 3) {
-                    Text("↓").foregroundColor(.blue)
-                        .font(.system(size: 12))
-                    Text(entry.weather.forecast.forecastday[0].day.mintemp_c.rounded().clean.description)
-                        .foregroundColor(Color.customBlue)
-                        .font(.system(size: 12))
-                    Text("↑")
-                        .foregroundColor(.red)
-                        .font(.system(size: 12))
-                    Text(entry.weather.forecast.forecastday[0].day.maxtemp_c.rounded().clean.description)
-                        .foregroundColor(Color.customBlue)
-                        .font(.system(size: 12))
-                    Spacer()
-                }
-                Spacer()
-                HStack(alignment: .center, spacing: 3) {
-                    Text("Last Update: ")
-                        .foregroundColor(Color.customBlue)
-                        .font(.system(size: 12))
-                    
-                    Text(entry.weather.time?.getCleanTime() ?? "None")
-                        .foregroundColor(Color.customBlue)
-                        .font(.system(size: 12))
-                }
-                .padding(.bottom)
-            }
-                Spacer()
-
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color(.systemBackground))
-        }
-    }
-    
-    struct MediumWidget: View {
-        var entry: Provider.Entry
-        var body: some View {
-            HStack(alignment: .center, spacing: 10) {
-                Spacer()
-                    .frame(width: 15)
                 VStack(alignment: .leading) {
                     Spacer()
-                        HStack {
-    //                        Spacer()
+                    HStack {
+                        //                        Spacer()
                         Text(entry.weather.current.temp_c.rounded().clean.description + " °C")
                             .minimumScaleFactor(0.5)
                             .font(.system(size: 27))
@@ -224,8 +159,73 @@ struct WeatherNowWidgetEntryView : View {
                     }
                     .padding(.bottom)
                 }
+                Spacer()
+                
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color(.systemBackground))
+        }
+    }
+    
+    struct MediumWidget: View {
+        var entry: Provider.Entry
+        var body: some View {
+            HStack(alignment: .center, spacing: 10) {
+                Spacer()
+                    .frame(width: 15)
+                VStack(alignment: .leading) {
                     Spacer()
-
+                    HStack {
+                        //                        Spacer()
+                        Text(entry.weather.current.temp_c.rounded().clean.description + " °C")
+                            .minimumScaleFactor(0.5)
+                            .font(.system(size: 27))
+                            .foregroundColor(Color.customBlue)
+                        WidgetEmoji(input: entry.weather)
+                    }
+                    Spacer()
+                    Text(entry.weather.location.name).bold()
+                        .foregroundColor(Color.customBlue)
+                        .multilineTextAlignment(.leading)
+                        .lineLimit(1)
+                        .font(.system(size: 25))
+                        .minimumScaleFactor(0.5)
+                    Spacer()
+                    Text(entry.weather.location.country)
+                        .foregroundColor(Color.customBlue)
+                        .multilineTextAlignment(.leading)
+                        .lineLimit(1)
+                        .font(.system(size: 14))
+                        .minimumScaleFactor(0.5)
+                    Spacer()
+                    HStack(alignment: .center, spacing: 3) {
+                        Text("↓").foregroundColor(.blue)
+                            .font(.system(size: 12))
+                        Text(entry.weather.forecast.forecastday[0].day.mintemp_c.rounded().clean.description)
+                            .foregroundColor(Color.customBlue)
+                            .font(.system(size: 12))
+                        Text("↑")
+                            .foregroundColor(.red)
+                            .font(.system(size: 12))
+                        Text(entry.weather.forecast.forecastday[0].day.maxtemp_c.rounded().clean.description)
+                            .foregroundColor(Color.customBlue)
+                            .font(.system(size: 12))
+                        Spacer()
+                    }
+                    Spacer()
+                    HStack(alignment: .center, spacing: 3) {
+                        Text("Last Update: ")
+                            .foregroundColor(Color.customBlue)
+                            .font(.system(size: 12))
+                        
+                        Text(entry.weather.time?.getCleanTime() ?? "None")
+                            .foregroundColor(Color.customBlue)
+                            .font(.system(size: 12))
+                    }
+                    .padding(.bottom)
+                }
+                Spacer()
+                
                 
                 VStack(alignment: .leading, spacing: 3) {
                     Spacer()
@@ -237,7 +237,7 @@ struct WeatherNowWidgetEntryView : View {
                                 .foregroundColor(Color.customBlue)
                                 .font(.system(size: 12))
                                 .lineLimit(1)
-//                                .minimumScaleFactor(0.8)
+                            //                                .minimumScaleFactor(0.8)
                             Spacer()
                             Text("↓").foregroundColor(.blue)
                                 .font(.system(size: 12))
@@ -322,7 +322,7 @@ struct WeatherNowWidgetEntryView : View {
                                 .font(.system(size: 12))
                         }
                         Spacer()
-//                            .frame(height: 20)
+                        //                            .frame(height: 20)
                     }
                     
                 }
@@ -335,8 +335,8 @@ struct WeatherNowWidgetEntryView : View {
                             Spacer()
                                 .frame(width: 15)
                             WidgetEmoji(input: item)
-//                            Spacer()
-
+                            //                            Spacer()
+                            
                             Text("\(item.location.name)")
                                 .foregroundColor(Color.customBlue)
                                 .font(.system(size: 14))
@@ -362,8 +362,8 @@ struct WeatherNowWidgetEntryView : View {
                     Spacer()
                 }
             }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(Color(.systemBackground))
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color(.systemBackground))
         }
         
     }
@@ -511,10 +511,6 @@ func loadWeatherData() {
     }
 }
 
-extension Color {
-    static let customBlue = Color(red: 109.0/255.0, green: 154.0/255.0, blue: 242.0/255.0)
-}
-
 extension View {
     
     func showWidgetPreviews(for family: WidgetFamily) -> some View {
@@ -537,4 +533,8 @@ extension View {
             }
         }
     }
+}
+
+extension Color {
+    static let customBlue = Color(red: 109.0/255.0, green: 154.0/255.0, blue: 242.0/255.0)
 }

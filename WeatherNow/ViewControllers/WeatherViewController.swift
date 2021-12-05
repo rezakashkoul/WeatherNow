@@ -474,6 +474,7 @@ extension WeatherViewController {
             let decoder = JSONDecoder()
             weatherList = try decoder.decode([WeatherModel].self, from: messageData)
             saveWeatherData()
+            sendWeatherListToWidgets()
             DispatchQueue.main.async {
                 self.setTopViewWeatherData()
                 self.tableView.reloadData()
