@@ -13,31 +13,31 @@ struct Provider: IntentTimelineProvider {
     
     let weather = WeatherModel(location: WeatherLocation.init(country: "", name: "", region: ""), current: CurrentWeather(temp_c: 0.0, condition: WeatherCondition(text: "")), forecast: Forecast(forecastday: [ForecastDay].init()), time: Date.init(), weatherUrl: "")
     
-    func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date(), weather: weather , configuration: ConfigurationIntent())
+    func placeholder(in context: Context) -> WeatherEntry {
+        WeatherEntry(date: Date(), weather: mockData , configuration: ConfigurationIntent())
     }
     
-    func getSnapshot(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (SimpleEntry) -> ()) {
-        let entry = SimpleEntry(date: Date(), weather: weather ,configuration: configuration)
+    func getSnapshot(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (WeatherEntry) -> ()) {
+        let entry = WeatherEntry(date: Date(), weather: mockData ,configuration: configuration)
         completion(entry)
     }
     
     func getTimeline(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
-        var entries: [SimpleEntry] = []
+        var entries: [WeatherEntry] = []
         
         // Generate a timeline consisting of five entries an hour apart, starting from the current date.
         let currentDate = Date()
         for hourOffset in 0 ..< 30 {
             let entryDate = Calendar.current.date(byAdding: .minute, value: hourOffset, to: currentDate)!
             getWeatherDataFromiPhone()
-            //            updateWeather()
+//            updateWeather()
             saveWeatherData()
             if weatherList.count != 0 {
-                let entry = SimpleEntry(date: entryDate, weather: weatherList[0] ,configuration: configuration)
+                let entry = WeatherEntry(date: entryDate, weather: weatherList[0] ,configuration: configuration)
                 entries.append(entry)
             } else {
                 print("***** weatherList in empty *****")
-                let entry = SimpleEntry(date: entryDate, weather: mockData ,configuration: configuration)
+                let entry = WeatherEntry(date: entryDate, weather: mockData ,configuration: configuration)
                 entries.append(entry)
             }
         }
@@ -46,7 +46,7 @@ struct Provider: IntentTimelineProvider {
     }
 }
 
-struct SimpleEntry: TimelineEntry {
+struct WeatherEntry: TimelineEntry {
     
     let date: Date
     let weather: WeatherModel
@@ -61,24 +61,45 @@ struct WeatherNowWidgetEntryView : View {
         
         switch family {
         case .systemSmall:
-            SmallWidget(entry: entry)
             if weatherList.count == 0 {
-                Text("Please add some cities")
+                Text("Please add some cities").bold()
+                    .foregroundColor(Color.customBlue)
+                    .multilineTextAlignment(.leading)
+                    .lineLimit(nil)
+                    .font(.system(size: 25))
+                    .minimumScaleFactor(0.8)
+            } else {
+                SmallWidget(entry: entry)
             }
         case .systemMedium:
             if weatherList.count == 0 {
-                Text("Please add some cities")
+                Text("Please add some cities").bold()
+                    .foregroundColor(Color.customBlue)
+                    .multilineTextAlignment(.leading)
+                    .lineLimit(nil)
+                    .font(.system(size: 32))
+                    .minimumScaleFactor(0.8)
             } else {
                 MediumWidget(entry: entry)
             }
         case .systemLarge:
             if weatherList.count == 0 {
-                Text("Please add some cities")
+                Text("Please add some cities").bold()
+                    .foregroundColor(Color.customBlue)
+                    .multilineTextAlignment(.leading)
+                    .lineLimit(nil)
+                    .font(.system(size: 38))
+                    .minimumScaleFactor(0.8)
             } else {
                 LargeWidget(entry: entry)
             }
         default:
-            Text("We'll create it in the future.")
+            Text("We'll create it in the future.").bold()
+                .foregroundColor(Color.customBlue)
+                .multilineTextAlignment(.leading)
+                .lineLimit(nil)
+                .font(.system(size: 35))
+                .minimumScaleFactor(0.8)
         }
     }
     
@@ -358,10 +379,10 @@ struct WeatherNowWidget_Previews: PreviewProvider {
     let weather = WeatherModel(location: WeatherLocation.init(country: "", name: "", region: ""), current: CurrentWeather(temp_c: 0.0, condition: WeatherCondition(text: "")), forecast: Forecast(forecastday: [ForecastDay].init()), time: Date.init(), weatherUrl: "")
     
     static var previews: some View {
-        WeatherNowWidgetEntryView(entry: SimpleEntry(date: Date(), weather: mockData, configuration: ConfigurationIntent()))
+        WeatherNowWidgetEntryView(entry: WeatherEntry(date: Date(), weather: mockData, configuration: ConfigurationIntent()))
             .showWidgetPreviews(for: .systemSmall)
         
-        WeatherNowWidgetEntryView(entry: SimpleEntry(date: Date(), weather: mockData, configuration: ConfigurationIntent()))
+        WeatherNowWidgetEntryView(entry: WeatherEntry(date: Date(), weather: mockData, configuration: ConfigurationIntent()))
             .redacted(reason: .placeholder)
             .previewContext(WidgetPreviewContext(family: .systemSmall))
         //            .previewContext(WidgetPreviewContext(family: .systemMedium))
@@ -370,12 +391,10 @@ struct WeatherNowWidget_Previews: PreviewProvider {
 }
 
 
-var forecastArray = [ForecastDay(day: Day(maxtemp_c: 20, mintemp_c: -2))]
-var mockData = WeatherModel(location: WeatherLocation(country: "USA", name: "California", region: "LA"), current: CurrentWeather(temp_c: 12, condition: WeatherCondition(text: "Sunny")), forecast: Forecast(forecastday: forecastArray) , time: nil, weatherUrl: nil)
+var forecastArray = [ForecastDay(day: Day(maxtemp_c: 28, mintemp_c: 20))]
+var mockData = WeatherModel(location: WeatherLocation(country: "United States", name: "California", region: "CA"), current: CurrentWeather(temp_c: 25, condition: WeatherCondition(text: "Sunny")), forecast: Forecast(forecastday: forecastArray) , time: Date(), weatherUrl: nil)
 var weatherList: [WeatherModel] = []
-var expiredItems: [WeatherModel] = []
-var forecast = [ForecastDay]()
-var sampleData: WeatherModel = WeatherModel(location: WeatherLocation(country: "USA", name: "California", region: "LA"), current: CurrentWeather(temp_c: 25, condition: WeatherCondition(text: "Sunny")), forecast: Forecast(forecastday: forecast), time: Date(), weatherUrl: "")
+//var forecast = [ForecastDay]()
 
 func addPercentageToUrl(urlString : String) -> String{
     return urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
@@ -398,9 +417,7 @@ func getWeatherDataFromiPhone() {
 func updateWeather() {
     var counter = 0
     loadWeatherData()
-    expiredItems = weatherList.filter({ $0.time!.timeIntervalSinceNow  < -120})
-    print("Widgets expiredItems.count", expiredItems.count)
-    for _ in expiredItems {
+    for _ in weatherList {
         let fixedUrl = addPercentageToUrl(urlString: "https://api.weatherapi.com/v1/forecast.json?key=ec51c5f169d2409b85293311210511&q=\(weatherList[counter].location.name)-\(weatherList[counter].location.region)-\(weatherList[counter].location.country)&days=1&aqi=no&alerts=no")
         //            print("weatherList\(weatherList)")
         if let urlString = URL(string: fixedUrl) {
@@ -409,7 +426,7 @@ func updateWeather() {
             let task = URLSession.shared.dataTask(with: urlString) { data, response, error in
                 if let data = data , error == nil {
                     parseForUpdate(json: data)
-                    if counter == expiredItems.count {
+                    if counter == weatherList.count {
                         DispatchQueue.main.async {
                             saveWeatherData()
                         }
