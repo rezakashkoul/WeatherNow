@@ -109,25 +109,30 @@ struct WeatherNowWidgetEntryView : View {
             HStack {
                 Spacer()
             VStack(alignment: .leading) {
+                Spacer()
                     HStack {
+//                        Spacer()
                     Text(entry.weather.current.temp_c.rounded().clean.description + " °C")
                         .minimumScaleFactor(0.5)
                         .font(.system(size: 27))
                         .foregroundColor(Color.customBlue)
                     WidgetEmoji(input: entry.weather)
                 }
+                Spacer()
                 Text(entry.weather.location.name).bold()
                     .foregroundColor(Color.customBlue)
                     .multilineTextAlignment(.leading)
-                    .lineLimit(nil)
+                    .lineLimit(1)
                     .font(.system(size: 25))
                     .minimumScaleFactor(0.5)
+                Spacer()
                 Text(entry.weather.location.country)
                     .foregroundColor(Color.customBlue)
                     .multilineTextAlignment(.leading)
                     .lineLimit(1)
                     .font(.system(size: 14))
                     .minimumScaleFactor(0.5)
+                Spacer()
                 HStack(alignment: .center, spacing: 3) {
                     Text("↓").foregroundColor(.blue)
                         .font(.system(size: 12))
@@ -140,8 +145,10 @@ struct WeatherNowWidgetEntryView : View {
                     Text(entry.weather.forecast.forecastday[0].day.maxtemp_c.rounded().clean.description)
                         .foregroundColor(Color.customBlue)
                         .font(.system(size: 12))
+                    Spacer()
                 }
-                HStack(alignment: .center, spacing: 3, content: {
+                Spacer()
+                HStack(alignment: .center, spacing: 3) {
                     Text("Last Update: ")
                         .foregroundColor(Color.customBlue)
                         .font(.system(size: 12))
@@ -149,7 +156,8 @@ struct WeatherNowWidgetEntryView : View {
                     Text(entry.weather.time?.getCleanTime() ?? "None")
                         .foregroundColor(Color.customBlue)
                         .font(.system(size: 12))
-                })
+                }
+                .padding(.bottom)
             }
                 Spacer()
 
@@ -165,26 +173,31 @@ struct WeatherNowWidgetEntryView : View {
             HStack(alignment: .center, spacing: 10) {
                 Spacer()
                     .frame(width: 15)
-                VStack(alignment: .leading, spacing: 1) {
-                    HStack {
+                VStack(alignment: .leading) {
+                    Spacer()
+                        HStack {
+    //                        Spacer()
                         Text(entry.weather.current.temp_c.rounded().clean.description + " °C")
                             .minimumScaleFactor(0.5)
                             .font(.system(size: 27))
                             .foregroundColor(Color.customBlue)
                         WidgetEmoji(input: entry.weather)
                     }
+                    Spacer()
                     Text(entry.weather.location.name).bold()
                         .foregroundColor(Color.customBlue)
                         .multilineTextAlignment(.leading)
-                        .lineLimit(nil)
+                        .lineLimit(1)
                         .font(.system(size: 25))
                         .minimumScaleFactor(0.5)
+                    Spacer()
                     Text(entry.weather.location.country)
                         .foregroundColor(Color.customBlue)
                         .multilineTextAlignment(.leading)
                         .lineLimit(1)
                         .font(.system(size: 14))
                         .minimumScaleFactor(0.5)
+                    Spacer()
                     HStack(alignment: .center, spacing: 3) {
                         Text("↓").foregroundColor(.blue)
                             .font(.system(size: 12))
@@ -197,9 +210,10 @@ struct WeatherNowWidgetEntryView : View {
                         Text(entry.weather.forecast.forecastday[0].day.maxtemp_c.rounded().clean.description)
                             .foregroundColor(Color.customBlue)
                             .font(.system(size: 12))
+                        Spacer()
                     }
-                    
-                    HStack(alignment: .center, spacing: 3, content: {
+                    Spacer()
+                    HStack(alignment: .center, spacing: 3) {
                         Text("Last Update: ")
                             .foregroundColor(Color.customBlue)
                             .font(.system(size: 12))
@@ -207,19 +221,23 @@ struct WeatherNowWidgetEntryView : View {
                         Text(entry.weather.time?.getCleanTime() ?? "None")
                             .foregroundColor(Color.customBlue)
                             .font(.system(size: 12))
-                    })
+                    }
+                    .padding(.bottom)
                 }
+                    Spacer()
+
                 
                 VStack(alignment: .leading, spacing: 3) {
                     Spacer()
                     ForEach(weatherList.dropFirst().prefix(5), id: \.self) { item in
-                        HStack(spacing: 3) {
+                        HStack(spacing: 0) {
                             WidgetEmoji(input: item)
+                            
                             Text("\(item.location.name)")
                                 .foregroundColor(Color.customBlue)
                                 .font(.system(size: 12))
-                                .lineLimit(nil)
-                                .minimumScaleFactor(0.5)
+                                .lineLimit(1)
+//                                .minimumScaleFactor(0.8)
                             Spacer()
                             Text("↓").foregroundColor(.blue)
                                 .font(.system(size: 12))
@@ -240,6 +258,7 @@ struct WeatherNowWidgetEntryView : View {
                     }
                     Spacer()
                 }
+                Spacer()
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color(.systemBackground))
@@ -252,17 +271,20 @@ struct WeatherNowWidgetEntryView : View {
             VStack {
                 Spacer()
                     .frame(height: 20)
-                HStack(alignment: .center, spacing: 60) {
+                HStack(alignment: .top, spacing: 60) {
                     VStack(alignment: .center, spacing: 0) {
-                        HStack(alignment: .center, spacing: 5) {
+                        HStack(alignment: .center, spacing: 0) {
+                            Spacer()
                             Text(entry.weather.location.name + ",").bold()
                                 .foregroundColor(Color.customBlue)
                                 .multilineTextAlignment(.leading)
-                                .lineLimit(nil)
+                                .lineLimit(1)
                                 .font(.system(size: 35))
+                                .minimumScaleFactor(0.8)
                             Text(entry.weather.current.temp_c.rounded().clean.description + " °C")
                                 .font(.system(size: 35))
                                 .foregroundColor(Color.customBlue)
+                            Spacer()
                         }
                         Text(entry.weather.location.country)
                             .foregroundColor(Color.customBlue)
@@ -299,17 +321,22 @@ struct WeatherNowWidgetEntryView : View {
                                 .foregroundColor(Color.customBlue)
                                 .font(.system(size: 12))
                         }
+                        Spacer()
+//                            .frame(height: 20)
                     }
+                    
                 }
                 Spacer()
                     .frame(height: 15)
                 VStack(alignment: .leading, spacing: 3) {
+                    
                     ForEach(weatherList.dropFirst().prefix(7), id: \.self) { item in
                         HStack(spacing: 3) {
                             Spacer()
                                 .frame(width: 15)
                             WidgetEmoji(input: item)
-                            
+//                            Spacer()
+
                             Text("\(item.location.name)")
                                 .foregroundColor(Color.customBlue)
                                 .font(.system(size: 14))
@@ -332,6 +359,7 @@ struct WeatherNowWidgetEntryView : View {
                             print("shit")
                         }
                     }
+                    Spacer()
                 }
             }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
