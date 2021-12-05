@@ -329,7 +329,7 @@ struct WeatherNowWidgetEntryView : View {
                     }
                 }
             }
-            Spacer()
+//            Spacer()
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .background(Color(.systemBackground))
         }
