@@ -71,7 +71,7 @@ class WeatherViewController: UIViewController, SearchViewControllerDelegate, WCS
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: true)
         tableView.reloadData()
-//        sendWeatherListToWidgets()
+        //        sendWeatherListToWidgets()
     }
     
     override func viewDidAppear(_ animated: Bool) {

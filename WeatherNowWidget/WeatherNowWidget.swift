@@ -41,7 +41,6 @@ struct Provider: IntentTimelineProvider {
                 entries.append(entry)
             }
         }
-        
         let timeline = Timeline(entries: entries, policy: .atEnd)
         completion(timeline)
     }
@@ -60,36 +59,26 @@ struct WeatherNowWidgetEntryView : View {
     var entry: Provider.Entry
     var body: some View {
         
-        //        WeatherItemsForList(entry: entry)
-        
         switch family {
         case .systemSmall:
             SmallWidget(entry: entry)
-            //            Text("hello")
-            //            if weatherList.count == 0 {
-            //                Text("Please add some cities")
-            //            }
-            
-            
+            if weatherList.count == 0 {
+                Text("Please add some cities")
+            }
         case .systemMedium:
-            MediumWidget(entry: entry)
-            
-            //            if weatherList.count == 0 {
-            //                Text("Please add some cities")
-            //            }
-            //            Text("Medium")
-            
+            if weatherList.count == 0 {
+                Text("Please add some cities")
+            } else {
+                MediumWidget(entry: entry)
+            }
         case .systemLarge:
-            //            if weatherList.count == 0 {
-            //                Text("Please add some cities")
-            //
-            LargeWidget(entry: entry)
-            //            Text("X-Large")
-            
-            
-            
+            if weatherList.count == 0 {
+                Text("Please add some cities")
+            } else {
+                LargeWidget(entry: entry)
+            }
         default:
-            Text("Some other WidgetFamily in the future.")
+            Text("We'll create it in the future.")
         }
     }
     
@@ -102,7 +91,7 @@ struct WeatherNowWidgetEntryView : View {
                         .minimumScaleFactor(0.5)
                         .font(.system(size: 27))
                         .foregroundColor(Color.customBlue)
-                    WeatherEmoji(entry: entry)
+                    WidgetEmoji(input: entry.weather)
                 }
                 Text(entry.weather.location.name).bold()
                     .foregroundColor(Color.customBlue)
@@ -119,19 +108,16 @@ struct WeatherNowWidgetEntryView : View {
                 HStack(alignment: .center, spacing: 3) {
                     Text("↓").foregroundColor(.blue)
                         .font(.system(size: 12))
-                    //                    Text(entry.weather.forecast.forecastday[0].day.mintemp_c.rounded().clean.description)
-                    Text("5 ")
+                    Text(entry.weather.forecast.forecastday[0].day.mintemp_c.rounded().clean.description)
                         .foregroundColor(Color.customBlue)
                         .font(.system(size: 12))
                     Text("↑")
                         .foregroundColor(.red)
                         .font(.system(size: 12))
-                    //                    Text(entry.weather.forecast.forecastday[0].day.maxtemp_c.rounded().clean.description)
-                    Text("12")
+                    Text(entry.weather.forecast.forecastday[0].day.maxtemp_c.rounded().clean.description)
                         .foregroundColor(Color.customBlue)
                         .font(.system(size: 12))
                 }
-                
                 HStack(alignment: .center, spacing: 3, content: {
                     Text("Last Update: ")
                         .foregroundColor(Color.customBlue)
@@ -141,9 +127,6 @@ struct WeatherNowWidgetEntryView : View {
                         .foregroundColor(Color.customBlue)
                         .font(.system(size: 12))
                 })
-                
-                
-                
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color(.systemBackground))
@@ -162,7 +145,7 @@ struct WeatherNowWidgetEntryView : View {
                             .minimumScaleFactor(0.5)
                             .font(.system(size: 27))
                             .foregroundColor(Color.customBlue)
-                        WeatherEmoji(entry: entry)
+                        WidgetEmoji(input: entry.weather)
                     }
                     Text(entry.weather.location.name).bold()
                         .foregroundColor(Color.customBlue)
@@ -179,15 +162,13 @@ struct WeatherNowWidgetEntryView : View {
                     HStack(alignment: .center, spacing: 3) {
                         Text("↓").foregroundColor(.blue)
                             .font(.system(size: 12))
-                        //                    Text(entry.weather.forecast.forecastday[0].day.mintemp_c.rounded().clean.description)
-                        Text("5 ")
+                        Text(entry.weather.forecast.forecastday[0].day.mintemp_c.rounded().clean.description)
                             .foregroundColor(Color.customBlue)
                             .font(.system(size: 12))
                         Text("↑")
                             .foregroundColor(.red)
                             .font(.system(size: 12))
-                        //                    Text(entry.weather.forecast.forecastday[0].day.maxtemp_c.rounded().clean.description)
-                        Text("12")
+                        Text(entry.weather.forecast.forecastday[0].day.maxtemp_c.rounded().clean.description)
                             .foregroundColor(Color.customBlue)
                             .font(.system(size: 12))
                     }
@@ -207,9 +188,7 @@ struct WeatherNowWidgetEntryView : View {
                     Spacer()
                     ForEach(weatherList.dropFirst().prefix(5), id: \.self) { item in
                         HStack(spacing: 3) {
-//                            Spacer()
-//                                .frame(width: 15)
-                            WeatherEmoji(entry: entry)
+                            WidgetEmoji(input: item)
                             Text("\(item.location.name)")
                                 .foregroundColor(Color.customBlue)
                                 .font(.system(size: 12))
@@ -218,33 +197,24 @@ struct WeatherNowWidgetEntryView : View {
                             Spacer()
                             Text("↓").foregroundColor(.blue)
                                 .font(.system(size: 12))
-                            //                        Spacer()
-                            
                             Text(item.forecast.forecastday[0].day.mintemp_c.rounded().clean.description)
                                 .foregroundColor(Color.customBlue)
                                 .font(.system(size: 12))
-                            //                        Spacer()
-                            
                             Text("↑")
                                 .foregroundColor(.red)
                                 .font(.system(size: 12))
-                            //                        Spacer()
-                            
                             Text(item.forecast.forecastday[0].day.maxtemp_c.rounded().clean.description)
                                 .foregroundColor(Color.customBlue)
                                 .font(.system(size: 12))
                             Spacer()
                                 .frame(width: 10)
-                            
                         }.onAppear {
                             print("shit")
                         }
-
                     }
                     Spacer()
                 }
             }
-            
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color(.systemBackground))
         }
@@ -256,111 +226,99 @@ struct WeatherNowWidgetEntryView : View {
             VStack {
                 Spacer()
                     .frame(height: 20)
-            HStack(alignment: .center, spacing: 60) {
-                VStack(alignment: .center, spacing: 0) {
-                    HStack(alignment: .center, spacing: 5) {
-                        Text(entry.weather.location.name + ",").bold()
+                HStack(alignment: .center, spacing: 60) {
+                    VStack(alignment: .center, spacing: 0) {
+                        HStack(alignment: .center, spacing: 5) {
+                            Text(entry.weather.location.name + ",").bold()
+                                .foregroundColor(Color.customBlue)
+                                .multilineTextAlignment(.leading)
+                                .lineLimit(nil)
+                                .font(.system(size: 35))
+                            Text(entry.weather.current.temp_c.rounded().clean.description + " °C")
+                                .font(.system(size: 35))
+                                .foregroundColor(Color.customBlue)
+                        }
+                        Text(entry.weather.location.country)
                             .foregroundColor(Color.customBlue)
                             .multilineTextAlignment(.leading)
-                            .lineLimit(nil)
-                            .font(.system(size: 35))
-                        Text(entry.weather.current.temp_c.rounded().clean.description + " °C")
-                            .font(.system(size: 35))
-                            .foregroundColor(Color.customBlue)
-                    }
-                    Text(entry.weather.location.country)
-                        .foregroundColor(Color.customBlue)
-                        .multilineTextAlignment(.leading)
-                        .lineLimit(1)
-                        .font(.system(size: 28))
-                        .minimumScaleFactor(0.8)
-                    HStack {
-                        Text(entry.weather.current.condition.text)
-                            .foregroundColor(Color.customBlue)
-                        .font(.system(size: 16))
-                        WeatherEmoji(entry: entry)
-                    }
-                    
-                    HStack(alignment: .top , spacing: 3) {
-                        Text("↓").foregroundColor(.blue).bold()
-                            .font(.system(size: 12))
-                        //                    Text(entry.weather.forecast.forecastday[0].day.mintemp_c.rounded().clean.description)
-                        Text("5 ")
-                            .foregroundColor(Color.customBlue)
-                            .font(.system(size: 12))
-                        Text("↑").bold()
-                            .foregroundColor(.red)
-                            .font(.system(size: 12))
-                        //                    Text(entry.weather.forecast.forecastday[0].day.maxtemp_c.rounded().clean.description)
-                        Text("12")
-                            .foregroundColor(Color.customBlue)
-                            .font(.system(size: 12))
-                    }
-                    
-                    HStack(alignment: .center, spacing: 3) {
-                        Text("Last Update: ")
-                            .foregroundColor(Color.customBlue)
-                            .font(.system(size: 12))
+                            .lineLimit(1)
+                            .font(.system(size: 28))
+                            .minimumScaleFactor(0.8)
+                        HStack {
+                            Text(entry.weather.current.condition.text)
+                                .foregroundColor(Color.customBlue)
+                                .font(.system(size: 16))
+                            WidgetEmoji(input: entry.weather)
+                        }
                         
-                        Text(entry.weather.time?.getCleanTime() ?? "None")
-                            .foregroundColor(Color.customBlue)
-                            .font(.system(size: 12))
+                        HStack(alignment: .top , spacing: 3) {
+                            Text("↓").foregroundColor(.blue).bold()
+                                .font(.system(size: 12))
+                            Text(entry.weather.forecast.forecastday[0].day.mintemp_c.rounded().clean.description)
+                                .foregroundColor(Color.customBlue)
+                                .font(.system(size: 12))
+                            Text("↑").bold()
+                                .foregroundColor(.red)
+                                .font(.system(size: 12))
+                            Text(entry.weather.forecast.forecastday[0].day.maxtemp_c.rounded().clean.description)
+                                .foregroundColor(Color.customBlue)
+                                .font(.system(size: 12))
+                        }
+                        HStack(alignment: .center, spacing: 3) {
+                            Text("Last Update: ")
+                                .foregroundColor(Color.customBlue)
+                                .font(.system(size: 12))
+                            
+                            Text(entry.weather.time?.getCleanTime() ?? "None")
+                                .foregroundColor(Color.customBlue)
+                                .font(.system(size: 12))
+                        }
                     }
                 }
-            }
-            Spacer()
+                Spacer()
                     .frame(height: 15)
-            VStack(alignment: .leading, spacing: 3) {
-
-                ForEach(weatherList.dropFirst().prefix(7), id: \.self) { item in
-                    HStack(spacing: 3) {
-                        Spacer()
-                            .frame(width: 15)
-                        WeatherEmoji(entry: entry)
-                        
-                        Text("\(item.location.name)")
-                            .foregroundColor(Color.customBlue)
-                            .font(.system(size: 14))
-                        Spacer()
-                        Text("↓").foregroundColor(.blue)
-                            .font(.system(size: 12))
-                        //                        Spacer()
-                        
-                        Text(item.forecast.forecastday[0].day.mintemp_c.rounded().clean.description)
-                            .foregroundColor(Color.customBlue)
-                            .font(.system(size: 12))
-                        //                        Spacer()
-                        
-                        Text("↑")
-                            .foregroundColor(.red)
-                            .font(.system(size: 12))
-                        //                        Spacer()
-                        
-                        Text(item.forecast.forecastday[0].day.maxtemp_c.rounded().clean.description)
-                            .foregroundColor(Color.customBlue)
-                            .font(.system(size: 12))
-                        Spacer()
-                            .frame(width: 20)
-                        
-                    }.onAppear {
-                        print("shit")
+                VStack(alignment: .leading, spacing: 3) {
+                    ForEach(weatherList.dropFirst().prefix(7), id: \.self) { item in
+                        HStack(spacing: 3) {
+                            Spacer()
+                                .frame(width: 15)
+                            WidgetEmoji(input: item)
+                            
+                            Text("\(item.location.name)")
+                                .foregroundColor(Color.customBlue)
+                                .font(.system(size: 14))
+                            Spacer()
+                            Text("↓").foregroundColor(.blue)
+                                .font(.system(size: 12))
+                            Text(item.forecast.forecastday[0].day.mintemp_c.rounded().clean.description)
+                                .foregroundColor(Color.customBlue)
+                                .font(.system(size: 12))
+                            Text("↑")
+                                .foregroundColor(.red)
+                                .font(.system(size: 12))
+                            Text(item.forecast.forecastday[0].day.maxtemp_c.rounded().clean.description)
+                                .foregroundColor(Color.customBlue)
+                                .font(.system(size: 12))
+                            Spacer()
+                                .frame(width: 20)
+                            
+                        }.onAppear {
+                            print("shit")
+                        }
                     }
                 }
-
-            }
-            
             }
             Spacer()
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color(.systemBackground))
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(Color(.systemBackground))
         }
         
     }
     
-    struct WeatherEmoji: View {
-        var entry: Provider.Entry
+    struct WidgetEmoji: View {
+        var input: WeatherModel
         var body: some View {
-            switch entry.weather.current.condition.text {
+            switch input.current.condition.text {
             case "Sunny" : Text("☀️") .font(.system(size: 20))
             case "Partly cloudy" : Text("🌤") .font(.system(size: 20))
             case "Cloudy" : Text("🌥") .font(.system(size: 20))
@@ -388,7 +346,6 @@ struct WeatherNowWidget: Widget {
     var body: some WidgetConfiguration {
         IntentConfiguration(kind: kind, intent: ConfigurationIntent.self, provider: Provider()) { entry in
             WeatherNowWidgetEntryView(entry: entry)
-            
         }
         .configurationDisplayName("WeatherNow Widget")
         .description("A powerful weather app. I hope you enjoy")
@@ -416,19 +373,9 @@ struct WeatherNowWidget_Previews: PreviewProvider {
 var forecastArray = [ForecastDay(day: Day(maxtemp_c: 20, mintemp_c: -2))]
 var mockData = WeatherModel(location: WeatherLocation(country: "USA", name: "California", region: "LA"), current: CurrentWeather(temp_c: 12, condition: WeatherCondition(text: "Sunny")), forecast: Forecast(forecastday: forecastArray) , time: nil, weatherUrl: nil)
 var weatherList: [WeatherModel] = []
-//= [
-//    WeatherModel(location: WeatherLocation(country: "Iran", name: "Tehran", region: "LA"), current: CurrentWeather(temp_c: 14, condition: WeatherCondition(text: "Sunny")), forecast: Forecast(forecastday: forecastArray) , time: nil, weatherUrl: nil),
-//    WeatherModel(location: WeatherLocation(country: "USA", name: "California", region: "LA"), current: CurrentWeather(temp_c: 12, condition: WeatherCondition(text: "Sunny")), forecast: Forecast(forecastday: forecastArray) , time: nil, weatherUrl: nil)
-//]
-
-var locationList: [SearchLocationModel] = []
 var expiredItems: [WeatherModel] = []
 var forecast = [ForecastDay]()
 var sampleData: WeatherModel = WeatherModel(location: WeatherLocation(country: "USA", name: "California", region: "LA"), current: CurrentWeather(temp_c: 25, condition: WeatherCondition(text: "Sunny")), forecast: Forecast(forecastday: forecast), time: Date(), weatherUrl: "")
-
-
-
-
 
 func addPercentageToUrl(urlString : String) -> String{
     return urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
