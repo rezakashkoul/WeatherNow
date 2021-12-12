@@ -27,11 +27,14 @@ struct Provider: IntentTimelineProvider {
         
         // Generate a timeline consisting of five entries an hour apart, starting from the current date.
         let currentDate = Date()
-        for hourOffset in 0 ..< 30 {
-            let entryDate = Calendar.current.date(byAdding: .minute, value: hourOffset, to: currentDate)!
+        for hourOffset in 0 ..< 24 {
+            let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
             getWeatherDataFromiPhone()
-            //            updateWeather()
-            saveWeatherData()
+            updateWeather { weatherObjects in
+                weatherList = weatherObjects
+                saveWeatherData()
+                loadWeatherData()
+            }
             if weatherList.count != 0 {
                 let entry = WeatherEntry(date: entryDate, weather: weatherList[0] ,configuration: configuration)
                 entries.append(entry)
@@ -446,7 +449,7 @@ func getWeatherDataFromiPhone() {
     }
 }
 
-func updateWeather() {
+func updateWeather(completion: @escaping ([WeatherModel])->Void) {
     var counter = 0
     loadWeatherData()
     for _ in weatherList {
@@ -457,11 +460,24 @@ func updateWeather() {
             //                print("urlString", fixedUrl)
             let task = URLSession.shared.dataTask(with: urlString) { data, response, error in
                 if let data = data , error == nil {
-                    parseForUpdate(json: data)
-                    if counter == weatherList.count {
-                        DispatchQueue.main.async {
-                            saveWeatherData()
+                    let decoder = JSONDecoder()
+                    do {
+                        var weatherObject = try decoder.decode(WeatherModel.self, from: data)
+                        weatherObject.time = Date()
+                        if weatherList.contains(weatherObject) {
+                            for i in 0..<weatherList.count {
+                                if weatherList[i].location.region == weatherObject.location.region && weatherList[i].location.name == weatherObject.location.name && weatherList[i].location.country == weatherObject.location.country {
+                                    weatherList[i] = weatherObject
+                                }
+                            }
                         }
+                        saveWeatherData()
+                    } catch {
+                        print("Widget: Weather Parsing Error: \(error)")
+                    }
+                    if counter == weatherList.count {
+                        saveWeatherData()
+                        completion(weatherList)
                     }
                 } else {
                     print("Error in fetching data")
@@ -472,23 +488,23 @@ func updateWeather() {
     }
 }
 
-func parseForUpdate(json: Data) {
-    let decoder = JSONDecoder()
-    do {
-        var weatherObject = try decoder.decode(WeatherModel.self, from: json)
-        weatherObject.time = Date()
-        if weatherList.contains(weatherObject) {
-            for i in 0..<weatherList.count {
-                if weatherList[i].location.region == weatherObject.location.region && weatherList[i].location.name == weatherObject.location.name && weatherList[i].location.country == weatherObject.location.country {
-                    weatherList[i] = weatherObject
-                }
-            }
-        }
-        saveWeatherData()
-    } catch {
-        print("Widget: Weather Parsing Error: \(error)")
-    }
-}
+//func parseForUpdate(json: Data) {
+//    let decoder = JSONDecoder()
+//    do {
+//        var weatherObject = try decoder.decode(WeatherModel.self, from: json)
+//        weatherObject.time = Date()
+//        if weatherList.contains(weatherObject) {
+//            for i in 0..<weatherList.count {
+//                if weatherList[i].location.region == weatherObject.location.region && weatherList[i].location.name == weatherObject.location.name && weatherList[i].location.country == weatherObject.location.country {
+//                    weatherList[i] = weatherObject
+//                }
+//            }
+//        }
+//        saveWeatherData()
+//    } catch {
+//        print("Widget: Weather Parsing Error: \(error)")
+//    }
+//}
 
 func saveWeatherData() {
     do {
@@ -518,7 +534,7 @@ extension View {
             let devices = ["iPhone 13" , "iPhone SE"] //, "iPhone 11 pro Max", "iPhone SE"]
             ForEach(devices, id:\.self) { device in
                 self
-                //                    .previewContext(WidgetPreviewContext(family: .systemMedium))
+//                  .previewContext(WidgetPreviewContext(family: .systemMedium))
                     .previewContext(WidgetPreviewContext(family: .systemLarge))
                 
                     .previewDevice(PreviewDevice(rawValue: device))
